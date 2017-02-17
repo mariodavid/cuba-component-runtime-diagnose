@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="de.diedavids.cuba.console.web.screens.Console"
+        messagesPack="de.diedavids.cuba.console.web.screens">
+    <actions>
+        <action id="runConsoleAction"
+                icon="icons/run.png"
+                invoke="runConsole"/>
+        <action id="clearConsoleAction"
+                icon="icons/erase.png"
+                invoke="clearConsole"/>
+        <action id="clearConsoleResultAction"
+                icon="icons/erase.png"
+                invoke="clearConsoleResult"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout>
+        <split id="consoleResultSplitter"
+               height="100%"
+               orientation="vertical"
+               width="100%">
+            <vbox id="consoleVBox"
+                  expand="console"
+                  height="100%"
+                  margin="true"
+                  spacing="true">
+                <buttonsPanel>
+                    <button id="runBtn"
+                            action="runConsoleAction"/>
+                    <button id="clearBtn"
+                            action="clearConsoleAction"/>
+                </buttonsPanel>
+                <sourceCodeEditor id="console"
+                                  caption="Console"
+                                  mode="Groovy"
+                                  width="100%"/>
+            </vbox>
+            <vbox id="consoleResultVBox"
+                  expand="consoleResultTabSheet"
+                  height="100%"
+                  margin="true"
+                  spacing="true">
+                <buttonsPanel>
+                    <button id="clearResultBtn"
+                            action="clearConsoleResultAction"/>
+                </buttonsPanel>
+                <tabSheet id="consoleResultTabSheet">
+                    <tab id="consoleResultTabResult"
+                         caption="Result"
+                         spacing="true">
+                        <sourceCodeEditor id="consoleResult"
+                                          height="100%"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                    <tab id="consoleResultTabResultLog"
+                         caption="Log"
+                         spacing="true">
+                        <sourceCodeEditor id="consoleResultLog"
+                                          height="100%"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                </tabSheet>
+            </vbox>
+        </split>
+    </layout>
+</window>
