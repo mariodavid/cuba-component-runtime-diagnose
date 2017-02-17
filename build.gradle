@@ -67,6 +67,15 @@ configure([globalModule, coreModule, guiModule, webModule]) {
     }
 }
 
+configure([globalModule, coreModule, guiModule, webModule]) {
+    apply(plugin: 'groovy')
+
+    sourceSets {
+        main { groovy { srcDirs = ["src"] } }
+        test { groovy { srcDirs = ["test"] } }
+    }
+}
+
 configure(globalModule) {
     task enhance(type: CubaEnhancing)
     
