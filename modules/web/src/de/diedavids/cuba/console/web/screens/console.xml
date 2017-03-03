@@ -5,14 +5,32 @@
         messagesPack="de.diedavids.cuba.console.web.screens">
     <actions>
         <action id="runConsoleAction"
+                caption="msg://runConsole"
                 icon="icons/run.png"
-                invoke="runConsole"/>
+                invoke="runConsole"
+                shortcut="SHIFT-ENTER"/>
         <action id="clearConsoleAction"
                 icon="icons/erase.png"
                 invoke="clearConsole"/>
+        <action id="maximizeConsoleAction"
+                icon="font-icon:EXPAND"
+                invoke="maximizeConsole"/>
+        <action id="minimizeConsoleAction"
+                icon="font-icon:COMPRESS"
+                invoke="minimizeConsole"/>
+        <action id="maximizeConsoleResultAction"
+                icon="font-icon:EXPAND"
+                invoke="maximizeConsoleResult"/>
+        <action id="minimizeConsoleResultAction"
+                icon="font-icon:COMPRESS"
+                invoke="minimizeConsoleResult"/>
         <action id="clearConsoleResultAction"
                 icon="icons/erase.png"
                 invoke="clearConsoleResult"/>
+        <action id="downloadConsoleResultAction"
+                caption="msg://downloadResult"
+                icon="icons/download.png"
+                invoke="downloadConsoleResult"/>
     </actions>
     <dialogMode height="600"
                 width="800"/>
@@ -22,48 +40,136 @@
                orientation="vertical"
                width="100%">
             <vbox id="consoleVBox"
-                  expand="console"
                   height="100%"
                   margin="true"
                   spacing="true">
-                <buttonsPanel>
-                    <button id="runBtn"
-                            action="runConsoleAction"/>
-                    <button id="clearBtn"
-                            action="clearConsoleAction"/>
-                </buttonsPanel>
-                <sourceCodeEditor id="console"
-                                  caption="Console"
-                                  mode="Groovy"
-                                  width="100%"/>
+                <tabSheet id="tabSheet"
+                          height="100%">
+                    <tab id="fileUploadTab"
+                         caption="Upload"
+                         expand="dropZone"
+                         margin="true,false,true,false"
+                         spacing="true">
+                        <buttonsPanel>
+                            <upload id="consoleFileUploadBtn"
+                                    accept=".groovy"
+                                    showFileName="true"
+                                    dropZone="dropZone"
+                                    showClearButton="true"
+                                    clearButtonIcon="icons/erase.png"
+                                    clearButtonCaption=""
+                                    uploadButtonCaption="msg://uploadBtnCaption"
+                                    uploadButtonDescription="msg://uploadBtnDescription"
+                                    uploadButtonIcon="icons/upload.png"/>
+                        </buttonsPanel>
+                        <vbox id="dropZone"
+                              spacing="true"
+                              stylename="cuba-static-drop-zone">
+                            <label align="MIDDLE_CENTER"
+                                   stylename="cuba-upload-dropzone-description"
+                                   value="Drop file here..."/>
+                        </vbox>
+                    </tab>
+                    <tab id="consoleTab"
+                         caption="Console"
+                         expand="console"
+                         margin="true,false,true,false"
+                         spacing="true">
+                        <hbox spacing="true"
+                              width="100%">
+                            <hbox>
+                                <buttonsPanel>
+                                    <button id="runBtn"
+                                            action="runConsoleAction"/>
+                                    <button id="clearBtn"
+                                            action="clearConsoleAction"/>
+                                </buttonsPanel>
+                            </hbox>
+                            <hbox align="TOP_RIGHT">
+                                <buttonsPanel>
+                                    <button id="maximizeConsoleBtn"
+                                            action="maximizeConsoleAction"/>
+                                    <button id="minimizeConsoleBtn"
+                                            action="minimizeConsoleAction"/>
+                                </buttonsPanel>
+                            </hbox>
+                        </hbox>
+                        <sourceCodeEditor id="console"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                </tabSheet>
             </vbox>
             <vbox id="consoleResultVBox"
                   expand="consoleResultTabSheet"
                   height="100%"
                   margin="true"
                   spacing="true">
-                <buttonsPanel>
-                    <button id="clearResultBtn"
-                            action="clearConsoleResultAction"/>
-                </buttonsPanel>
+                <hbox spacing="true"
+                      width="100%">
+                    <hbox>
+                        <buttonsPanel>
+                            <button id="clearResultBtn"
+                                    action="clearConsoleResultAction"/>
+                        </buttonsPanel>
+                    </hbox>
+                    <hbox align="TOP_RIGHT">
+                        <buttonsPanel>
+                            <button id="maximizeConsoleResultBtn"
+                                    action="maximizeConsoleResultAction"/>
+                            <button id="minimizeConsoleResultBtn"
+                                    action="minimizeConsoleResultAction"/>
+                        </buttonsPanel>
+                    </hbox>
+                </hbox>
                 <tabSheet id="consoleResultTabSheet">
                     <tab id="consoleResultTabResult"
                          caption="Result"
+                         margin="true,false,true,false"
                          spacing="true">
                         <sourceCodeEditor id="consoleResult"
+                                          editable="false"
                                           height="100%"
                                           mode="Groovy"
                                           width="100%"/>
                     </tab>
                     <tab id="consoleResultTabResultLog"
                          caption="Log"
+                         margin="true,false,true,false"
                          spacing="true">
                         <sourceCodeEditor id="consoleResultLog"
+                                          editable="false"
+                                          height="100%"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                    <tab id="consoleResultTabStacktraceLog"
+                         caption="Stacktrace"
+                         margin="true,false,true,false"
+                         spacing="true">
+                        <sourceCodeEditor id="consoleStacktraceLog"
+                                          editable="false"
+                                          height="100%"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                    <tab id="consoleExecutedScriptLogTab"
+                         caption="Executed Script"
+                         margin="true,false,true,false"
+                         spacing="true">
+                        <sourceCodeEditor id="consoleExecutedScriptLog"
+                                          editable="false"
                                           height="100%"
                                           mode="Groovy"
                                           width="100%"/>
                     </tab>
                 </tabSheet>
+                <hbox>
+                    <buttonsPanel>
+                        <button id="downloadResultBtn"
+                                action="downloadConsoleResultAction"/>
+                    </buttonsPanel>
+                </hbox>
             </vbox>
         </split>
     </layout>
