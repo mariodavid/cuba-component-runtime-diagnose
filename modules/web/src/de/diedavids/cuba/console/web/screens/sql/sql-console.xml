@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
         caption="msg://caption"
-        class="de.diedavids.cuba.console.web.screens.Console"
-        messagesPack="de.diedavids.cuba.console.web.screens">
+        class="de.diedavids.cuba.console.web.screens.sql.SqlConsole"
+        messagesPack="de.diedavids.cuba.console.web.screens.sql">
     <actions>
-        <action id="runConsoleAction"
+        <action id="runSqlConsoleAction"
                 caption="msg://runConsole"
                 icon="icons/run.png"
-                invoke="runConsole"
+                invoke="runSqlConsole"
                 shortcut="SHIFT-ENTER"/>
-        <action id="clearConsoleAction"
+        <action id="clearSqlConsoleAction"
                 icon="icons/erase.png"
-                invoke="clearConsole"/>
+                invoke="clearSqlConsole"/>
+
+
         <action id="maximizeConsoleAction"
                 icon="font-icon:EXPAND"
                 invoke="maximizeConsole"/>
@@ -70,32 +72,34 @@
                                    value="Drop file here..."/>
                         </vbox>
                     </tab>
-                    <tab id="consoleTab"
-                         caption="Console"
-                         expand="console"
+
+
+                    <tab id="sqlConsoleTab"
+                         caption="SQL Console"
+                         expand="sqlConsole"
                          margin="true,false,true,false"
                          spacing="true">
                         <hbox spacing="true"
                               width="100%">
                             <hbox>
                                 <buttonsPanel>
-                                    <button id="runBtn"
-                                            action="runConsoleAction"/>
-                                    <button id="clearBtn"
-                                            action="clearConsoleAction"/>
+                                    <button id="sqlRunBtn"
+                                            action="runSqlConsoleAction"/>
+                                    <button id="sqlClearBtn"
+                                            action="clearSqlConsoleAction"/>
                                 </buttonsPanel>
                             </hbox>
                             <hbox align="TOP_RIGHT">
                                 <buttonsPanel>
-                                    <button id="maximizeConsoleBtn"
+                                    <button id="maximizeSqlConsoleBtn"
                                             action="maximizeConsoleAction"/>
-                                    <button id="minimizeConsoleBtn"
+                                    <button id="minimizeSqlConsoleBtn"
                                             action="minimizeConsoleAction"/>
                                 </buttonsPanel>
                             </hbox>
                         </hbox>
-                        <sourceCodeEditor id="console"
-                                          mode="Groovy"
+                        <sourceCodeEditor id="sqlConsole"
+                                          mode="SQL"
                                           width="100%"/>
                     </tab>
                 </tabSheet>
@@ -127,42 +131,9 @@
                          caption="Result"
                          margin="true,false,true,false"
                          spacing="true">
-                        <sourceCodeEditor id="consoleResult"
-                                          editable="false"
-                                          height="100%"
-                                          mode="Groovy"
-                                          width="100%"/>
+                        <vbox id="resultTableBox"/>
                     </tab>
-                    <tab id="consoleResultTabResultLog"
-                         caption="Log"
-                         margin="true,false,true,false"
-                         spacing="true">
-                        <sourceCodeEditor id="consoleResultLog"
-                                          editable="false"
-                                          height="100%"
-                                          mode="Groovy"
-                                          width="100%"/>
-                    </tab>
-                    <tab id="consoleResultTabStacktraceLog"
-                         caption="Stacktrace"
-                         margin="true,false,true,false"
-                         spacing="true">
-                        <sourceCodeEditor id="consoleStacktraceLog"
-                                          editable="false"
-                                          height="100%"
-                                          mode="Groovy"
-                                          width="100%"/>
-                    </tab>
-                    <tab id="consoleExecutedScriptLogTab"
-                         caption="Executed Script"
-                         margin="true,false,true,false"
-                         spacing="true">
-                        <sourceCodeEditor id="consoleExecutedScriptLog"
-                                          editable="false"
-                                          height="100%"
-                                          mode="Groovy"
-                                          width="100%"/>
-                    </tab>
+
                 </tabSheet>
                 <hbox>
                     <buttonsPanel>

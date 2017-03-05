@@ -1,4 +1,4 @@
-package de.diedavids.cuba.console.web.screens
+package de.diedavids.cuba.console.web.screens.groovy
 
 import com.haulmont.cuba.core.global.DataManager
 import com.haulmont.cuba.core.global.DatatypeFormatter
@@ -12,6 +12,7 @@ import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.export.ExportFormat
 import com.haulmont.cuba.gui.upload.FileUploadingAPI
 import com.haulmont.cuba.security.global.UserSession
+import de.diedavids.cuba.console.GroovyConsoleLogger
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
@@ -21,7 +22,7 @@ import javax.inject.Inject
 import java.nio.charset.StandardCharsets
 import java.util.zip.CRC32
 
-class Console extends AbstractWindow {
+class GroovyConsole extends AbstractWindow {
 
 
     @Inject
@@ -110,7 +111,7 @@ class Console extends AbstractWindow {
         if (groovyScript) {
 
             def binding = new Binding()
-            def log = new ConsoleLogger(
+            def log = new GroovyConsoleLogger(
                     timeSource: timeSource,
                     datatypeFormatter: datatypeFormatter
             )
@@ -248,6 +249,7 @@ class Console extends AbstractWindow {
     void maximizeConsole() {
         consoleResultSplitter.splitPosition = 100
     }
+
     void maximizeConsoleResult(Integer position = 0) {
         consoleResultSplitter.splitPosition = position
     }
@@ -256,7 +258,9 @@ class Console extends AbstractWindow {
     void minimizeConsole() {
         consoleResultSplitter.splitPosition = 50
     }
+
     void minimizeConsoleResult() {
         consoleResultSplitter.splitPosition = 50
     }
+
 }

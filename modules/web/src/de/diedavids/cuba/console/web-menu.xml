@@ -2,6 +2,8 @@
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <menu id="consoleMenu"
           insertBefore="administration">
-        <item id="console"/>
+        <item id="diagnoseWizard"/>
+        <item id="groovyConsole"/>
+        <item id="sqlConsole"/>
     </menu>
 </menu-config>

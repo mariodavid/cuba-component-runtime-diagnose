@@ -1,9 +1,9 @@
-package de.diedavids.cuba.console.web.screens
+package de.diedavids.cuba.console
 
 import com.haulmont.cuba.core.global.DatatypeFormatter
 import com.haulmont.cuba.core.global.TimeSource
 
-class ConsoleLogger {
+class GroovyConsoleLogger {
 
 
     StringBuilder result = new StringBuilder()

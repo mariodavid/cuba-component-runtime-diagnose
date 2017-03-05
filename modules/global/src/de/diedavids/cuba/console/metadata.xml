@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <metadata xmlns="http://schemas.haulmont.com/cuba/metadata.xsd">
 
-    <metadata-model root-package="de.diedavids.cuba.console" namespace="console"/>
+    <metadata-model root-package="de.diedavids.cuba.console" namespace="console">
+        <class>de.diedavids.cuba.console.wizard.DiagnoseFileValidation</class>
+    </metadata-model>
 
 </metadata>
