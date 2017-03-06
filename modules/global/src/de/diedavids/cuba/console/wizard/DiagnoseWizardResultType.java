@@ -5,7 +5,7 @@ import com.haulmont.chile.core.datatypes.impl.EnumClass;
 import javax.annotation.Nullable;
 
 
-public enum DiagnoseFileValidationType implements EnumClass<String> {
+public enum DiagnoseWizardResultType implements EnumClass<String> {
 
     ERROR("ERROR", "font-icon:EXCLAMATION"),
     WARNING("WARNING", "font-icon:INFO"),
@@ -15,7 +15,7 @@ public enum DiagnoseFileValidationType implements EnumClass<String> {
 
     private String icon;
 
-    DiagnoseFileValidationType(String value, String icon) {
+    DiagnoseWizardResultType(String value, String icon) {
         this.id = value;
         this.icon = icon;
     }
@@ -29,8 +29,8 @@ public enum DiagnoseFileValidationType implements EnumClass<String> {
     }
 
     @Nullable
-    public static DiagnoseFileValidationType fromId(String id) {
-        for (DiagnoseFileValidationType at : DiagnoseFileValidationType.values()) {
+    public static DiagnoseWizardResultType fromId(String id) {
+        for (DiagnoseWizardResultType at : DiagnoseWizardResultType.values()) {
             if (at.getId().equals(id)) {
                 return at;
             }

@@ -48,6 +48,8 @@ class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
                     datatypeFormatter: datatypeFormatter
             )
             Binding binding = createBinding(log)
+            diagnoseExecution.executionTimestamp = timeSource.currentTimestamp()
+
             try {
                 def result = scripting.evaluateGroovy(diagnoseExecution.diagnoseScript, binding)
                 diagnoseExecution.addResult('result',result)

@@ -3,12 +3,11 @@ package de.diedavids.cuba.console.wizard;
 import com.haulmont.chile.core.annotations.MetaClass;
 import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.cuba.core.entity.AbstractNotPersistentEntity;
-import com.haulmont.cuba.core.entity.BaseUuidEntity;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.Messages;
 
-@MetaClass(name = "console$DiagnoseFileValidation")
-public class DiagnoseFileValidation extends AbstractNotPersistentEntity {
+@MetaClass(name = "console$DiagnoseWizardResult")
+public class DiagnoseWizardResult extends AbstractNotPersistentEntity {
     private static final long serialVersionUID = 8079820443159058331L;
 
     @MetaProperty(mandatory = true)
@@ -23,12 +22,12 @@ public class DiagnoseFileValidation extends AbstractNotPersistentEntity {
     @MetaProperty
     protected String message;
 
-    public void setType(DiagnoseFileValidationType type) {
+    public void setType(DiagnoseWizardResultType type) {
         this.type = type == null ? null : type.getId();
     }
 
-    public DiagnoseFileValidationType getType() {
-        return type == null ? null : DiagnoseFileValidationType.fromId(type);
+    public DiagnoseWizardResultType getType() {
+        return type == null ? null : DiagnoseWizardResultType.fromId(type);
     }
 
 

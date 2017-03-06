@@ -43,63 +43,65 @@
             <vbox id="consoleVBox"
                   height="100%"
                   margin="true"
+                  expand="console"
                   spacing="true">
-                <tabSheet id="tabSheet"
-                          height="100%">
-                    <tab id="fileUploadTab"
-                         caption="Upload"
-                         expand="dropZone"
-                         margin="true,false,true,false"
-                         spacing="true">
+                <hbox spacing="true"
+                      width="100%">
+                    <hbox>
                         <buttonsPanel>
-                            <upload id="consoleFileUploadBtn"
-                                    accept=".groovy"
-                                    showFileName="true"
-                                    dropZone="dropZone"
-                                    showClearButton="true"
-                                    clearButtonIcon="icons/erase.png"
-                                    clearButtonCaption=""
-                                    uploadButtonCaption="msg://uploadBtnCaption"
-                                    uploadButtonDescription="msg://uploadBtnDescription"
-                                    uploadButtonIcon="icons/upload.png"/>
+                            <button id="runBtn"
+                                    action="runConsoleAction"/>
+                            <button id="clearBtn"
+                                    action="clearConsoleAction"/>
                         </buttonsPanel>
-                        <vbox id="dropZone"
-                              spacing="true"
-                              stylename="cuba-static-drop-zone">
-                            <label align="MIDDLE_CENTER"
-                                   stylename="cuba-upload-dropzone-description"
-                                   value="Drop file here..."/>
-                        </vbox>
-                    </tab>
-                    <tab id="consoleTab"
-                         caption="Console"
-                         expand="console"
-                         margin="true,false,true,false"
-                         spacing="true">
-                        <hbox spacing="true"
-                              width="100%">
-                            <hbox>
-                                <buttonsPanel>
-                                    <button id="runBtn"
-                                            action="runConsoleAction"/>
-                                    <button id="clearBtn"
-                                            action="clearConsoleAction"/>
-                                </buttonsPanel>
-                            </hbox>
-                            <hbox align="TOP_RIGHT">
-                                <buttonsPanel>
-                                    <button id="maximizeConsoleBtn"
-                                            action="maximizeConsoleAction"/>
-                                    <button id="minimizeConsoleBtn"
-                                            action="minimizeConsoleAction"/>
-                                </buttonsPanel>
-                            </hbox>
-                        </hbox>
-                        <sourceCodeEditor id="console"
-                                          mode="Groovy"
-                                          width="100%"/>
-                    </tab>
-                </tabSheet>
+                    </hbox>
+                    <hbox align="TOP_RIGHT">
+                        <buttonsPanel>
+                            <button id="maximizeConsoleBtn"
+                                    action="maximizeConsoleAction"/>
+                            <button id="minimizeConsoleBtn"
+                                    action="minimizeConsoleAction"/>
+                        </buttonsPanel>
+                    </hbox>
+                </hbox>
+                <sourceCodeEditor id="console"
+                                  mode="Groovy"
+                                  width="100%"/>
+                <!--<tabSheet id="tabSheet"-->
+                          <!--height="100%">-->
+                    <!--&lt;!&ndash;<tab id="fileUploadTab"&ndash;&gt;-->
+                         <!--&lt;!&ndash;caption="Upload"&ndash;&gt;-->
+                         <!--&lt;!&ndash;expand="dropZone"&ndash;&gt;-->
+                         <!--&lt;!&ndash;margin="true,false,true,false"&ndash;&gt;-->
+                         <!--&lt;!&ndash;spacing="true">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<buttonsPanel>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<upload id="consoleFileUploadBtn"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;accept=".groovy"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;showFileName="true"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;dropZone="dropZone"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;showClearButton="true"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;clearButtonIcon="icons/erase.png"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;clearButtonCaption=""&ndash;&gt;-->
+                                    <!--&lt;!&ndash;uploadButtonCaption="msg://uploadBtnCaption"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;uploadButtonDescription="msg://uploadBtnDescription"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;uploadButtonIcon="icons/upload.png"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</buttonsPanel>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<vbox id="dropZone"&ndash;&gt;-->
+                              <!--&lt;!&ndash;spacing="true"&ndash;&gt;-->
+                              <!--&lt;!&ndash;stylename="cuba-static-drop-zone">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label align="MIDDLE_CENTER"&ndash;&gt;-->
+                                   <!--&lt;!&ndash;stylename="cuba-upload-dropzone-description"&ndash;&gt;-->
+                                   <!--&lt;!&ndash;value="Drop file here..."/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</vbox>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</tab>&ndash;&gt;-->
+                    <!--<tab id="consoleTab"-->
+                         <!--caption="Console"-->
+                         <!--expand="console"-->
+                         <!--margin="true,false,true,false"-->
+                         <!--spacing="true">-->
+
+                    <!--</tab>-->
+                <!--</tabSheet>-->
             </vbox>
             <vbox id="consoleResultVBox"
                   expand="consoleResultTabSheet"

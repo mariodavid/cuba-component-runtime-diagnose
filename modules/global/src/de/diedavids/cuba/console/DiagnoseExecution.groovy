@@ -31,4 +31,13 @@ class DiagnoseExecution implements Serializable{
     String getResult(String fileName) {
         diagnoseResults[fileName]
     }
+
+    boolean isExecuted() {
+        executionTimestamp != null
+    }
+    boolean isPending() {
+        !executed
+    }
+
+
 }

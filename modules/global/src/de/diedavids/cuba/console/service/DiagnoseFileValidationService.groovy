@@ -1,13 +1,10 @@
 package de.diedavids.cuba.console.service;
 
-import de.diedavids.cuba.console.DiagnoseExecution;
-import de.diedavids.cuba.console.wizard.DiagnoseFileValidation;
-
-import java.util.Collection;
-
+import de.diedavids.cuba.console.DiagnoseExecution
+import de.diedavids.cuba.console.wizard.DiagnoseWizardResult
 
 public interface DiagnoseFileValidationService {
     String NAME = "console_DiagnoseFileValidationService";
 
-    Collection<DiagnoseFileValidation> validateDiagnose(DiagnoseExecution diagnose);
+    Collection<DiagnoseWizardResult> validateDiagnose(DiagnoseExecution diagnose);
 }

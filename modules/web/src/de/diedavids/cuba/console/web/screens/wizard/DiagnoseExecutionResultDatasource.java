@@ -2,15 +2,18 @@ package de.diedavids.cuba.console.web.screens.wizard;
 
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.data.impl.CustomCollectionDatasource;
-import de.diedavids.cuba.console.service.DiagnoseFileValidationService;
 import de.diedavids.cuba.console.DiagnoseExecution;
+import de.diedavids.cuba.console.service.DiagnoseWizardResultService;
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResult;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.UUID;
 
-public class DiagnoseFileValidationDatasource extends CustomCollectionDatasource<DiagnoseWizardResult, UUID> {
+public class DiagnoseExecutionResultDatasource extends CustomCollectionDatasource<DiagnoseWizardResult, UUID> {
 
-    private DiagnoseFileValidationService diagnoseFileValidationService = AppBeans.get(DiagnoseFileValidationService.NAME);
+    private DiagnoseWizardResultService diagnoseWizardResultService = AppBeans.get(DiagnoseWizardResultService.NAME);
 
     @Override
     protected Collection<DiagnoseWizardResult> getEntities(Map params) {
@@ -18,7 +21,7 @@ public class DiagnoseFileValidationDatasource extends CustomCollectionDatasource
         DiagnoseExecution diagnose = (DiagnoseExecution) params.get("diagnose");
 
         if (diagnose != null) {
-            return diagnoseFileValidationService.validateDiagnose(diagnose);
+            return diagnoseWizardResultService.createResultsForDiagnose(diagnose);
         }
         else {
             return new HashSet<>();

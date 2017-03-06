@@ -2,7 +2,7 @@
 <metadata xmlns="http://schemas.haulmont.com/cuba/metadata.xsd">
 
     <metadata-model root-package="de.diedavids.cuba.console" namespace="console">
-        <class>de.diedavids.cuba.console.wizard.DiagnoseFileValidation</class>
+        <class>de.diedavids.cuba.console.wizard.DiagnoseWizardResult</class>
     </metadata-model>
 
 </metadata>

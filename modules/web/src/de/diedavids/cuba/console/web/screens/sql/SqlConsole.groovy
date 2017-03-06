@@ -54,27 +54,27 @@ class SqlConsole extends AbstractWindow {
 
     @Override
     void init(Map<String, Object> params) {
-        consoleFileUploadBtn.addFileUploadSucceedListener(new FileUploadField.FileUploadSucceedListener() {
-            @Override
-            void fileUploadSucceed(FileUploadField.FileUploadSucceedEvent e) {
-                File file = fileUploadingAPI.getFile(consoleFileUploadBtn.fileId)
-
-
-                showOptionDialog("File upload successful", "File upload successful. Execute the content of the file?", Frame.MessageType.CONFIRMATION, [new DialogAction(DialogAction.Type.OK) {
-
-                    @Override
-                    void actionPerform(Component component) {
-                        runGroovyScript(file.text)
-                    }
-                }, new DialogAction(DialogAction.Type.CANCEL)])
-            }
-        })
-        consoleFileUploadBtn.addFileUploadErrorListener(new UploadField.FileUploadErrorListener() {
-            @Override
-            void fileUploadError(UploadField.FileUploadErrorEvent e) {
-                showNotification("File upload error", Frame.NotificationType.ERROR)
-            }
-        })
+//        consoleFileUploadBtn.addFileUploadSucceedListener(new FileUploadField.FileUploadSucceedListener() {
+//            @Override
+//            void fileUploadSucceed(FileUploadField.FileUploadSucceedEvent e) {
+//                File file = fileUploadingAPI.getFile(consoleFileUploadBtn.fileId)
+//
+//
+//                showOptionDialog("File upload successful", "File upload successful. Execute the content of the file?", Frame.MessageType.CONFIRMATION, [new DialogAction(DialogAction.Type.OK) {
+//
+//                    @Override
+//                    void actionPerform(Component component) {
+//                        runGroovyScript(file.text)
+//                    }
+//                }, new DialogAction(DialogAction.Type.CANCEL)])
+//            }
+//        })
+//        consoleFileUploadBtn.addFileUploadErrorListener(new UploadField.FileUploadErrorListener() {
+//            @Override
+//            void fileUploadError(UploadField.FileUploadErrorEvent e) {
+//                showNotification("File upload error", Frame.NotificationType.ERROR)
+//            }
+//        })
     }
 
 

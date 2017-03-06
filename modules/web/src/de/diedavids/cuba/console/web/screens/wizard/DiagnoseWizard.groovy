@@ -8,10 +8,9 @@ import com.haulmont.cuba.gui.export.ExportFormat
 import com.haulmont.cuba.gui.upload.FileUploadingAPI
 import de.diedavids.cuba.console.DiagnoseExecution
 import de.diedavids.cuba.console.DiagnoseExecutionFactory
-import de.diedavids.cuba.console.DiagnoseExecutionFactoryBean
 import de.diedavids.cuba.console.service.GroovyDiagnoseService
-import de.diedavids.cuba.console.wizard.DiagnoseFileValidation
-import de.diedavids.cuba.console.wizard.DiagnoseFileValidationType
+import de.diedavids.cuba.console.wizard.DiagnoseWizardResult
+import de.diedavids.cuba.console.wizard.DiagnoseWizardResultType
 
 import javax.inject.Inject
 
@@ -35,9 +34,14 @@ class DiagnoseWizard extends AbstractWindow {
 
     @Inject
     Table diagnoseFileValidationTable
+    @Inject
+    Table diagnoseWizardResultsTable
 
     @Inject
     DiagnoseFileValidationDatasource diagnoseFileValidationDs
+
+    @Inject
+    DiagnoseExecutionResultDatasource diagnoseWizardResultsDs
 
     @Inject
     Button executeDiagnosisBtn
@@ -56,19 +60,20 @@ class DiagnoseWizard extends AbstractWindow {
     DiagnoseExecutionFactory diagnoseExecutionFactory
 
 
-    DiagnoseExecution diagnoseExecution
+    @Inject
+    Button closeWizard
 
+
+    DiagnoseExecution diagnoseExecution
 
 
     @Override
     void init(Map<String, Object> params) {
 
-        diagnoseFileValidationTable.setIconProvider(new ListComponent.IconProvider<DiagnoseFileValidation>() {
-            @Override
-            String getItemIcon(DiagnoseFileValidation entity) {
-                entity.type.icon
-            }
-        })
+        def iconProvider = new DiagnoseWizardResultTypeIconProvider()
+        diagnoseFileValidationTable.iconProvider = iconProvider
+        diagnoseWizardResultsTable.iconProvider = iconProvider
+
 
         consoleFileUploadBtn.addFileUploadSucceedListener(new FileUploadField.FileUploadSucceedListener() {
             @Override
@@ -82,7 +87,7 @@ class DiagnoseWizard extends AbstractWindow {
                 wizardAccordion.getTab("step2").setEnabled(true)
                 wizardAccordion.setTab("step2")
 
-                if (diagnoseFileValidationDs.getItems().any {it.type == DiagnoseFileValidationType.ERROR}) {
+                if (diagnoseFileValidationDs.getItems().any { it.type == DiagnoseWizardResultType.ERROR }) {
                     executeDiagnosisBtn.setEnabled(false)
                 }
                 Accordion.Tab step1 = wizardAccordion.getTab("step1")
@@ -103,12 +108,7 @@ class DiagnoseWizard extends AbstractWindow {
     void runGroovyDiagnose() {
         diagnoseExecution = groovyDiagnoseService.runGroovyDiagnose(diagnoseExecution)
 
-        if (diagnoseExecution.executionSuccessful) {
-            showNotification("yeah", Frame.NotificationType.HUMANIZED)
-        }
-        else {
-            showNotification("non", Frame.NotificationType.ERROR)
-        }
+        diagnoseWizardResultsDs.refresh([diagnose: diagnoseExecution])
     }
 
 
@@ -121,11 +121,12 @@ class DiagnoseWizard extends AbstractWindow {
 
     void executeDiagnosis() {
 
-        if (diagnoseExecution.isGroovy()) {
+        if (diagnoseExecution.groovy) {
             runGroovyDiagnose()
 
             wizardAccordion.getTab("step3").setEnabled(true)
             wizardAccordion.setTab("step3")
+            closeWizard.setEnabled(true)
 
             Accordion.Tab step2 = wizardAccordion.getTab("step2")
             step2.setCaption(step2.getCaption() + " " + formatMessage("check"))
@@ -135,7 +136,12 @@ class DiagnoseWizard extends AbstractWindow {
     }
 
     void cancelWizard() {
-        close('cancel')
+        close(CLOSE_ACTION_ID)
+    }
+
+    void closeWizard() {
+        downloadDiagnoseResult()
+        close(CLOSE_ACTION_ID)
     }
 
     void downloadDiagnoseResult() {
@@ -145,8 +151,33 @@ class DiagnoseWizard extends AbstractWindow {
         try {
             exportDisplay.show(new ByteArrayDataProvider(zipBytes),
                     createZipFileName(), ExportFormat.ZIP);
+            showNotification(formatMessage("diagnoseResultsDownloadedMessage"))
         } catch (Exception e) {
             showNotification(getMessage("exportFailed"), e.getMessage(), Frame.NotificationType.ERROR);
         }
+    }
+
+    @Override
+    protected boolean preClose(String actionId) {
+
+        if (diagnoseExecution?.pending) {
+            showOptionDialog("Cancel Diagnose Execution", "The Diagnose has not been executed yet. Are you sure?", Frame.MessageType.CONFIRMATION, [new DialogAction(DialogAction.Type.OK) {
+                @Override
+                void actionPerform(Component component) {
+                    close(actionId, true)
+                }
+            }, new DialogAction(DialogAction.Type.CANCEL)])
+        } else {
+            close(actionId, true)
+        }
+        return false
+    }
+
+}
+
+class DiagnoseWizardResultTypeIconProvider implements ListComponent.IconProvider<DiagnoseWizardResult> {
+    @Override
+    String getItemIcon(DiagnoseWizardResult entity) {
+        entity.type.icon
     }
 }

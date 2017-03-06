@@ -16,6 +16,8 @@
                        value="de.diedavids.cuba.console.service.DiagnoseFileValidationService"/>
                 <entry key="console_GroovyConsoleService"
                        value="de.diedavids.cuba.console.service.GroovyDiagnoseService"/>
+                <entry key="console_DiagnoseWizardResultService"
+                       value="de.diedavids.cuba.console.service.DiagnoseWizardResultService"/>
             </map>
         </property>
     </bean>

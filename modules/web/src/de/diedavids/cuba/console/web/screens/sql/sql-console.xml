@@ -44,65 +44,30 @@
             <vbox id="consoleVBox"
                   height="100%"
                   margin="true"
+                  expand="sqlConsole"
                   spacing="true">
-                <tabSheet id="tabSheet"
-                          height="100%">
-                    <tab id="fileUploadTab"
-                         caption="Upload"
-                         expand="dropZone"
-                         margin="true,false,true,false"
-                         spacing="true">
+                <hbox spacing="true"
+                      width="100%">
+                    <hbox>
                         <buttonsPanel>
-                            <upload id="consoleFileUploadBtn"
-                                    accept=".groovy"
-                                    showFileName="true"
-                                    dropZone="dropZone"
-                                    showClearButton="true"
-                                    clearButtonIcon="icons/erase.png"
-                                    clearButtonCaption=""
-                                    uploadButtonCaption="msg://uploadBtnCaption"
-                                    uploadButtonDescription="msg://uploadBtnDescription"
-                                    uploadButtonIcon="icons/upload.png"/>
+                            <button id="sqlRunBtn"
+                                    action="runSqlConsoleAction"/>
+                            <button id="sqlClearBtn"
+                                    action="clearSqlConsoleAction"/>
                         </buttonsPanel>
-                        <vbox id="dropZone"
-                              spacing="true"
-                              stylename="cuba-static-drop-zone">
-                            <label align="MIDDLE_CENTER"
-                                   stylename="cuba-upload-dropzone-description"
-                                   value="Drop file here..."/>
-                        </vbox>
-                    </tab>
-
-
-                    <tab id="sqlConsoleTab"
-                         caption="SQL Console"
-                         expand="sqlConsole"
-                         margin="true,false,true,false"
-                         spacing="true">
-                        <hbox spacing="true"
-                              width="100%">
-                            <hbox>
-                                <buttonsPanel>
-                                    <button id="sqlRunBtn"
-                                            action="runSqlConsoleAction"/>
-                                    <button id="sqlClearBtn"
-                                            action="clearSqlConsoleAction"/>
-                                </buttonsPanel>
-                            </hbox>
-                            <hbox align="TOP_RIGHT">
-                                <buttonsPanel>
-                                    <button id="maximizeSqlConsoleBtn"
-                                            action="maximizeConsoleAction"/>
-                                    <button id="minimizeSqlConsoleBtn"
-                                            action="minimizeConsoleAction"/>
-                                </buttonsPanel>
-                            </hbox>
-                        </hbox>
-                        <sourceCodeEditor id="sqlConsole"
-                                          mode="SQL"
-                                          width="100%"/>
-                    </tab>
-                </tabSheet>
+                    </hbox>
+                    <hbox align="TOP_RIGHT">
+                        <buttonsPanel>
+                            <button id="maximizeSqlConsoleBtn"
+                                    action="maximizeConsoleAction"/>
+                            <button id="minimizeSqlConsoleBtn"
+                                    action="minimizeConsoleAction"/>
+                        </buttonsPanel>
+                    </hbox>
+                </hbox>
+                <sourceCodeEditor id="sqlConsole"
+                                  mode="SQL"
+                                  width="100%"/>
             </vbox>
             <vbox id="consoleResultVBox"
                   expand="consoleResultTabSheet"
