@@ -29,10 +29,6 @@
         <action id="clearConsoleResultAction"
                 icon="icons/erase.png"
                 invoke="clearConsoleResult"/>
-        <action id="downloadConsoleResultAction"
-                caption="msg://downloadResult"
-                icon="icons/download.png"
-                invoke="downloadConsoleResult"/>
     </actions>
     <dialogMode height="600"
                 width="800"/>
@@ -77,9 +73,14 @@
                 <hbox spacing="true"
                       width="100%">
                     <hbox>
-                        <buttonsPanel>
+                        <buttonsPanel id="resultButtonPanel">
                             <button id="clearResultBtn"
                                     action="clearConsoleResultAction"/>
+                            <button id="excelButton"
+                                    enable="false"
+                                    caption="mainMsg://actions.Excel"
+                                    icon="theme://actions.Excel.icon"
+                            />
                         </buttonsPanel>
                     </hbox>
                     <hbox align="TOP_RIGHT">
@@ -96,16 +97,10 @@
                          caption="Result"
                          margin="true,false,true,false"
                          spacing="true">
-                        <vbox id="resultTableBox"/>
+                        <vbox id="resultTableBox" height="100%" width="100%"/>
                     </tab>
 
                 </tabSheet>
-                <hbox>
-                    <buttonsPanel>
-                        <button id="downloadResultBtn"
-                                action="downloadConsoleResultAction"/>
-                    </buttonsPanel>
-                </hbox>
             </vbox>
         </split>
     </layout>

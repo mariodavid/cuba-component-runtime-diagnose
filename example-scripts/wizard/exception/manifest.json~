@@ -1,5 +1,6 @@
 {
   "appVersion": "1.0",
   "appName": "console-app",
-  "producer": "Company Inc."
+  "producer": "Company Inc.",
+  "diagnoseType": "GROOVY"
 }
