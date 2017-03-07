@@ -7,7 +7,7 @@
         <action id="runConsoleAction"
                 caption="msg://runConsole"
                 icon="icons/run.png"
-                invoke="runConsole"
+                invoke="runGroovyDiagnose"
                 shortcut="SHIFT-ENTER"/>
 
         <action id="clearConsoleAction"
@@ -29,7 +29,7 @@
                 icon="icons/erase.png"
                 invoke="clearConsoleResult"/>
         <action id="downloadConsoleResultAction"
-                caption="msg://downloadResult"
+                enable="false"
                 icon="icons/download.png"
                 invoke="downloadConsoleResult"/>
     </actions>
@@ -67,41 +67,6 @@
                 <sourceCodeEditor id="console"
                                   mode="Groovy"
                                   width="100%"/>
-                <!--<tabSheet id="tabSheet"-->
-                          <!--height="100%">-->
-                    <!--&lt;!&ndash;<tab id="fileUploadTab"&ndash;&gt;-->
-                         <!--&lt;!&ndash;caption="Upload"&ndash;&gt;-->
-                         <!--&lt;!&ndash;expand="dropZone"&ndash;&gt;-->
-                         <!--&lt;!&ndash;margin="true,false,true,false"&ndash;&gt;-->
-                         <!--&lt;!&ndash;spacing="true">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<buttonsPanel>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<upload id="consoleFileUploadBtn"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;accept=".groovy"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;showFileName="true"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;dropZone="dropZone"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;showClearButton="true"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;clearButtonIcon="icons/erase.png"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;clearButtonCaption=""&ndash;&gt;-->
-                                    <!--&lt;!&ndash;uploadButtonCaption="msg://uploadBtnCaption"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;uploadButtonDescription="msg://uploadBtnDescription"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;uploadButtonIcon="icons/upload.png"/>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</buttonsPanel>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<vbox id="dropZone"&ndash;&gt;-->
-                              <!--&lt;!&ndash;spacing="true"&ndash;&gt;-->
-                              <!--&lt;!&ndash;stylename="cuba-static-drop-zone">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<label align="MIDDLE_CENTER"&ndash;&gt;-->
-                                   <!--&lt;!&ndash;stylename="cuba-upload-dropzone-description"&ndash;&gt;-->
-                                   <!--&lt;!&ndash;value="Drop file here..."/>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</vbox>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</tab>&ndash;&gt;-->
-                    <!--<tab id="consoleTab"-->
-                         <!--caption="Console"-->
-                         <!--expand="console"-->
-                         <!--margin="true,false,true,false"-->
-                         <!--spacing="true">-->
-
-                    <!--</tab>-->
-                <!--</tabSheet>-->
             </vbox>
             <vbox id="consoleResultVBox"
                   expand="consoleResultTabSheet"
@@ -114,6 +79,8 @@
                         <buttonsPanel>
                             <button id="clearResultBtn"
                                     action="clearConsoleResultAction"/>
+                            <button id="downloadResultBtn"
+                                    action="downloadConsoleResultAction"/>
                         </buttonsPanel>
                     </hbox>
                     <hbox align="TOP_RIGHT">
@@ -167,12 +134,6 @@
                                           width="100%"/>
                     </tab>
                 </tabSheet>
-                <hbox>
-                    <buttonsPanel>
-                        <button id="downloadResultBtn"
-                                action="downloadConsoleResultAction"/>
-                    </buttonsPanel>
-                </hbox>
             </vbox>
         </split>
     </layout>

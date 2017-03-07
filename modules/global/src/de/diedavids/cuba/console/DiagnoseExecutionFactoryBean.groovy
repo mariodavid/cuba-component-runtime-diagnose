@@ -30,7 +30,17 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
 
     }
 
-    private String readDiagnoseScriptFromDiagnoseFile(DiagnoseExecution diagnoseExecution,ZipFile diagnoseZipFile) {
+    @Override
+    DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript) {
+
+        def result = new DiagnoseExecution()
+
+        result.diagnoseScript = diagnoseScript
+
+        result
+    }
+
+    private String readDiagnoseScriptFromDiagnoseFile(DiagnoseExecution diagnoseExecution, ZipFile diagnoseZipFile) {
         if (diagnoseExecution.isGroovy()) {
             readFileContentFromArchive('diagnose.groovy', diagnoseZipFile)
         }
