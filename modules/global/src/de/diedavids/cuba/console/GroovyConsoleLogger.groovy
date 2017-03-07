@@ -16,7 +16,7 @@ class GroovyConsoleLogger {
         append("DEBUG",content)
     }
 
-    protected StringBuilder append(String level, Object content) {
+    void append(String level, Object content) {
         def time = datatypeFormatter.formatDateTime(timeSource.currentTimestamp())
         result << "[$time]\t[$level]\t$content\n"
     }

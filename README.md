@@ -1,3 +1,6 @@
+[![license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Build Status](https://travis-ci.org/mariodavid/cuba-component-console.svg?branch=master)](https://travis-ci.org/mariodavid/cuba-component-console)
+
 # CUBA Platform Component - Console
 
 This application component is a Groovy console for interactive runtime application management and debugging of a [CUBA](https://www.cuba-platform.com/) application.
