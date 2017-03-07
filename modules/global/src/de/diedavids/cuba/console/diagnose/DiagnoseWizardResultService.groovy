@@ -1,6 +1,6 @@
-package de.diedavids.cuba.console.service
+package de.diedavids.cuba.console.diagnose
 
-import de.diedavids.cuba.console.DiagnoseExecution
+import de.diedavids.cuba.console.diagnose.DiagnoseExecution
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResult
 
 

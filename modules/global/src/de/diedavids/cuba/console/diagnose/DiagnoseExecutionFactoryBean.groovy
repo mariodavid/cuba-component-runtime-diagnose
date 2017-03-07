@@ -1,4 +1,4 @@
-package de.diedavids.cuba.console
+package de.diedavids.cuba.console.diagnose
 
 import groovy.json.JsonSlurper
 import org.apache.commons.compress.archivers.ArchiveEntry

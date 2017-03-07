@@ -11,13 +11,13 @@
         <property name="remoteServices">
             <map>
                 <entry key="console_SqlConsoleService"
-                       value="de.diedavids.cuba.console.service.SqlConsoleService"/>
+                       value="de.diedavids.cuba.console.sql.SqlConsoleService"/>
                 <entry key="console_DiagnoseFileValidationService"
-                       value="de.diedavids.cuba.console.service.DiagnoseFileValidationService"/>
+                       value="de.diedavids.cuba.console.diagnose.DiagnoseFileValidationService"/>
                 <entry key="console_GroovyConsoleService"
-                       value="de.diedavids.cuba.console.service.GroovyDiagnoseService"/>
+                       value="de.diedavids.cuba.console.groovy.GroovyDiagnoseService"/>
                 <entry key="console_DiagnoseWizardResultService"
-                       value="de.diedavids.cuba.console.service.DiagnoseWizardResultService"/>
+                       value="de.diedavids.cuba.console.diagnose.DiagnoseWizardResultService"/>
             </map>
         </property>
     </bean>

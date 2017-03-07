@@ -6,9 +6,9 @@ import com.haulmont.cuba.gui.export.ByteArrayDataProvider
 import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.export.ExportFormat
 import com.haulmont.cuba.gui.upload.FileUploadingAPI
-import de.diedavids.cuba.console.DiagnoseExecution
-import de.diedavids.cuba.console.DiagnoseExecutionFactory
-import de.diedavids.cuba.console.service.GroovyDiagnoseService
+import de.diedavids.cuba.console.diagnose.DiagnoseExecution
+import de.diedavids.cuba.console.diagnose.DiagnoseExecutionFactory
+import de.diedavids.cuba.console.groovy.GroovyDiagnoseService
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResult
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResultType
 

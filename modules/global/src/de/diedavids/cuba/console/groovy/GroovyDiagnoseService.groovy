@@ -1,6 +1,6 @@
-package de.diedavids.cuba.console.service
+package de.diedavids.cuba.console.groovy
 
-import de.diedavids.cuba.console.DiagnoseExecution
+import de.diedavids.cuba.console.diagnose.DiagnoseExecution
 
 
 public interface GroovyDiagnoseService {

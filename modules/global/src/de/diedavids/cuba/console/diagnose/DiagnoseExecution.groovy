@@ -1,4 +1,4 @@
-package de.diedavids.cuba.console
+package de.diedavids.cuba.console.diagnose
 
 class DiagnoseExecution implements Serializable{
 

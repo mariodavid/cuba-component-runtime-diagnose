@@ -1,4 +1,4 @@
-package de.diedavids.cuba.console.service
+package de.diedavids.cuba.console.groovy
 
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.global.DataManager
@@ -7,9 +7,7 @@ import com.haulmont.cuba.core.global.Metadata
 import com.haulmont.cuba.core.global.Scripting
 import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
-import com.haulmont.cuba.security.global.UserSession
-import de.diedavids.cuba.console.DiagnoseExecution
-import de.diedavids.cuba.console.GroovyConsoleLogger
+import de.diedavids.cuba.console.diagnose.DiagnoseExecution
 import org.springframework.stereotype.Service
 
 import javax.inject.Inject

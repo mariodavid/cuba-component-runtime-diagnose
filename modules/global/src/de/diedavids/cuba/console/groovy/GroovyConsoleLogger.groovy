@@ -1,4 +1,4 @@
-package de.diedavids.cuba.console
+package de.diedavids.cuba.console.groovy
 
 import com.haulmont.cuba.core.global.DatatypeFormatter
 import com.haulmont.cuba.core.global.TimeSource

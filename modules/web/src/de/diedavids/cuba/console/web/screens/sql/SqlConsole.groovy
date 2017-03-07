@@ -4,7 +4,6 @@ import com.haulmont.chile.core.model.MetaClass
 import com.haulmont.chile.core.model.MetaProperty
 import com.haulmont.cuba.core.global.GlobalConfig
 import com.haulmont.cuba.core.global.Metadata
-import com.haulmont.cuba.gui.app.core.entityinspector.EntityInspectorBrowse
 import com.haulmont.cuba.gui.components.*
 import com.haulmont.cuba.gui.components.actions.ExcelAction
 import com.haulmont.cuba.gui.data.DsBuilder
@@ -13,7 +12,8 @@ import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.theme.ThemeConstants
 import com.haulmont.cuba.gui.upload.FileUploadingAPI
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory
-import de.diedavids.cuba.console.service.SqlConsoleService
+import de.diedavids.cuba.console.sql.SqlSelectResult
+import de.diedavids.cuba.console.sql.SqlConsoleService
 
 import javax.inject.Inject
 
@@ -68,17 +68,17 @@ class SqlConsole extends AbstractWindow {
 
 
     void runSqlConsole() {
-        def result = sqlConsoleService.executeSqlKvE(sqlConsole.value)
+        SqlSelectResult result = sqlConsoleService.executeSql(sqlConsole.value)
         ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
         createResultTable(sqlResultDs)
     }
 
 
 
-    private ValueCollectionDatasourceImpl createDatasource(Map<String, Object> result) {
+    private ValueCollectionDatasourceImpl createDatasource(SqlSelectResult result) {
         ValueCollectionDatasourceImpl sqlResultDs = creteValueCollectionDs()
         result.entities.each { sqlResultDs.includeItem(it) }
-        result.columns.each { sqlResultDs.addProperty(it.name) }
+        result.columns.each { sqlResultDs.addProperty(it) }
         sqlResultDs
     }
 
@@ -93,20 +93,29 @@ class SqlConsole extends AbstractWindow {
         }
         resultTable = componentsFactory.createComponent(Table)
         resultTable.setFrame(frame)
+
+        addTableColumns(sqlResultDs, resultTable)
+
+        resultTable.setDatasource(sqlResultDs)
+        resultTable.setSizeFull()
+        resultTableBox.add(resultTable)
+
+        configureExcelButton(resultTable)
+    }
+
+    private void configureExcelButton(Table resultTable) {
+        excelButton.enabled = true
+        excelButton.setAction(new ExcelAction(resultTable));
+    }
+
+    private void addTableColumns(ValueCollectionDatasourceImpl sqlResultDs, Table resultTable) {
         MetaClass meta = sqlResultDs.getMetaClass()
         for (MetaProperty metaProperty : meta.getProperties()) {
             Table.Column column = new Table.Column(meta.getPropertyPath(metaProperty.getName()));
             column.setCaption(metaProperty.getName());
             resultTable.addColumn(column);
         }
-        resultTable.setDatasource(sqlResultDs)
-        resultTable.setSizeFull()
-        resultTableBox.add(resultTable)
-
-        excelButton.enabled = true
-        excelButton.setAction(new ExcelAction(resultTable));
     }
-
 
 
     void clearSqlConsole() {

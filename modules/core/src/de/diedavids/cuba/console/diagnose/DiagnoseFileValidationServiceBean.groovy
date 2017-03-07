@@ -1,9 +1,8 @@
-package de.diedavids.cuba.console.service
+package de.diedavids.cuba.console.diagnose
 
 import com.haulmont.cuba.core.global.Metadata
-import de.diedavids.cuba.console.DiagnoseExecution
-import de.diedavids.cuba.console.wizard.DiagnoseWizardResultType
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResult
+import de.diedavids.cuba.console.wizard.DiagnoseWizardResultType
 import org.springframework.stereotype.Service
 
 import javax.inject.Inject

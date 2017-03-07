@@ -1,4 +1,4 @@
-package de.diedavids.cuba.console.service
+package de.diedavids.cuba.console.groovy
 
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.global.DataManager
@@ -7,8 +7,7 @@ import com.haulmont.cuba.core.global.Metadata
 import com.haulmont.cuba.core.global.Scripting
 import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
-import de.diedavids.cuba.console.DiagnoseExecution
-import de.diedavids.cuba.console.GroovyConsoleLogger
+import de.diedavids.cuba.console.diagnose.DiagnoseExecution
 import spock.lang.Specification
 
 class GroovyDiagnoseServiceBeanSpec extends Specification {
@@ -173,7 +172,7 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         def stacktraceResult = diagnoseExecution.getResult('stacktrace')
         then:
         stacktraceResult.contains "java.lang.RuntimeException: exceptionMessage"
-        stacktraceResult.contains "at de.diedavids.cuba.console.service.GroovyDiagnoseServiceBeanSpec"
+        stacktraceResult.contains "at de.diedavids.cuba.console.groovy.GroovyDiagnoseServiceBeanSpec"
     }
 
     def "RunGroovyDiagnose puts the log information in the execution result"() {

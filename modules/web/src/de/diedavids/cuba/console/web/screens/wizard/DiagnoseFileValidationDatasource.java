@@ -2,8 +2,8 @@ package de.diedavids.cuba.console.web.screens.wizard;
 
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.gui.data.impl.CustomCollectionDatasource;
-import de.diedavids.cuba.console.service.DiagnoseFileValidationService;
-import de.diedavids.cuba.console.DiagnoseExecution;
+import de.diedavids.cuba.console.diagnose.DiagnoseFileValidationService;
+import de.diedavids.cuba.console.diagnose.DiagnoseExecution;
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResult;
 
 import java.util.*;
