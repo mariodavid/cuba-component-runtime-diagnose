@@ -119,6 +119,6 @@ class SqlConsole extends AbstractWindow {
 
 
     void clearSqlConsole() {
-
+        sqlConsole.value = null
     }
 }
