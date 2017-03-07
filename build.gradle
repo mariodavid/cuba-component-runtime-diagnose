@@ -16,7 +16,8 @@ buildscript {
 
         classpath "com.haulmont.cuba:cuba-global:$cubaVersion"
 
-        
+
+        classpath 'net.saliman:gradle-cobertura-plugin:2.3.2'
     }
 }
 
@@ -47,6 +48,37 @@ cuba {
 
 def hsql = 'org.hsqldb:hsqldb:2.2.9'
 
+allprojects {
+    apply plugin: 'net.saliman.cobertura'
+}
+
+
+def files = subprojects
+        .findAll{ !it.name.toLowerCase().contains('theme') }
+        .collect { new File(it.projectDir, '/build/cobertura/cobertura.ser')}
+def sourceDirs = subprojects
+        .findAll{ !it.name.toLowerCase().contains('theme') }
+        .collect { new File(it.projectDir, '/src')}
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+    coverageMergeDatafiles = files
+    coverageCheckTotalBranchRate = 2
+    coverageCheckTotalLineRate = 9
+    coverageCheckHaltOnFailure = true
+    coverageSourceDirs = sourceDirs
+//    coverageCheckLineRate = 1
+    coverageCheckRegexes = [[regex: '.*\\$.*', branchRate: 0, lineRate: 0]]
+
+}
+
+
+test.dependsOn(subprojects.collect{ ":${it.name}:test"} )
+test.finalizedBy(project.tasks.cobertura)
+test.finalizedBy(project.tasks.coberturaCheck)
+
+
+
 configure([globalModule, coreModule, guiModule, webModule]) {
     apply(plugin: 'java')
     apply(plugin: 'maven')
@@ -74,10 +106,32 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 configure([globalModule, coreModule, guiModule, webModule]) {
     apply(plugin: 'groovy')
 
+
+    apply plugin: 'net.saliman.cobertura'
+
+    cobertura {
+        coverageFormats = ['html', 'xml']
+        coverageIgnoreTrivial = true
+        coverageIgnores = ['org.slf4j.Logger.*']
+        coverageReportDir = new File("$buildDir/reports/cobertura")
+
+        coverageExcludes = [
+                '.*Generator',
+                '.*Enum',
+                '.*Hilfe.*' // Hilfe wird vorerst deaktiviert, da die Hilfe noch einem großen Refactoring unterliegt und dies bisher nur ein Proof of Concept ist
+        ]
+    }
+
+    test.finalizedBy(project.tasks.cobertura)
+    test.finalizedBy(project.tasks.coberturaCheck)
+
     sourceSets {
         main { groovy { srcDirs = ["src"] } }
         test { groovy { srcDirs = ["test"] } }
     }
+
+
+
 }
 
 configure(globalModule) {
@@ -216,3 +270,8 @@ task wrapper(type: Wrapper) {
 }
 
 apply from: 'extra.gradle'
+
+
+clean {
+    delete = ['build/libs', 'build/tmp']
+}
