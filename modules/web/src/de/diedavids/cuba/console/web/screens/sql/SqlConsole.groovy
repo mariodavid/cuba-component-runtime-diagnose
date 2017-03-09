@@ -12,6 +12,7 @@ import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.theme.ThemeConstants
 import com.haulmont.cuba.gui.upload.FileUploadingAPI
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory
+import de.diedavids.cuba.console.SqlConsoleSecurityException
 import de.diedavids.cuba.console.sql.SqlSelectResult
 import de.diedavids.cuba.console.sql.SqlConsoleService
 
@@ -68,9 +69,15 @@ class SqlConsole extends AbstractWindow {
 
 
     void runSqlConsole() {
+        try {
         SqlSelectResult result = sqlConsoleService.executeSql(sqlConsole.value)
-        ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
-        createResultTable(sqlResultDs)
+            ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
+            createResultTable(sqlResultDs)
+        }
+        catch (SqlConsoleSecurityException e) {
+            showNotification(e.message, Frame.NotificationType.ERROR)
+        }
+
     }
 
 
