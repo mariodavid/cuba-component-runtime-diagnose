@@ -11,4 +11,4 @@ Sometimes it is necessary for debugging purposes of a CUBA application to be abl
 
 The console uses the [Scripting](https://doc.cuba-platform.com/manual-6.4/scripting.html) Interface of the platform in order to execute groovy code.
 
-[[https://github.com/mariodavid/cuba-component-console/blob/master/img/groovy-console-screenshot.png|alt=Screenshot of the Groovy-Console]]
+[[https://github.com/mariodavid/cuba-component-console/blob/master/img/groovy-console-screenshot.png|alt=Screenshot-Groovy-Console]]
