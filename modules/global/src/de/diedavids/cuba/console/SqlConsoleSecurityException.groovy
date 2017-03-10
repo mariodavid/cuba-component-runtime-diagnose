@@ -1,7 +1,7 @@
 package de.diedavids.cuba.console
 
 import com.haulmont.cuba.core.global.SupportedByClient
-import groovy.transform.InheritConstructors;
+import groovy.transform.InheritConstructors
 
 
 @SupportedByClient

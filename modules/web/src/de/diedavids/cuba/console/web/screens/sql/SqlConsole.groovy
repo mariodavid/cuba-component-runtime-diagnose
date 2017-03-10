@@ -10,11 +10,10 @@ import com.haulmont.cuba.gui.data.DsBuilder
 import com.haulmont.cuba.gui.data.impl.ValueCollectionDatasourceImpl
 import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.theme.ThemeConstants
-import com.haulmont.cuba.gui.upload.FileUploadingAPI
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory
 import de.diedavids.cuba.console.SqlConsoleSecurityException
+import de.diedavids.cuba.console.sql.SqlDiagnoseService
 import de.diedavids.cuba.console.sql.SqlSelectResult
-import de.diedavids.cuba.console.sql.SqlConsoleService
 
 import javax.inject.Inject
 
@@ -25,16 +24,10 @@ class SqlConsole extends AbstractWindow {
     SourceCodeEditor sqlConsole
 
     @Inject
-    SqlConsoleService sqlConsoleService
+    SqlDiagnoseService sqlDiagnoseService
 
     @Inject
     TabSheet.Tab consoleResultTabResult
-
-    @Inject
-    private FileUploadField consoleFileUploadBtn
-
-    @Inject
-    private FileUploadingAPI fileUploadingAPI
 
     @Inject
     SplitPanel consoleResultSplitter
@@ -46,31 +39,31 @@ class SqlConsole extends AbstractWindow {
     GlobalConfig globalConfig
 
     @Inject
-    protected ExportDisplay exportDisplay;
+    protected ExportDisplay exportDisplay
 
     @Inject
     ComponentsFactory componentsFactory
 
     @Inject
-    protected BoxLayout resultTableBox;
+    protected BoxLayout resultTableBox
 
-    protected Table resultTable;
+    protected Table resultTable
 
 
     @Inject
-    protected ThemeConstants themeConstants;
+    protected ThemeConstants themeConstants
     
     @Inject
     ButtonsPanel resultButtonPanel
 
 
     @Inject
-    protected Button excelButton;
+    protected Button excelButton
 
 
     void runSqlConsole() {
         try {
-        SqlSelectResult result = sqlConsoleService.executeSql(sqlConsole.value)
+        SqlSelectResult result = sqlDiagnoseService.runSqlDiagnose(sqlConsole.value)
             ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
             createResultTable(sqlResultDs)
         }
@@ -80,8 +73,6 @@ class SqlConsole extends AbstractWindow {
 
     }
 
-
-
     private ValueCollectionDatasourceImpl createDatasource(SqlSelectResult result) {
         ValueCollectionDatasourceImpl sqlResultDs = creteValueCollectionDs()
         result.entities.each { sqlResultDs.includeItem(it) }
@@ -90,37 +81,39 @@ class SqlConsole extends AbstractWindow {
     }
 
     private ValueCollectionDatasourceImpl creteValueCollectionDs() {
-        DsBuilder.create(getDsContext()).reset().setAllowCommit(false)
+        DsBuilder.create(dsContext).reset().setAllowCommit(false)
                 .buildValuesCollectionDatasource()
     }
 
-    private void createResultTable(ValueCollectionDatasourceImpl sqlResultDs) {
+    private Table createResultTable(ValueCollectionDatasourceImpl sqlResultDs) {
         if (resultTable) {
-            resultTableBox.remove(resultTable);
+            resultTableBox.remove(resultTable)
         }
         resultTable = componentsFactory.createComponent(Table)
-        resultTable.setFrame(frame)
+        resultTable.frame = frame
 
         addTableColumns(sqlResultDs, resultTable)
 
-        resultTable.setDatasource(sqlResultDs)
+        resultTable.datasource = sqlResultDs
         resultTable.setSizeFull()
         resultTableBox.add(resultTable)
 
         configureExcelButton(resultTable)
+
+        resultTable
     }
 
     private void configureExcelButton(Table resultTable) {
         excelButton.enabled = true
-        excelButton.setAction(new ExcelAction(resultTable));
+        excelButton.action = new ExcelAction(resultTable)
     }
 
     private void addTableColumns(ValueCollectionDatasourceImpl sqlResultDs, Table resultTable) {
-        MetaClass meta = sqlResultDs.getMetaClass()
-        for (MetaProperty metaProperty : meta.getProperties()) {
-            Table.Column column = new Table.Column(meta.getPropertyPath(metaProperty.getName()));
-            column.setCaption(metaProperty.getName());
-            resultTable.addColumn(column);
+        MetaClass meta = sqlResultDs.metaClass
+        for (MetaProperty metaProperty : meta.properties) {
+            Table.Column column = new Table.Column(meta.getPropertyPath(metaProperty.name))
+            column.caption = metaProperty.name
+            resultTable.addColumn(column)
         }
     }
 

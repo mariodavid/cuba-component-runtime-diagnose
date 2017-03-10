@@ -30,7 +30,7 @@ class SqlSelectResultFactoryBean implements SqlSelectResultFactory {
         content.each {k,v ->
             def displayedValue = v.toString()
             if (v instanceof Timestamp) {
-                displayedValue = datatypeFormatter.formatDateTime(new Date(v.getTime()))
+                displayedValue = datatypeFormatter.formatDateTime(new Date(v.time))
             }
             kv.setValue(k, displayedValue)
         }

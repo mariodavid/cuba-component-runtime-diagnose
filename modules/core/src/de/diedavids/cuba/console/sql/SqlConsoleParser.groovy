@@ -1,6 +1,6 @@
 package de.diedavids.cuba.console.sql
 
-import com.haulmont.cuba.core.Persistence
+import com.haulmont.cuba.core.global.Messages
 import de.diedavids.cuba.console.ConsoleConfiguration
 import de.diedavids.cuba.console.SqlConsoleSecurityException
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
@@ -29,6 +29,9 @@ class SqlConsoleParser {
     @Inject
     ConsoleConfiguration configuration
 
+    @Inject
+    Messages messages
+
     protected static final EXECUTE_OPERATIONS = [
         Execute, SetStatement
     ]
@@ -41,18 +44,18 @@ class SqlConsoleParser {
 
     Statements analyseSql(String sqlString) {
 
-        Statements statements = CCJSqlParserUtil.parseStatements(sqlString);
+        Statements statements = CCJSqlParserUtil.parseStatements(sqlString)
 
         if (!configuration.sqlAllowDataManipulation && containsDataManipulation(statements)) {
-            throw new SqlConsoleSecurityException("Data manipulation SQL statements are not allowed")
+            throw new SqlConsoleSecurityException(messages.getMessage(getClass(), 'dataManipulationNotAllowed'))
         }
 
         if (!configuration.sqlAllowSchemaManipulation && containsSchemaManipulation(statements)) {
-            throw new SqlConsoleSecurityException("Schema manipulation SQL statements are not allowed")
+            throw new SqlConsoleSecurityException(messages.getMessage(getClass(), 'schemaManipulationNotAllowed'))
         }
 
         if (!configuration.sqlAllowExecuteOperations && containsExecuteOperations(statements)) {
-            throw new SqlConsoleSecurityException("SQL Execute operations are not allowed")
+            throw new SqlConsoleSecurityException(messages.getMessage(getClass(), 'executeOperationNotAllowed'))
         }
 
         statements

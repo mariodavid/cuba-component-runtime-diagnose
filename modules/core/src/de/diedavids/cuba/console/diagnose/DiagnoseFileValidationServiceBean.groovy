@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 import javax.inject.Inject
 
 @Service(DiagnoseFileValidationService.NAME)
-public class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService {
+class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService {
 
     @Inject
     Metadata metadata

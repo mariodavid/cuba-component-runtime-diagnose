@@ -63,8 +63,8 @@ def sourceDirs = subprojects
 cobertura {
     coverageFormats = ['html', 'xml']
     coverageMergeDatafiles = files
-    coverageCheckTotalBranchRate = 2
-    coverageCheckTotalLineRate = 9
+    coverageCheckTotalBranchRate = 8
+    coverageCheckTotalLineRate = 17
     coverageCheckHaltOnFailure = true
     coverageSourceDirs = sourceDirs
 //    coverageCheckLineRate = 1
@@ -105,9 +105,23 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 
 configure([globalModule, coreModule, guiModule, webModule]) {
     apply(plugin: 'groovy')
-
-
     apply plugin: 'net.saliman.cobertura'
+    apply plugin: 'codenarc'
+
+    codenarc {
+        toolVersion = "0.24"
+        ignoreFailures = false
+        reportFormat = 'html'
+        reportsDir = new File("./build/reports/codenarc")
+    }
+
+    codenarcMain {
+        configFile = rootProject.file("config/codenarc/rulesMain.groovy")
+    }
+    codenarcTest {
+        configFile = rootProject.file("config/codenarc/rulesTests.groovy")
+    }
+
 
     cobertura {
         coverageFormats = ['html', 'xml']

@@ -1,4 +1,4 @@
-package de.diedavids.cuba.console.diagnose;
+package de.diedavids.cuba.console.diagnose
 
 enum DiagnoseType {
     GROOVY,

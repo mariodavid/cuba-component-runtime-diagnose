@@ -11,7 +11,7 @@
         <property name="remoteServices">
             <map>
                 <entry key="console_SqlConsoleService"
-                       value="de.diedavids.cuba.console.sql.SqlConsoleService"/>
+                       value="de.diedavids.cuba.console.sql.SqlDiagnoseService"/>
                 <entry key="console_DiagnoseFileValidationService"
                        value="de.diedavids.cuba.console.diagnose.DiagnoseFileValidationService"/>
                 <entry key="console_GroovyConsoleService"

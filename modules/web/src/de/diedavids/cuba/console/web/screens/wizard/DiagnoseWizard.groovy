@@ -1,71 +1,48 @@
 package de.diedavids.cuba.console.web.screens.wizard
 
-import com.haulmont.cuba.core.global.*
+import com.haulmont.cuba.core.global.DatatypeFormatter
+import com.haulmont.cuba.core.global.GlobalConfig
+import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.gui.components.*
-import com.haulmont.cuba.gui.export.ByteArrayDataProvider
 import com.haulmont.cuba.gui.export.ExportDisplay
-import com.haulmont.cuba.gui.export.ExportFormat
 import com.haulmont.cuba.gui.upload.FileUploadingAPI
 import de.diedavids.cuba.console.diagnose.DiagnoseExecution
 import de.diedavids.cuba.console.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.console.groovy.GroovyDiagnoseService
-import de.diedavids.cuba.console.wizard.DiagnoseWizardResult
+import de.diedavids.cuba.console.sql.SqlDiagnoseService
+import de.diedavids.cuba.console.web.screens.diagnose.DiagnoseFileDownloader
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResultType
 
 import javax.inject.Inject
 
 class DiagnoseWizard extends AbstractWindow {
 
-    @Inject
-    private FileUploadField consoleFileUploadBtn
-
-    @Inject
-    private FileUploadingAPI fileUploadingAPI
-
-    @Inject
-    GlobalConfig globalConfig
-
-    @Inject
-    protected ExportDisplay exportDisplay;
+    public static final String WIZARD_STEP_2 = 'step2'
+    public static final String WIZARD_STEP_1 = 'step1'
+    public static final String WIZARD_STEP_3 = 'step3'
 
 
-    @Inject
-    Accordion wizardAccordion
+    @Inject Accordion wizardAccordion
+    @Inject Table diagnoseFileValidationTable
+    @Inject Table diagnoseWizardResultsTable
+    @Inject DiagnoseFileValidationDatasource diagnoseFileValidationDs
+    @Inject DiagnoseExecutionResultDatasource diagnoseWizardResultsDs
+    @Inject Button executeDiagnosisBtn
+    @Inject Button closeWizard
 
-    @Inject
-    Table diagnoseFileValidationTable
-    @Inject
-    Table diagnoseWizardResultsTable
+    @Inject FileUploadField consoleFileUploadBtn
+    @Inject FileUploadingAPI fileUploadingAPI
+    @Inject GlobalConfig globalConfig
+    @Inject ExportDisplay exportDisplay
+    @Inject DatatypeFormatter datatypeFormatter
+    @Inject TimeSource timeSource
 
-    @Inject
-    DiagnoseFileValidationDatasource diagnoseFileValidationDs
-
-    @Inject
-    DiagnoseExecutionResultDatasource diagnoseWizardResultsDs
-
-    @Inject
-    Button executeDiagnosisBtn
-
-    @Inject
-    GroovyDiagnoseService groovyDiagnoseService
-
-
-    @Inject
-    DatatypeFormatter datatypeFormatter
-
-    @Inject
-    TimeSource timeSource
-
-    @Inject
-    DiagnoseExecutionFactory diagnoseExecutionFactory
-
-
-    @Inject
-    Button closeWizard
-
+    @Inject GroovyDiagnoseService groovyDiagnoseService
+    @Inject SqlDiagnoseService sqlDiagnoseService
+    @Inject DiagnoseExecutionFactory diagnoseExecutionFactory
+    @Inject DiagnoseFileDownloader diagnoseFileDownloader
 
     DiagnoseExecution diagnoseExecution
-
 
     @Override
     void init(Map<String, Object> params) {
@@ -74,65 +51,75 @@ class DiagnoseWizard extends AbstractWindow {
         diagnoseFileValidationTable.iconProvider = iconProvider
         diagnoseWizardResultsTable.iconProvider = iconProvider
 
+        initUploadFileSucceedListener()
+        initUploadFileErrorListener()
+    }
 
+    protected initUploadFileSucceedListener() {
         consoleFileUploadBtn.addFileUploadSucceedListener(new FileUploadField.FileUploadSucceedListener() {
             @Override
             void fileUploadSucceed(FileUploadField.FileUploadSucceedEvent e) {
                 File file = fileUploadingAPI.getFile(consoleFileUploadBtn.fileId)
 
                 diagnoseExecution = diagnoseExecutionFactory.createDiagnoseExecutionFromFile(file)
-
                 diagnoseFileValidationDs.refresh([diagnose: diagnoseExecution])
 
-                wizardAccordion.getTab("step2").setEnabled(true)
-                wizardAccordion.setTab("step2")
+                wizardAccordion.getTab(WIZARD_STEP_2).enabled = true
+                wizardAccordion.tab = WIZARD_STEP_2
 
-                if (diagnoseFileValidationDs.getItems().any { it.type == DiagnoseWizardResultType.ERROR }) {
-                    executeDiagnosisBtn.setEnabled(false)
+                if (diagnoseFileValidationDs.items.any { it.type == DiagnoseWizardResultType.ERROR }) {
+                    executeDiagnosisBtn.enabled = false
                 }
-                Accordion.Tab step1 = wizardAccordion.getTab("step1")
-                step1.setCaption(step1.getCaption() + " " + formatMessage("check"))
-                step1.setEnabled(false)
+                Accordion.Tab step1 = wizardAccordion.getTab(WIZARD_STEP_1)
+                step1.caption = "${step1.caption} $check"
+                step1.enabled = false
 
             }
         })
+    }
 
+    protected initUploadFileErrorListener() {
         consoleFileUploadBtn.addFileUploadErrorListener(new UploadField.FileUploadErrorListener() {
             @Override
             void fileUploadError(UploadField.FileUploadErrorEvent e) {
-                showNotification("File upload error", Frame.NotificationType.ERROR)
+                showNotification(formatMessage('fileUploadError'), Frame.NotificationType.ERROR)
             }
         })
     }
 
     void runGroovyDiagnose() {
         diagnoseExecution = groovyDiagnoseService.runGroovyDiagnose(diagnoseExecution)
-
         diagnoseWizardResultsDs.refresh([diagnose: diagnoseExecution])
     }
 
 
-    protected String createZipFileName() {
-        def dateString = datatypeFormatter.formatDateTime(timeSource.currentTimestamp()).replace(" ", "-")
-        def appName = globalConfig.webContextName
-        "${appName}-console-execution-${dateString}.zip"
+    void runSqlDiagnose() {
+        diagnoseExecution = sqlDiagnoseService.runSqlDiagnose(diagnoseExecution)
+        diagnoseWizardResultsDs.refresh([diagnose: diagnoseExecution])
     }
 
-
     void executeDiagnosis() {
-
-        if (diagnoseExecution.groovy) {
+        if (diagnoseExecution.isGroovy()) {
             runGroovyDiagnose()
-
-            wizardAccordion.getTab("step3").setEnabled(true)
-            wizardAccordion.setTab("step3")
-            closeWizard.setEnabled(true)
-
-            Accordion.Tab step2 = wizardAccordion.getTab("step2")
-            step2.setCaption(step2.getCaption() + " " + formatMessage("check"))
-            step2.setEnabled(false)
         }
+        else if( diagnoseExecution.isSQL()) {
+            runSqlDiagnose()
+        }
+        progressToStep3()
+    }
 
+    protected void progressToStep3() {
+        wizardAccordion.getTab(WIZARD_STEP_3).enabled = true
+        wizardAccordion.tab = WIZARD_STEP_3
+        closeWizard.enabled = true
+
+        Accordion.Tab step2 = wizardAccordion.getTab(WIZARD_STEP_2)
+        step2.caption = "$step2.caption $check"
+        step2.enabled = false
+    }
+
+    protected String getCheck() {
+        formatMessage('check')
     }
 
     void cancelWizard() {
@@ -145,23 +132,15 @@ class DiagnoseWizard extends AbstractWindow {
     }
 
     void downloadDiagnoseResult() {
-
         def zipBytes = diagnoseExecutionFactory.createExecutionResultFormDiagnoseExecution(diagnoseExecution)
-
-        try {
-            exportDisplay.show(new ByteArrayDataProvider(zipBytes),
-                    createZipFileName(), ExportFormat.ZIP);
-            showNotification(formatMessage("diagnoseResultsDownloadedMessage"))
-        } catch (Exception e) {
-            showNotification(getMessage("exportFailed"), e.getMessage(), Frame.NotificationType.ERROR);
-        }
+        diagnoseFileDownloader.downloadFile(this, zipBytes)
     }
 
     @Override
     protected boolean preClose(String actionId) {
 
         if (diagnoseExecution?.pending) {
-            showOptionDialog("Cancel Diagnose Execution", "The Diagnose has not been executed yet. Are you sure?", Frame.MessageType.CONFIRMATION, [new DialogAction(DialogAction.Type.OK) {
+            showOptionDialog(formatMessage('cancelDiagnoseTitle'), formatMessage('cancelDiagnoseMessage'), Frame.MessageType.CONFIRMATION, [new DialogAction(DialogAction.Type.OK) {
                 @Override
                 void actionPerform(Component component) {
                     close(actionId, true)
@@ -170,14 +149,7 @@ class DiagnoseWizard extends AbstractWindow {
         } else {
             close(actionId, true)
         }
-        return false
+        false
     }
 
-}
-
-class DiagnoseWizardResultTypeIconProvider implements ListComponent.IconProvider<DiagnoseWizardResult> {
-    @Override
-    String getItemIcon(DiagnoseWizardResult entity) {
-        entity.type.icon
-    }
 }

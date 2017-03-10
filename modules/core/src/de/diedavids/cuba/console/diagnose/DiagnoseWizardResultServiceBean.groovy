@@ -1,5 +1,6 @@
 package de.diedavids.cuba.console.diagnose
 
+import com.haulmont.cuba.core.global.Messages
 import com.haulmont.cuba.core.global.Metadata
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResult
 import de.diedavids.cuba.console.wizard.DiagnoseWizardResultType
@@ -8,10 +9,13 @@ import org.springframework.stereotype.Service
 import javax.inject.Inject
 
 @Service(DiagnoseWizardResultService.NAME)
-public class DiagnoseWizardResultServiceBean implements DiagnoseWizardResultService {
+class DiagnoseWizardResultServiceBean implements DiagnoseWizardResultService {
 
     @Inject
     Metadata metadata
+
+    @Inject
+    Messages messages
 
     @Override
     Collection<DiagnoseWizardResult> createResultsForDiagnose(DiagnoseExecution diagnose) {
@@ -25,11 +29,12 @@ public class DiagnoseWizardResultServiceBean implements DiagnoseWizardResultServ
 
         if (diagnose.executionSuccessful) {
             wizardResult.type = DiagnoseWizardResultType.SUCCESS
-            wizardResult.message = "Diagnose Execution successful"
+
+            wizardResult.message = messages.getMessage(getClass(), 'diagnoseExecutedSuccessful')
         }
         else {
             wizardResult.type = DiagnoseWizardResultType.ERROR
-            wizardResult.message = "Error while executing Diagnose"
+            wizardResult.message = messages.getMessage(getClass(), 'diagnoseExecutedError')
         }
         wizardResult
     }

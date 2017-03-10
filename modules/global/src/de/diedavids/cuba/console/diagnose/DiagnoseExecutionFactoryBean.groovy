@@ -33,7 +33,7 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     @Override
     DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript) {
 
-        def result = new DiagnoseExecution()
+        def result = new DiagnoseExecution(manifest: new DiagnoseManifest(diagnoseType: DiagnoseType.GROOVY))
 
         result.diagnoseScript = diagnoseScript
 
@@ -43,8 +43,7 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     private String readDiagnoseScriptFromDiagnoseFile(DiagnoseExecution diagnoseExecution, ZipFile diagnoseZipFile) {
         if (diagnoseExecution.isGroovy()) {
             readFileContentFromArchive('diagnose.groovy', diagnoseZipFile)
-        }
-        else if (diagnoseExecution.isSQL()) {
+        } else if (diagnoseExecution.isSQL()) {
             readFileContentFromArchive('diagnose.sql', diagnoseZipFile)
         }
     }
@@ -65,67 +64,52 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     }
 
     byte[] createExecutionResultFormDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
-
-        def entries = [
-                "environmentInformation.log": createEnvironmentInformation(),
-                "executedScript.groovy"     : diagnoseExecution.diagnoseScript,
-                "result.log"                : diagnoseExecution.getResult('result'),
-                "log.log"                   : diagnoseExecution.getResult('log'),
-                "stacktrace.log"            : diagnoseExecution.getResult('stacktrace')
-        ]
-
-        createZipFileForEntries(entries)
-
+        createZipFileForEntries(diagnoseExecution.executionResultFileMap)
     }
 
     protected String createEnvironmentInformation() {
 
         def environmentContent = [
-                "App Name"          : "globalConfig.webContextName",
-                "Execution User"    : "userSession.user.instanceName",
-                "Client Information": "userSession.clientInfo"
+                'App Name'          : 'globalConfig.webContextName',
+                'Execution User'    : 'userSession.user.instanceName',
+                'Client Information': 'userSession.clientInfo'
         ]
 
         environmentContent.collect { k, v ->
             "$k: $v"
-        }.join("\n")
+        }.join('\n')
 
     }
 
 
     protected byte[] createZipFileForEntries(Map<String, String> fileEntries) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ZipArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(byteArrayOutputStream);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
+        ZipArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(byteArrayOutputStream)
         zipOutputStream.method = ZipArchiveOutputStream.STORED
         zipOutputStream.encoding = StandardCharsets.UTF_8.name()
-        try {
-            fileEntries.each { String fileName, String fileContent ->
-                addArchiveEntryToZipFile(zipOutputStream, fileName, fileContent?.bytes)
-            }
 
-        } catch (Exception e) {
-            throw new RuntimeException("Error on creating zip archive during entities export", e)
-        } finally {
-            IOUtils.closeQuietly(zipOutputStream)
+        fileEntries.each { String fileName, String fileContent ->
+            addArchiveEntryToZipFile(zipOutputStream, fileName, fileContent?.bytes)
         }
+
+        IOUtils.closeQuietly(zipOutputStream)
+
         byteArrayOutputStream.toByteArray()
 
     }
 
     protected void addArchiveEntryToZipFile(ZipArchiveOutputStream zipOutputStream, String fileName, byte[] fileContent) {
 
-        if (!fileContent) {
-            fileContent = []
-        }
-        ArchiveEntry resultArchiveEntry = createArchiveEntry(fileName, fileContent);
+        byte[] correctFileContent = fileContent ?: [] as byte[]
+        ArchiveEntry resultArchiveEntry = createArchiveEntry(fileName, correctFileContent)
 
-        zipOutputStream.putArchiveEntry(resultArchiveEntry);
-        zipOutputStream.write(fileContent);
-        zipOutputStream.closeArchiveEntry();
+        zipOutputStream.putArchiveEntry(resultArchiveEntry)
+        zipOutputStream.write(correctFileContent)
+        zipOutputStream.closeArchiveEntry()
     }
 
     protected ArchiveEntry createArchiveEntry(String name, byte[] data) {
-        ZipArchiveEntry zipEntry = new ZipArchiveEntry(name);
+        ZipArchiveEntry zipEntry = new ZipArchiveEntry(name)
         zipEntry.size = data.length
         zipEntry.compressedSize = zipEntry.size
         CRC32 crc32 = new CRC32()

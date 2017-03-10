@@ -13,7 +13,7 @@ class GroovyConsoleLogger {
     DatatypeFormatter datatypeFormatter
 
     void debug(Object content) {
-        append("DEBUG",content)
+        append('DEBUG', content)
     }
 
     void append(String level, Object content) {
@@ -22,11 +22,11 @@ class GroovyConsoleLogger {
     }
 
     void warn(Object content) {
-        append("WARN", content)
+        append('WARN', content)
     }
 
     void error(Object content) {
-        append("ERROR", content)
+        append('ERROR', content)
     }
 
     @Override

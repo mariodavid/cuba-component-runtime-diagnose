@@ -9,10 +9,10 @@ import spock.lang.Specification
 import javax.sql.DataSource
 import java.sql.SQLException
 
-class SqlConsoleServiceBeanSpec extends Specification {
+class SqlDiagnoseServiceBeanSpec extends Specification {
 
 
-    MockableSqlConsoleServiceBean sqlConsoleService
+    MockableSqlDiagnoseServiceBean sqlConsoleService
 
     SqlConsoleParser sqlConsoleParser
     SqlSelectResultFactory selectResultFactory
@@ -26,7 +26,7 @@ class SqlConsoleServiceBeanSpec extends Specification {
 
         persistence = Mock(Persistence)
         sql = Mock(Sql)
-        sqlConsoleService = new MockableSqlConsoleServiceBean(
+        sqlConsoleService = new MockableSqlDiagnoseServiceBean(
             sqlConsoleParser: sqlConsoleParser,
                 selectResultFactory: selectResultFactory,
                 persistence: persistence,
@@ -43,7 +43,7 @@ class SqlConsoleServiceBeanSpec extends Specification {
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
         when:
-        sqlConsoleService.executeSql(sqlString)
+        sqlConsoleService.runSqlDiagnose(sqlString)
         then:
         1 * sqlConsoleParser.analyseSql(sqlString)
     }
@@ -51,7 +51,7 @@ class SqlConsoleServiceBeanSpec extends Specification {
     def "executeSql creates a SQL object with the datasource from persistence"() {
 
         when:
-        sqlConsoleService.executeSql(null)
+        sqlConsoleService.runSqlDiagnose("")
         then:
         sqlConsoleService.actualDataSource == dataSource
     }
@@ -71,7 +71,7 @@ class SqlConsoleServiceBeanSpec extends Specification {
         sqlConsoleParser.analyseSql(_) >> statements
 
         when:
-        sqlConsoleService.executeSql(sqlString)
+        sqlConsoleService.runSqlDiagnose(sqlString)
 
         then:
         1 * sql.rows(sqlString)
@@ -89,42 +89,15 @@ class SqlConsoleServiceBeanSpec extends Specification {
         sqlConsoleParser.analyseSql(_) >> statements
 
         when:
-        sqlConsoleService.executeSql(sqlString)
+        sqlConsoleService.runSqlDiagnose(sqlString)
 
         then:
         0 * sql.rows(_)
     }
 
-
-    def "executeSql will delegate a SQLException to a RuntimeException to push it to the client"() {
-
-        given:
-        def sqlString = 'SELECT * FROM SEC_USER;'
-
-        and: "the sql parser returns one sql statement"
-        def statements = Mock(Statements)
-        def sqlStatement = Mock(Statement)
-        sqlStatement.toString() >> sqlString
-        statements.getStatements() >> [sqlStatement]
-
-        sqlConsoleParser.analyseSql(_) >> statements
-
-        and:
-        def mySqlException = new SQLException("the SQL is bad")
-        sql.rows(sqlString) >> { throw mySqlException }
-
-        when:
-        sqlConsoleService.executeSql(sqlString)
-
-        then: "the runtime exception is a wrapped SQL exception"
-        def runtimeException = thrown RuntimeException
-        runtimeException.cause == mySqlException
-    }
-
-
 }
 
-class MockableSqlConsoleServiceBean extends SqlConsoleServiceBean {
+class MockableSqlDiagnoseServiceBean extends SqlDiagnoseServiceBean {
 
     Sql sql
 

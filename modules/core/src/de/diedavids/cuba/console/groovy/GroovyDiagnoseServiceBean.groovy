@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service
 
 import javax.inject.Inject
 
+@SuppressWarnings('DuplicateStringLiteral')
 @Service(GroovyDiagnoseService.NAME)
 class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
 
@@ -40,41 +41,30 @@ class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
 
     DiagnoseExecution runGroovyDiagnose(DiagnoseExecution diagnoseExecution) {
         if (diagnoseExecution) {
-
-            def log = new GroovyConsoleLogger(
-                    timeSource: timeSource,
-                    datatypeFormatter: datatypeFormatter
-            )
+            def log = new GroovyConsoleLogger(timeSource: timeSource, datatypeFormatter: datatypeFormatter)
             Binding binding = createBinding(log)
             diagnoseExecution.executionTimestamp = timeSource.currentTimestamp()
 
             try {
                 def result = scripting.evaluateGroovy(diagnoseExecution.diagnoseScript, binding)
-                diagnoseExecution.addResult('result',result)
-                diagnoseExecution.executionSuccessful = true
-            }
-            catch (Throwable throwable) {
-                StringWriter stacktrace = new StringWriter();
-                throwable.printStackTrace(new PrintWriter(stacktrace));
-                diagnoseExecution.addResult('stacktrace', stacktrace.toString())
-                diagnoseExecution.addResult('result', throwable.message)
-                diagnoseExecution.executionSuccessful = false
+                diagnoseExecution.handleSuccessfulExecution(result.toString())
             }
 
+            catch (Exception e) {
+                diagnoseExecution.handleErrorExecution(e)
+            }
             diagnoseExecution.addResult('log', log.toString())
 
             diagnoseExecution
-
         }
-
     }
 
     private Binding createBinding(GroovyConsoleLogger log) {
         def binding = new Binding()
-        binding.setVariable("log", log)
-        binding.setVariable("dataManager", dataManager)
-        binding.setVariable("metadata", metadata)
-        binding.setVariable("persistence", persistence)
+        binding.setVariable('log', log)
+        binding.setVariable('dataManager', dataManager)
+        binding.setVariable('metadata', metadata)
+        binding.setVariable('persistence', persistence)
         binding
     }
 }
