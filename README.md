@@ -27,6 +27,22 @@ In order to use existing platform beans or your application specific beans, you 
 
 > NOTE: To reference classes by name you have to manually add the corresponding import statements at the top of the scripts
 
+If you want to define custom variables that are accessible in your scripts, you have to extend the `GroovyDiagnoseServiceBean` like this:
+
+    class MyGroovyDiagnoseServiceBean extends GroovyDiagnoseServiceBean {
+    
+        @Override
+        protected Map<String, Object> getAdditionalBindingVariableMap() {
+            [now: new Date()]
+        }
+    }
+   
+The resulting map will additionally passed to the script. In order to use your bean, you have to register it in the `spring.xml` of the core module of your application like this:
+ 
+    <bean id="console_GroovyConsoleService" class="com.company.myapp.core.MyGroovyDiagnoseServiceBean" />
+    
+This way, Spring will pick up your extension GroovyDiagnoseService.
+    
 ### Execution results
 
 There are different results of a groovy script (displayed in the different tabs). The actual result of the script (meaning the return value of the last statement) is displayed in the first tab. The stacktrace tab displayes the stacktrace of a possible exception that occurs during script execution. The tab executed script shows the actual executed script.

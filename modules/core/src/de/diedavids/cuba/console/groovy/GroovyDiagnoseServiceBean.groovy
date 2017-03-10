@@ -59,12 +59,24 @@ class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
         }
     }
 
-    private Binding createBinding(GroovyConsoleLogger log) {
+    protected Binding createBinding(GroovyConsoleLogger log) {
         def binding = new Binding()
+        setDefaultBindingVariables(binding, log)
+
+        additionalBindingVariableMap.each { k, v ->
+            binding.setVariable(k, v)
+        }
+        binding
+    }
+
+    protected void setDefaultBindingVariables(Binding binding, GroovyConsoleLogger log) {
         binding.setVariable('log', log)
         binding.setVariable('dataManager', dataManager)
         binding.setVariable('metadata', metadata)
         binding.setVariable('persistence', persistence)
-        binding
+    }
+
+    protected Map<String, Object> getAdditionalBindingVariableMap() {
+        [:]
     }
 }

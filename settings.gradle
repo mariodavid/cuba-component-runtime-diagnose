@@ -1,6 +1,6 @@
 rootProject.name = 'cuba-component-console'
-include(':app-global', ':app-core', ':app-gui', ':app-web')
-project(':app-global').projectDir = new File(settingsDir, 'modules/global')
-project(':app-core').projectDir = new File(settingsDir, 'modules/core')
-project(':app-gui').projectDir = new File(settingsDir, 'modules/gui')
-project(':app-web').projectDir = new File(settingsDir, 'modules/web')
+include(':console-global', ':console-core', ':console-gui', ':console-web')
+project(':console-global').projectDir = new File(settingsDir, 'modules/global')
+project(':console-core').projectDir = new File(settingsDir, 'modules/core')
+project(':console-gui').projectDir = new File(settingsDir, 'modules/gui')
+project(':console-web').projectDir = new File(settingsDir, 'modules/web')

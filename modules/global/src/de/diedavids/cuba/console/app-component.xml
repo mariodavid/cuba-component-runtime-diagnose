@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<app-component xmlns="http://schemas.haulmont.com/cuba/app-component.xsd"
+               dependsOn="com.haulmont.cuba">
+    <module blocks="*"
+            name="global">
+        <artifact appJar="true"
+                  name="console-global"/>
+        <property name="cuba.persistenceConfig"
+                  value="+de/diedavids/cuba/console/persistence.xml"/>
+        <property name="cuba.metadataConfig"
+                  value="+de/diedavids/cuba/console/metadata.xml"/>
+        <property name="cuba.viewsConfig"
+                  value="+de/diedavids/cuba/console/views.xml"/>
+    </module>
+    <module blocks="core"
+            dependsOn="global"
+            name="core">
+        <artifact appJar="true"
+                  name="console-core"/>
+        <property name="cuba.springContextConfig"
+                  value="+de/diedavids/cuba/console/spring.xml"/>
+        <property name="cuba.mainMessagePack"
+                  value="+de.diedavids.cuba.console.core"/>
+    </module>
+    <module blocks="web,desktop"
+            dependsOn="global"
+            name="gui">
+        <artifact appJar="true"
+                  name="console-gui"/>
+    </module>
+    <module blocks="web"
+            dependsOn="gui"
+            name="web">
+        <artifact appJar="true"
+                  name="console-web"/>
+        <artifact classifier="web"
+                  configuration="webcontent"
+                  ext="zip"
+                  name="console-web"/>
+        <property name="cuba.springContextConfig"
+                  value="+de/diedavids/cuba/console/web-spring.xml"/>
+        <property name="cuba.dispatcherSpringContextConfig"
+                  value="+de/diedavids/cuba/console/web-dispatcher-spring.xml"/>
+        <property name="cuba.windowConfig"
+                  value="+de/diedavids/cuba/console/web-screens.xml"/>
+        <property name="cuba.menuConfig"
+                  value="+de/diedavids/cuba/console/web-menu.xml"/>
+        <property name="cuba.permissionConfig"
+                  value="+de/diedavids/cuba/console/web-permissions.xml"/>
+        <property name="cuba.mainMessagePack"
+                  value="+de.diedavids.cuba.console.web"/>
+    </module>
+</app-component>
