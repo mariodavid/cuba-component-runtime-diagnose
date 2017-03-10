@@ -54,7 +54,7 @@ The SQL console allows you to interactivly interact with the database usnig raw 
 ![Screenshot SQL-Console](https://github.com/mariodavid/cuba-component-console/blob/master/img/sql-console-screenshot.png)
 
 
-> NOTE: for normal data diagnosis the [Entity inspector](https://doc.cuba-platform.com/manual-6.4/entity_inspector.html) is oftentimes more user friendly, even for debugging purposes. Usage of the SQL-console is more preferred if you want to access data across tables using joins e.g.
+> NOTE: for normal data diagnosis the [Entity inspector](https://doc.cuba-platform.com/manual-6.4/entity_inspector.html) is oftentimes more user friendly, even for debugging purposes. Usage of the SQL-console is to be preferable to the entity inspector if you want to access data across tables using joins e.g.
 
 
 Results of a SQL statement are displayed in a table in the result tab. The result can be downloaded using the Excel button in the Results tab.
@@ -81,5 +81,28 @@ The following configuration options allow different statement types:
   * `EXECUTE ...`
   * `SET ...`
 
-## Dialog wizard
+## Diagnose wizard
+
+The last part is the diagnose wizard. This option is relevant if you as a developer or customer support person don't have direct access to the running application, because of security reasons or it is boxed software that is running out of your control. You could send your counterpart on customer side a text file which that should execute in the Groovy / SQL console, but this process is fairly insecure as well as error prone.
+
+In these cases you can send the person a zip file (as a black box) and tell them to upload this file in the diagnose wizard. The person will be guided through the different steps, executed the scripts and gets back the execution results that should be handed back to you.
+
 ![Screenshot Diagnose Wizard](https://github.com/mariodavid/cuba-component-console/blob/master/img/diagnose-wizard-screenshot.png)
+
+### Checks on the diagnose file
+There are some checks in place in the wizard that will ensure the correctness of the zip file. Within the zip archive, there has to be the following files:
+* diagnose.groovy / diganose.sql
+* manifest.json
+
+The diagnose.(sql|groovy) contains the executable script. The manifest file describes some metadata on the diagnose archive. Here's a valid manifest.json file:
+
+    {
+      "appVersion": "1.1",
+      "appName": "console-app",
+      "producer": "Company Inc.",
+      "diagnoseType": "GROOVY"
+    }
+
+The `diagnoseType` has to be either `GROOVY` or `SQL`. 
+
+If the values in the manifest file do not match the expected values from the application, the script cannot be executed.
