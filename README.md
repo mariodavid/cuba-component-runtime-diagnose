@@ -20,7 +20,7 @@ The groovy console allows you to interactivly inspect the running application. Y
 
 ![Screenshot Groovy-Console](https://github.com/mariodavid/cuba-component-console/blob/master/img/groovy-console-screenshot.png)
 
-> NOTE: Using the groovy console in production can be dangerous. Make sure that you will use the security subsystem properly so that only allowed users are able to execute code in production. For more information see the section about security
+> WARN: Using the groovy console in production can be dangerous. Make sure that you will use the security subsystem properly so that only allowed users are able to execute code in production. For more information see the section about security
 
 The console uses the [Scripting](https://doc.cuba-platform.com/manual-6.4/scripting.html) Interface of the platform in order to execute groovy code. Therefore most of the features of the scripting interface apply to the groovy console as well.
 
@@ -49,7 +49,37 @@ The possible methods are:
 Execution results can be downloaded through the corresponding button. It will create a zip file which will contain the different execution results in different files. Additionally, there is a file called `environmentInformation.log` which will include information about the current environment of execution (like information about the user that executed the script, information about the application itself etc.)
 
 ## SQL console
+The SQL console allows you to interactivly interact with the database usnig raw SQL statements. You enter a SQL script and execute it in an ad-hoc fashion.
+
 ![Screenshot SQL-Console](https://github.com/mariodavid/cuba-component-console/blob/master/img/sql-console-screenshot.png)
+
+
+> NOTE: for normal data diagnosis the [Entity inspector](https://doc.cuba-platform.com/manual-6.4/entity_inspector.html) is oftentimes more user friendly, even for debugging purposes. Usage of the SQL-console is more preferred if you want to access data across tables using joins e.g.
+
+
+Results of a SQL statement are displayed in a table in the result tab. The result can be downloaded using the Excel button in the Results tab.
+
+### Security of the SQL-Console
+By default, only SELECT stements are allowed to execute through the SQL-Console. If you want to execute other types of SQL statements like `INSERT` or `ALTER` it has to be explicitly configured the application component through CUBAs App properties UI: `Administration > Application properties > console`
+
+The following configuration options allow different statement types:
+* `console.sql.allowDataManipulation`
+** `INSERT INTO...`
+** `UPDATE ...`
+** `DELETE ...`
+** `MERGE ...`
+** `REPLACE ...`
+** `TRUNCATE ...`
+* `console.sql.allowSchemaManipulation`
+** `DROP ...`
+** `CREATE TABLE ...`
+** `CREATE VIEW ...`
+** `ALTER ...`
+** `ALTER VIEW ...`
+** `CREATE INDEX ...`
+* `console.sql.allowExecuteOperations`
+** `EXECUTE ...`
+** `SET ...`
 
 ## Dialog wizard
 ![Screenshot Diagnose Wizard](https://github.com/mariodavid/cuba-component-console/blob/master/img/diagnose-wizard-screenshot.png)
