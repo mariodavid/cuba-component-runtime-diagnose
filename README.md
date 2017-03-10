@@ -64,22 +64,22 @@ By default, only SELECT stements are allowed to execute through the SQL-Console.
 
 The following configuration options allow different statement types:
 * `console.sql.allowDataManipulation`
-** `INSERT INTO...`
-** `UPDATE ...`
-** `DELETE ...`
-** `MERGE ...`
-** `REPLACE ...`
-** `TRUNCATE ...`
+  * `INSERT INTO...`
+  * `UPDATE ...`
+  * `DELETE ...`
+  * `MERGE ...`
+  * `REPLACE ...`
+  * `TRUNCATE ...`
 * `console.sql.allowSchemaManipulation`
-** `DROP ...`
-** `CREATE TABLE ...`
-** `CREATE VIEW ...`
-** `ALTER ...`
-** `ALTER VIEW ...`
-** `CREATE INDEX ...`
+  * `DROP ...`
+  * `CREATE TABLE ...`
+  * `CREATE VIEW ...`
+  * `ALTER ...`
+  * `ALTER VIEW ...`
+  * `CREATE INDEX ...`
 * `console.sql.allowExecuteOperations`
-** `EXECUTE ...`
-** `SET ...`
+  * `EXECUTE ...`
+  * `SET ...`
 
 ## Dialog wizard
 ![Screenshot Diagnose Wizard](https://github.com/mariodavid/cuba-component-console/blob/master/img/diagnose-wizard-screenshot.png)
