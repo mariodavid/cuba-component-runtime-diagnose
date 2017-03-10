@@ -12,9 +12,6 @@ It mainly consists of the three parts:
 * interactive SQL console
 * non-interactive diagnose wizard
 
-## What is it about?
-Sometimes it is necessary for debugging purposes of a CUBA application to be able to execute code that supports developer and customer support to get insights in the running application.
-
 ## Groovy console
 The groovy console allows you to interactivly inspect the running application. You enter a groovy script and execute it in an ad-hoc fashion.
 
