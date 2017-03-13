@@ -119,3 +119,5 @@ The diagnose.(sql|groovy) contains the executable script. The manifest file desc
 The `diagnoseType` has to be either `GROOVY` or `SQL`. 
 
 If the values in the manifest file do not match the expected values from the application, the script cannot be executed.
+
+The diagnose files can be created manually or preferably from the Groovy / SQL Console. After defining the diagnose script, the "Download Diagnose File" lets the developer create the diagnose file that can be handed to the customer representative. 
