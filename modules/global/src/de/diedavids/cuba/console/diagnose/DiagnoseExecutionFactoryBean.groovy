@@ -1,16 +1,10 @@
 package de.diedavids.cuba.console.diagnose
 
+import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.apache.commons.compress.archivers.ArchiveEntry
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
-import org.apache.commons.io.IOUtils
 import org.springframework.stereotype.Component
 
 import javax.inject.Inject
-import java.nio.charset.StandardCharsets
-import java.util.zip.CRC32
-import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
 @Component(DiagnoseExecutionFactory.NAME)
@@ -33,19 +27,15 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     }
 
     @Override
-    DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript) {
+    DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript, DiagnoseType diagnoseType) {
 
-        def result = new DiagnoseExecution(manifest: new DiagnoseManifest(diagnoseType: DiagnoseType.GROOVY))
+        def result = new DiagnoseExecution(manifest: new DiagnoseManifest(diagnoseType: diagnoseType))
         result.diagnoseScript = diagnoseScript
         result
     }
 
     private String readDiagnoseScriptFromDiagnoseFile(DiagnoseExecution diagnoseExecution, ZipFile diagnoseZipFile) {
-        if (diagnoseExecution.isGroovy()) {
-            zipFileHelper.readFileContentFromArchive('diagnose.groovy', diagnoseZipFile)
-        } else if (diagnoseExecution.isSQL()) {
-            zipFileHelper.readFileContentFromArchive('diagnose.sql', diagnoseZipFile)
-        }
+            zipFileHelper.readFileContentFromArchive(getDiagnoseScriptFilename(diagnoseExecution), diagnoseZipFile)
     }
 
     private DiagnoseManifest createManifestFromDiagnoseFile(ZipFile diagnoseZipFile) {
@@ -56,6 +46,19 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
 
     byte[] createExecutionResultFormDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
         zipFileHelper.createZipFileForEntries(diagnoseExecution.executionResultFileMap)
+    }
+
+    @Override
+    byte[] createDiagnoseRequestFileFormDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
+        def files = [
+                (getDiagnoseScriptFilename(diagnoseExecution)): diagnoseExecution.diagnoseScript,
+                'manifest.json'                             : JsonOutput.prettyPrint(JsonOutput.toJson(diagnoseExecution.manifest)),
+        ]
+        zipFileHelper.createZipFileForEntries(files)
+    }
+
+    protected String getDiagnoseScriptFilename(DiagnoseExecution diagnoseExecution) {
+        "diagnose.${diagnoseExecution.executedScriptFileExtension}"
     }
 
     protected String createEnvironmentInformation() {

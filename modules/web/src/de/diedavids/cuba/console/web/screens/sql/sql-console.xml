@@ -14,6 +14,12 @@
                 invoke="clearSqlConsole"/>
 
 
+        <action id="downloadDiagnoseRequestFileAction"
+                icon="icons/download.png"
+                caption="msg://downloadDiagnoseFile"
+                invoke="downloadDiagnoseRequestFile"/>
+
+
         <action id="maximizeConsoleAction"
                 icon="font-icon:EXPAND"
                 invoke="maximizeConsole"/>
@@ -50,6 +56,8 @@
                                     action="runSqlConsoleAction"/>
                             <button id="sqlClearBtn"
                                     action="clearSqlConsoleAction"/>
+                            <button id="downloadDiagnoseRequestFileBtn"
+                                    action="downloadDiagnoseRequestFileAction"/>
                         </buttonsPanel>
                     </hbox>
                     <hbox align="TOP_RIGHT">

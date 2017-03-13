@@ -12,8 +12,11 @@ import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.theme.ThemeConstants
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory
 import de.diedavids.cuba.console.SqlConsoleSecurityException
+import de.diedavids.cuba.console.diagnose.DiagnoseExecutionFactory
+import de.diedavids.cuba.console.diagnose.DiagnoseType
 import de.diedavids.cuba.console.sql.SqlDiagnoseService
 import de.diedavids.cuba.console.sql.SqlSelectResult
+import de.diedavids.cuba.console.web.screens.diagnose.DiagnoseFileDownloader
 
 import javax.inject.Inject
 
@@ -52,7 +55,7 @@ class SqlConsole extends AbstractWindow {
 
     @Inject
     protected ThemeConstants themeConstants
-    
+
     @Inject
     ButtonsPanel resultButtonPanel
 
@@ -61,9 +64,15 @@ class SqlConsole extends AbstractWindow {
     protected Button excelButton
 
 
+    @Inject
+    DiagnoseExecutionFactory diagnoseExecutionFactory
+    @Inject
+    DiagnoseFileDownloader diagnoseFileDownloader
+
+
     void runSqlConsole() {
         try {
-        SqlSelectResult result = sqlDiagnoseService.runSqlDiagnose(sqlConsole.value)
+            SqlSelectResult result = sqlDiagnoseService.runSqlDiagnose(sqlConsole.value)
             ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
             createResultTable(sqlResultDs)
         }
@@ -120,5 +129,12 @@ class SqlConsole extends AbstractWindow {
 
     void clearSqlConsole() {
         sqlConsole.value = null
+    }
+
+    void downloadDiagnoseRequestFile() {
+        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlConsole.value, DiagnoseType.SQL)
+        def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution)
+        diagnoseFileDownloader.downloadFile(this, zipBytes)
+
     }
 }

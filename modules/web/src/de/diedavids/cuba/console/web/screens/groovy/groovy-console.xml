@@ -9,7 +9,6 @@
                 icon="icons/run.png"
                 invoke="runGroovyDiagnose"
                 shortcut="SHIFT-ENTER"/>
-
         <action id="clearConsoleAction"
                 icon="icons/erase.png"
                 invoke="clearConsole"/>
@@ -32,6 +31,10 @@
                 enable="false"
                 icon="icons/download.png"
                 invoke="downloadConsoleResult"/>
+        <action id="downloadDiagnoseRequestFileAction"
+                icon="icons/download.png"
+                caption="msg://downloadDiagnoseFile"
+                invoke="downloadDiagnoseRequestFile"/>
     </actions>
     <dialogMode height="600"
                 width="800"/>
@@ -41,9 +44,9 @@
                orientation="vertical"
                width="100%">
             <vbox id="consoleVBox"
+                  expand="console"
                   height="100%"
                   margin="true"
-                  expand="console"
                   spacing="true">
                 <hbox spacing="true"
                       width="100%">
@@ -53,6 +56,8 @@
                                     action="runConsoleAction"/>
                             <button id="clearBtn"
                                     action="clearConsoleAction"/>
+                            <button id="downloadDiagnoseRequestFileBtn"
+                                    action="downloadDiagnoseRequestFileAction"/>
                         </buttonsPanel>
                     </hbox>
                     <hbox align="TOP_RIGHT">

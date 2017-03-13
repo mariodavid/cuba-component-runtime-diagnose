@@ -6,6 +6,7 @@ import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.security.global.UserSession
 import de.diedavids.cuba.console.diagnose.DiagnoseExecution
 import de.diedavids.cuba.console.diagnose.DiagnoseExecutionFactory
+import de.diedavids.cuba.console.diagnose.DiagnoseType
 import de.diedavids.cuba.console.groovy.GroovyDiagnoseService
 import de.diedavids.cuba.console.web.screens.diagnose.DiagnoseFileDownloader
 
@@ -15,32 +16,50 @@ class GroovyConsole extends AbstractWindow {
 
     public static final int SPLIT_POSITION_CENTER = 50
 
-    @Inject SourceCodeEditor console
-    @Inject SourceCodeEditor consoleResult
-    @Inject SourceCodeEditor consoleResultLog
-    @Inject SourceCodeEditor consoleStacktraceLog
-    @Inject SourceCodeEditor consoleExecutedScriptLog
-    @Inject SplitPanel consoleResultSplitter
-    @Inject Button downloadResultBtn
+    @Inject
+    SourceCodeEditor console
+    @Inject
+    SourceCodeEditor consoleResult
+    @Inject
+    SourceCodeEditor consoleResultLog
+    @Inject
+    SourceCodeEditor consoleStacktraceLog
+    @Inject
+    SourceCodeEditor consoleExecutedScriptLog
+    @Inject
+    SplitPanel consoleResultSplitter
+    @Inject
+    Button downloadResultBtn
 
-    @Inject GlobalConfig globalConfig
-    @Inject ExportDisplay exportDisplay
-    @Inject Scripting scripting
-    @Inject Metadata metadata
-    @Inject DataManager dataManager
-    @Inject DatatypeFormatter datatypeFormatter
-    @Inject UserSession userSession
-    @Inject TimeSource timeSource
+    @Inject
+    GlobalConfig globalConfig
+    @Inject
+    ExportDisplay exportDisplay
+    @Inject
+    Scripting scripting
+    @Inject
+    Metadata metadata
+    @Inject
+    DataManager dataManager
+    @Inject
+    DatatypeFormatter datatypeFormatter
+    @Inject
+    UserSession userSession
+    @Inject
+    TimeSource timeSource
 
-    @Inject GroovyDiagnoseService groovyDiagnoseService
-    @Inject DiagnoseExecutionFactory diagnoseExecutionFactory
-    @Inject DiagnoseFileDownloader diagnoseFileDownloader
+    @Inject
+    GroovyDiagnoseService groovyDiagnoseService
+    @Inject
+    DiagnoseExecutionFactory diagnoseExecutionFactory
+    @Inject
+    DiagnoseFileDownloader diagnoseFileDownloader
 
     DiagnoseExecution diagnoseExecution
 
     void runGroovyDiagnose() {
         if (console.value) {
-            diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value)
+            diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value, DiagnoseType.GROOVY)
             diagnoseExecution = groovyDiagnoseService.runGroovyDiagnose(diagnoseExecution)
             if (diagnoseExecution.executionSuccessful) {
                 showNotification(formatMessage('executionSuccessful'), Frame.NotificationType.TRAY)
@@ -71,12 +90,12 @@ class GroovyConsole extends AbstractWindow {
     }
 
     void clearConsoleResult() {
-        updateResultTabs('','','','')
+        updateResultTabs('', '', '', '')
     }
 
     void downloadConsoleResult() {
         def zipBytes = diagnoseExecutionFactory.createExecutionResultFormDiagnoseExecution(diagnoseExecution)
-        diagnoseFileDownloader.downloadFile(this,zipBytes)
+        diagnoseFileDownloader.downloadFile(this, zipBytes)
     }
 
     void maximizeConsole() {
@@ -93,5 +112,11 @@ class GroovyConsole extends AbstractWindow {
 
     void minimizeConsoleResult() {
         consoleResultSplitter.splitPosition = SPLIT_POSITION_CENTER
+    }
+
+    void downloadDiagnoseRequestFile() {
+        diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value, DiagnoseType.GROOVY)
+        def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution)
+        diagnoseFileDownloader.downloadFile(this, zipBytes)
     }
 }

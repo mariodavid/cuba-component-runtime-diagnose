@@ -6,9 +6,11 @@ interface DiagnoseExecutionFactory {
 
 
     DiagnoseExecution createDiagnoseExecutionFromFile(File file)
-    DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript)
+    DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript, DiagnoseType diagnoseType)
 
     byte[] createExecutionResultFormDiagnoseExecution(DiagnoseExecution diagnoseExecution)
+
+    byte[] createDiagnoseRequestFileFormDiagnoseExecution(DiagnoseExecution diagnoseExecution)
 
 
 }
