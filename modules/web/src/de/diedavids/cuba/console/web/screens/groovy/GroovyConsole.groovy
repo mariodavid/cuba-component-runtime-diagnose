@@ -117,6 +117,6 @@ class GroovyConsole extends AbstractWindow {
     void downloadDiagnoseRequestFile() {
         diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value, DiagnoseType.GROOVY)
         def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution)
-        diagnoseFileDownloader.downloadFile(this, zipBytes)
+        diagnoseFileDownloader.downloadFile(this, zipBytes, 'diagnose.zip')
     }
 }

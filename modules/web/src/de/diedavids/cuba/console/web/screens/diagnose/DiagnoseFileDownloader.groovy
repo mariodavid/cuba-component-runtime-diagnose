@@ -32,10 +32,11 @@ class DiagnoseFileDownloader {
         "${appName}-console-execution-${dateString}.zip"
     }
 
-    void downloadFile(Frame frame, byte[] zipBytes) {
+    void downloadFile(Frame frame, byte[] zipBytes, String filename = createResultFilename()) {
+
         try {
             exportDisplay.show(new ByteArrayDataProvider(zipBytes),
-                    createResultFilename(), ExportFormat.ZIP)
+                    filename, ExportFormat.ZIP)
             frame.showNotification(messages.formatMessage(getClass(),'diagnoseResultsDownloadedMessage'))
         } catch (Exception e) {
             frame.showNotification(messages.formatMessage(getClass(),'exportFailed'), e.message, Frame.NotificationType.ERROR)

@@ -134,7 +134,7 @@ class SqlConsole extends AbstractWindow {
     void downloadDiagnoseRequestFile() {
         def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlConsole.value, DiagnoseType.SQL)
         def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution)
-        diagnoseFileDownloader.downloadFile(this, zipBytes)
+        diagnoseFileDownloader.downloadFile(this, zipBytes, 'diagnose.zip')
 
     }
 }
