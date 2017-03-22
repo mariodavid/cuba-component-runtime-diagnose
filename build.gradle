@@ -63,8 +63,8 @@ def sourceDirs = subprojects
 cobertura {
     coverageFormats = ['html', 'xml']
     coverageMergeDatafiles = files
-    coverageCheckTotalBranchRate = 8
-    coverageCheckTotalLineRate = 17
+    coverageCheckTotalBranchRate = 25
+    coverageCheckTotalLineRate = 23
     coverageCheckHaltOnFailure = true
     coverageSourceDirs = sourceDirs
 //    coverageCheckLineRate = 1
