@@ -28,19 +28,22 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
 
     @Override
     DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript, DiagnoseType diagnoseType) {
-
-        def result = new DiagnoseExecution(manifest: new DiagnoseManifest(diagnoseType: diagnoseType))
-        result.diagnoseScript = diagnoseScript
-        result
+        new DiagnoseExecution(manifest: new DiagnoseManifest(diagnoseType: diagnoseType), diagnoseScript: diagnoseScript)
     }
 
     private String readDiagnoseScriptFromDiagnoseFile(DiagnoseExecution diagnoseExecution, ZipFile diagnoseZipFile) {
-            zipFileHelper.readFileContentFromArchive(getDiagnoseScriptFilename(diagnoseExecution), diagnoseZipFile)
+        zipFileHelper.readFileContentFromArchive(getDiagnoseScriptFilename(diagnoseExecution), diagnoseZipFile)
     }
 
     private DiagnoseManifest createManifestFromDiagnoseFile(ZipFile diagnoseZipFile) {
-        def manifestJson = new JsonSlurper().parse(zipFileHelper.readFileFromArchive(MANIFEST_FILENAME, diagnoseZipFile))
-        manifestJson as DiagnoseManifest
+        def result = null
+        def manifestInputStream = zipFileHelper.readFileFromArchive(MANIFEST_FILENAME, diagnoseZipFile)
+        if (manifestInputStream) {
+            def manifestJson = new JsonSlurper().parse(manifestInputStream)
+            result = manifestJson as DiagnoseManifest
+        }
+
+        result
     }
 
 
@@ -52,7 +55,7 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     byte[] createDiagnoseRequestFileFormDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
         def files = [
                 (getDiagnoseScriptFilename(diagnoseExecution)): diagnoseExecution.diagnoseScript,
-                'manifest.json'                             : JsonOutput.prettyPrint(JsonOutput.toJson(diagnoseExecution.manifest)),
+                'manifest.json'                               : JsonOutput.prettyPrint(JsonOutput.toJson(diagnoseExecution.manifest)),
         ]
         zipFileHelper.createZipFileForEntries(files)
     }
