@@ -1,10 +1,10 @@
 [![license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/mariodavid/cuba-component-console.svg?branch=master)](https://travis-ci.org/mariodavid/cuba-component-console)
+[![Build Status](https://travis-ci.org/mariodavid/cuba-component-runtime-diagnose.svg?branch=master)](https://travis-ci.org/mariodavid/cuba-component-runtime-diagnose)
 
-# CUBA Platform Component - Console
+# CUBA Platform Component - Runtime diagnose
 
-This application component is a Console for interactive runtime application management and debugging of a [CUBA](https://www.cuba-platform.com/) application.
-CUBA-console is based on the idea of the [Grails console](http://plugins.grails.org/plugin/console).
+This application component can be used for interactive runtime application diagnose and debugging of a [CUBA](https://www.cuba-platform.com/) application.
+It is based on the idea of the [Grails console](http://plugins.grails.org/plugin/console).
 
 It mainly consists of the three parts:
 
@@ -15,7 +15,7 @@ It mainly consists of the three parts:
 ## Groovy console
 The groovy console allows you to interactivly inspect the running application. You enter a groovy script and execute it in an ad-hoc fashion.
 
-![Screenshot Groovy-Console](https://github.com/mariodavid/cuba-component-console/blob/master/img/groovy-console-screenshot.png)
+![Screenshot Groovy-Console](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/groovy-console-screenshot.png)
 
 > WARN: Using the groovy console in production can be dangerous. Make sure that you will use the security subsystem properly so that only allowed users are able to execute code in production. For more information see the section about security
 
@@ -64,7 +64,7 @@ Execution results can be downloaded through the corresponding button. It will cr
 ## SQL console
 The SQL console allows you to interactivly interact with the database usnig raw SQL statements. You enter a SQL script and execute it in an ad-hoc fashion.
 
-![Screenshot SQL-Console](https://github.com/mariodavid/cuba-component-console/blob/master/img/sql-console-screenshot.png)
+![Screenshot SQL-Console](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/sql-console-screenshot.png)
 
 
 > NOTE: for normal data diagnosis the [Entity inspector](https://doc.cuba-platform.com/manual-6.4/entity_inspector.html) is oftentimes more user friendly, even for debugging purposes. Usage of the SQL-console is to be preferable to the entity inspector if you want to access data across tables using joins e.g.
@@ -100,7 +100,7 @@ The last part is the diagnose wizard. This option is relevant if you as a develo
 
 In these cases you can send the person a zip file (as a black box) and tell them to upload this file in the diagnose wizard. The person will be guided through the different steps, executed the scripts and gets back the execution results that should be handed back to you.
 
-![Screenshot Diagnose Wizard](https://github.com/mariodavid/cuba-component-console/blob/master/img/diagnose-wizard-screenshot.png)
+![Screenshot Diagnose Wizard](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/diagnose-wizard-screenshot.png)
 
 ### Checks on the diagnose file
 There are some checks in place in the wizard that will ensure the correctness of the zip file. Within the zip archive, there has to be the following files:
