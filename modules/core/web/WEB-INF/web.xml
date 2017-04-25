@@ -9,7 +9,7 @@
         <param-value>classpath:cuba-app.properties
             classpath:de/diedavids/cuba/console/app.properties
             /WEB-INF/local.app.properties
-            "file:${catalina.home}/conf/console-core/local.app.properties"</param-value>
+            "file:${catalina.home}/conf/runtime-diagnose-core/local.app.properties"</param-value>
     </context-param>
     <!--Application components-->
     <context-param>

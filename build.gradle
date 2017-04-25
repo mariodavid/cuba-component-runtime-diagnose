@@ -21,10 +21,10 @@ buildscript {
     }
 }
 
-def globalModule = project(':console-global')
-def coreModule = project(':console-core')
-def guiModule = project(':console-gui')
-def webModule = project(':console-web')
+def globalModule = project(':runtime-diagnose-global')
+def coreModule = project(':runtime-diagnose-core')
+def guiModule = project(':runtime-diagnose-gui')
+def webModule = project(':runtime-diagnose-web')
 
 def servletApi = 'org.apache.tomcat:tomcat-servlet-api:8.0.26'
 
@@ -179,7 +179,7 @@ configure(coreModule) {
     }
 
     task cleanConf(description: 'Cleans up conf directory') << {
-        def dir = new File(cuba.tomcat.dir, '/conf/console-core')
+        def dir = new File(cuba.tomcat.dir, '/conf/runtime-diagnose-core')
         if (dir.isDirectory()) {
             ant.delete(includeemptydirs: true) {
                 fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties')
@@ -188,8 +188,8 @@ configure(coreModule) {
     }
 
     task deploy(dependsOn: [assemble, cleanConf], type: CubaDeployment) {
-        appName = 'console-core'
-        appJars('console-global', 'console-core')
+        appName = 'runtime-diagnose-core'
+        appJars('runtime-diagnose-global', 'runtime-diagnose-core')
     }
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
@@ -218,7 +218,7 @@ configure(guiModule) {
     task deployConf(type: Copy) {
         from file('src')
         include "de/diedavids/cuba/console/**"
-        into "$cuba.tomcat.dir/conf/console"
+        into "$cuba.tomcat.dir/conf/runtime-diagnose"
     }
 }
 
@@ -246,16 +246,16 @@ configure(webModule) {
     task deployConf(type: Copy) {
         from file('src')
         include "de/diedavids/cuba/console/**"
-        into "$cuba.tomcat.dir/conf/console"
+        into "$cuba.tomcat.dir/conf/runtime-diagnose"
     }
 
     task clearMessagesCache(type: CubaClearMessagesCache) {
-        appName = 'console'
+        appName = 'runtime-diagnose'
     }
     deployConf.dependsOn clearMessagesCache
 
     task cleanConf(description: 'Cleans up conf directory') << {
-        def dir = new File(cuba.tomcat.dir, '/conf/console')
+        def dir = new File(cuba.tomcat.dir, '/conf/runtime-diagnose')
         if (dir.isDirectory()) {
             ant.delete(includeemptydirs: true) {
                 fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties')
@@ -264,8 +264,8 @@ configure(webModule) {
     }
 
     task deploy(dependsOn: [assemble, cleanConf], type: CubaDeployment) {
-        appName = 'console'
-        appJars('console-global', 'console-gui', 'console-web')
+        appName = 'runtime-diagnose'
+        appJars('runtime-diagnose-global', 'runtime-diagnose-gui', 'runtime-diagnose-web')
     }
 }
 
@@ -273,13 +273,13 @@ configure(webModule) {
 
 
 
-task undeploy(type: Delete, dependsOn: ':console-web:cleanConf') {
+task undeploy(type: Delete, dependsOn: ':runtime-diagnose-web:cleanConf') {
     delete("$cuba.tomcat.dir/shared")
-    delete("$cuba.tomcat.dir/webapps/console-core")
-    delete("$cuba.tomcat.dir/webapps/console")
+    delete("$cuba.tomcat.dir/webapps/runtime-diagnose-core")
+    delete("$cuba.tomcat.dir/webapps/runtime-diagnose")
 }
 
-task restart(dependsOn: ['stop', ':console-core:deploy', ':console-web:deploy'], description: 'Redeploys applications and restarts local Tomcat') << {
+task restart(dependsOn: ['stop', ':runtime-diagnose-core:deploy', ':runtime-diagnose-web:deploy'], description: 'Redeploys applications and restarts local Tomcat') << {
     ant.waitfor(maxwait: 6, maxwaitunit: 'second', checkevery: 2, checkeveryunit: 'second') {
         not {
             socket(server: 'localhost', port: '8787')

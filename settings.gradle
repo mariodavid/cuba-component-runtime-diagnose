@@ -1,6 +1,6 @@
 rootProject.name = 'cuba-component-runtime-diagnose'
-include(':console-global', ':console-core', ':console-gui', ':console-web')
-project(':console-global').projectDir = new File(settingsDir, 'modules/global')
-project(':console-core').projectDir = new File(settingsDir, 'modules/core')
-project(':console-gui').projectDir = new File(settingsDir, 'modules/gui')
-project(':console-web').projectDir = new File(settingsDir, 'modules/web')
+include(':runtime-diagnose-global', ':runtime-diagnose-core', ':runtime-diagnose-gui', ':runtime-diagnose-web')
+project(':runtime-diagnose-global').projectDir = new File(settingsDir, 'modules/global')
+project(':runtime-diagnose-core').projectDir = new File(settingsDir, 'modules/core')
+project(':runtime-diagnose-gui').projectDir = new File(settingsDir, 'modules/gui')
+project(':runtime-diagnose-web').projectDir = new File(settingsDir, 'modules/web')
