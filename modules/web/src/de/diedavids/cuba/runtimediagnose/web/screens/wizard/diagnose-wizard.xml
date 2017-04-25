@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="de.diedavids.cuba.runtimediagnose.web.screens.wizard.DiagnoseWizard"
+        messagesPack="de.diedavids.cuba.runtimediagnose.web.screens.wizard">
+    <dsContext>
+        <datasource id="diagnoseFileValidationDs"
+                    class="de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResult"
+                    datasourceClass="de.diedavids.cuba.runtimediagnose.web.screens.wizard.DiagnoseFileValidationDatasource"/>
+
+        <datasource id="diagnoseWizardResultsDs"
+                    class="de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResult"
+                    datasourceClass="de.diedavids.cuba.runtimediagnose.web.screens.wizard.DiagnoseExecutionResultDatasource"/>
+    </dsContext>
+    <actions>
+        <action id="executeDiagnosisAction"
+                caption="msg://execute"
+                icon="icons/run.png"
+                invoke="executeDiagnosis"/>
+        <action id="cancelWizardAction"
+                caption="mainMsg://action.cancel"
+                icon="icons/cancel.png"
+                invoke="cancelWizard"/>
+        <action id="closeWizardAction"
+                caption="mainMsg://actions.Ok"
+                icon="icons/ok.png"
+
+                enable="false"
+                invoke="closeWizard"/>
+        <action id="downloadDiagnoseResultsAction"
+                caption="msg://downloadResult"
+                icon="icons/download.png"
+                invoke="downloadDiagnoseResult"/>
+    </actions>
+    <dialogMode forceDialog="true"
+                height="400"
+                resizable="true"
+                width="600"/>
+    <layout expand="wizardAccordion" spacing="true">
+        <accordion id="wizardAccordion">
+            <tab id="step1"
+                 caption="1. Upload Diagnose File"
+                 margin="true"
+                 expand="dropZone"
+                 spacing="true">
+                <buttonsPanel align="TOP_CENTER">
+                    <upload id="consoleFileUploadBtn"
+                            accept=".zip"
+                            dropZone="dropZone"
+                            uploadButtonCaption="msg://uploadBtnCaption"
+                            uploadButtonDescription="msg://uploadBtnDescription"
+                            uploadButtonIcon="icons/upload.png"/>
+                </buttonsPanel>
+                <vbox id="dropZone"
+                      spacing="true"
+                      stylename="cuba-static-drop-zone">
+                    <label align="MIDDLE_CENTER"
+                           stylename="cuba-upload-dropzone-description"
+                           value="Drop file here..."/>
+                </vbox>
+
+            </tab>
+            <tab id="step2"
+                 caption="2. Execute Diagnose"
+                 enable="false"
+                 margin="true"
+                 expand="diagnoseFileValidationTable"
+                 spacing="true">
+                <table id="diagnoseFileValidationTable"
+                       width="100%"
+                       columnControlVisible="false"
+                       showSelection="false"
+                       sortable="false"
+                       multiselect="false">
+                    <columns>
+                        <column id="message" caption="msg://diagnoseFileValidationTableMessageColumn"/>
+                    </columns>
+                    <rows datasource="diagnoseFileValidationDs"/>
+                </table>
+                <buttonsPanel align="TOP_RIGHT">
+                    <button id="executeDiagnosisBtn"
+                            action="executeDiagnosisAction"
+                    />
+                </buttonsPanel>
+            </tab>
+            <tab id="step3"
+                 caption="3. Diagnose results"
+                 enable="false"
+                 expand="diagnoseWizardResultsTable"
+                 margin="true"
+                 spacing="true">
+
+                <table id="diagnoseWizardResultsTable"
+                       width="100%"
+                       columnControlVisible="false"
+                       showSelection="false"
+                       sortable="false"
+                       multiselect="false">
+                    <columns>
+                        <column id="message" caption="msg://diagnoseWizardResultsTableMessageColumn"/>
+                    </columns>
+                    <rows datasource="diagnoseWizardResultsDs" />
+                </table>
+            </tab>
+        </accordion>
+        <buttonsPanel align="TOP_RIGHT">
+            <button id="closeWizard"
+                    action="closeWizardAction"
+            />
+            <button id="cancelWizard"
+                    action="cancelWizardAction"
+            />
+        </buttonsPanel>
+    </layout>
+</window>

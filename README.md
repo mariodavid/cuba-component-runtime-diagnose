@@ -39,7 +39,7 @@ If you want to define custom variables that are accessible in your scripts, you 
    
 The resulting map will additionally passed to the script. In order to use your bean, you have to register it in the `spring.xml` of the core module of your application like this:
  
-    <bean id="ddrd_GroovyConsoleService" class="com.company.myapp.core.MyGroovyDiagnoseServiceBean" />
+    <bean id="ddcrd_GroovyConsoleService" class="com.company.myapp.core.MyGroovyDiagnoseServiceBean" />
     
 This way, Spring will pick up your extension GroovyDiagnoseService.
     
@@ -76,21 +76,21 @@ Results of a SQL statement are displayed in a table in the result tab. The resul
 By default, only SELECT stements are allowed to execute through the SQL-Console. If you want to execute other types of SQL statements like `INSERT` or `ALTER` it has to be explicitly configured the application component through CUBAs App properties UI: `Administration > Application properties > console`
 
 The following configuration options allow different statement types:
-* `console.sql.allowDataManipulation`
+* `runtime-diagnose.sql.allowDataManipulation`
   * `INSERT INTO...`
   * `UPDATE ...`
   * `DELETE ...`
   * `MERGE ...`
   * `REPLACE ...`
   * `TRUNCATE ...`
-* `console.sql.allowSchemaManipulation`
+* `runtime-diagnose.sql.allowSchemaManipulation`
   * `DROP ...`
   * `CREATE TABLE ...`
   * `CREATE VIEW ...`
   * `ALTER ...`
   * `ALTER VIEW ...`
   * `CREATE INDEX ...`
-* `console.sql.allowExecuteOperations`
+* `runtime-diagnose.sql.allowExecuteOperations`
   * `EXECUTE ...`
   * `SET ...`
 
@@ -111,7 +111,7 @@ The diagnose.(sql|groovy) contains the executable script. The manifest file desc
 
     {
       "appVersion": "1.1",
-      "appName": "console-app",
+      "appName": "runtime-diagnose-app",
       "producer": "Company Inc.",
       "diagnoseType": "GROOVY"
     }

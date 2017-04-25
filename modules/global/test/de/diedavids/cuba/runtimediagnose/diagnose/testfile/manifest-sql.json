@@ -1,6 +1,6 @@
 {
-  "diagnoseType": "GROOVY",
   "appVersion": "1.0",
   "appName": "runtime-diagnose-app",
-  "producer": "Company Inc."
+  "producer": "Company Inc.",
+  "diagnoseType":"SQL"
 }

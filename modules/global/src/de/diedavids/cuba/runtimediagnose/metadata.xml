@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<metadata xmlns="http://schemas.haulmont.com/cuba/metadata.xsd">
+
+    <metadata-model root-package="de.diedavids.cuba.runtimediagnose" namespace="ddcrd">
+        <class>de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResult</class>
+    </metadata-model>
+
+</metadata>

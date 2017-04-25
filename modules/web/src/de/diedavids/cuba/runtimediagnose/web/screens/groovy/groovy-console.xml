@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://caption"
+        class="de.diedavids.cuba.runtimediagnose.web.screens.groovy.GroovyConsole"
+        messagesPack="de.diedavids.cuba.runtimediagnose.web.screens.groovy">
+    <actions>
+        <action id="runConsoleAction"
+                caption="msg://runConsole"
+                icon="icons/run.png"
+                invoke="runGroovyDiagnose"
+                shortcut="SHIFT-ENTER"/>
+        <action id="clearConsoleAction"
+                icon="icons/erase.png"
+                invoke="clearConsole"/>
+        <action id="maximizeConsoleAction"
+                icon="font-icon:EXPAND"
+                invoke="maximizeConsole"/>
+        <action id="minimizeConsoleAction"
+                icon="font-icon:COMPRESS"
+                invoke="minimizeConsole"/>
+        <action id="maximizeConsoleResultAction"
+                icon="font-icon:EXPAND"
+                invoke="maximizeConsoleResult"/>
+        <action id="minimizeConsoleResultAction"
+                icon="font-icon:COMPRESS"
+                invoke="minimizeConsoleResult"/>
+        <action id="clearConsoleResultAction"
+                icon="icons/erase.png"
+                invoke="clearConsoleResult"/>
+        <action id="downloadConsoleResultAction"
+                enable="false"
+                icon="icons/download.png"
+                invoke="downloadConsoleResult"/>
+        <action id="downloadDiagnoseRequestFileAction"
+                icon="icons/download.png"
+                caption="msg://downloadDiagnoseFile"
+                invoke="downloadDiagnoseRequestFile"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout>
+        <split id="consoleResultSplitter"
+               height="100%"
+               orientation="vertical"
+               width="100%">
+            <vbox id="consoleVBox"
+                  expand="console"
+                  height="100%"
+                  margin="true"
+                  spacing="true">
+                <hbox spacing="true"
+                      width="100%">
+                    <hbox>
+                        <buttonsPanel>
+                            <button id="runBtn"
+                                    action="runConsoleAction"/>
+                            <button id="clearBtn"
+                                    action="clearConsoleAction"/>
+                            <button id="downloadDiagnoseRequestFileBtn"
+                                    action="downloadDiagnoseRequestFileAction"/>
+                        </buttonsPanel>
+                    </hbox>
+                    <hbox align="TOP_RIGHT">
+                        <buttonsPanel>
+                            <button id="maximizeConsoleBtn"
+                                    action="maximizeConsoleAction"/>
+                            <button id="minimizeConsoleBtn"
+                                    action="minimizeConsoleAction"/>
+                        </buttonsPanel>
+                    </hbox>
+                </hbox>
+                <sourceCodeEditor id="console"
+                                  mode="Groovy"
+                                  width="100%"/>
+            </vbox>
+            <vbox id="consoleResultVBox"
+                  expand="consoleResultTabSheet"
+                  height="100%"
+                  margin="true"
+                  spacing="true">
+                <hbox spacing="true"
+                      width="100%">
+                    <hbox>
+                        <buttonsPanel>
+                            <button id="clearResultBtn"
+                                    action="clearConsoleResultAction"/>
+                            <button id="downloadResultBtn"
+                                    action="downloadConsoleResultAction"/>
+                        </buttonsPanel>
+                    </hbox>
+                    <hbox align="TOP_RIGHT">
+                        <buttonsPanel>
+                            <button id="maximizeConsoleResultBtn"
+                                    action="maximizeConsoleResultAction"/>
+                            <button id="minimizeConsoleResultBtn"
+                                    action="minimizeConsoleResultAction"/>
+                        </buttonsPanel>
+                    </hbox>
+                </hbox>
+                <tabSheet id="consoleResultTabSheet">
+                    <tab id="consoleResultTabResult"
+                         caption="Result"
+                         margin="true,false,true,false"
+                         spacing="true">
+                        <sourceCodeEditor id="consoleResult"
+                                          editable="false"
+                                          height="100%"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                    <tab id="consoleResultTabResultLog"
+                         caption="Log"
+                         margin="true,false,true,false"
+                         spacing="true">
+                        <sourceCodeEditor id="consoleResultLog"
+                                          editable="false"
+                                          height="100%"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                    <tab id="consoleResultTabStacktraceLog"
+                         caption="Stacktrace"
+                         margin="true,false,true,false"
+                         spacing="true">
+                        <sourceCodeEditor id="consoleStacktraceLog"
+                                          editable="false"
+                                          height="100%"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                    <tab id="consoleExecutedScriptLogTab"
+                         caption="Executed Script"
+                         margin="true,false,true,false"
+                         spacing="true">
+                        <sourceCodeEditor id="consoleExecutedScriptLog"
+                                          editable="false"
+                                          height="100%"
+                                          mode="Groovy"
+                                          width="100%"/>
+                    </tab>
+                </tabSheet>
+            </vbox>
+        </split>
+    </layout>
+</window>

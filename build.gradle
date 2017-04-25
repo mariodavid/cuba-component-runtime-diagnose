@@ -34,7 +34,7 @@ apply(plugin: 'cuba')
 
 cuba {
     artifact {
-        group = 'de.diedavids.cuba.console'
+        group = 'de.diedavids.cuba.runtimediagnose'
         version = '0.1'
         isSnapshot = true
     }
@@ -195,7 +195,7 @@ configure(coreModule) {
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
         dbms = 'hsql'
         host = 'localhost'
-        dbName = 'ddrd'
+        dbName = 'ddcrd'
         dbUser = 'sa'
         dbPassword = ''
     }
@@ -203,7 +203,7 @@ configure(coreModule) {
     task updateDb(dependsOn: assembleDbScripts, description: 'Updates local database', type: CubaDbUpdate) {
         dbms = 'hsql'
         host = 'localhost'
-        dbName = 'ddrd'
+        dbName = 'ddcrd'
         dbUser = 'sa'
         dbPassword = ''
     }
@@ -217,7 +217,7 @@ configure(guiModule) {
 
     task deployConf(type: Copy) {
         from file('src')
-        include "de/diedavids/cuba/console/**"
+        include "de/diedavids/cuba/runtimediagnose/**"
         into "$cuba.tomcat.dir/conf/runtime-diagnose"
     }
 }
@@ -245,7 +245,7 @@ configure(webModule) {
 
     task deployConf(type: Copy) {
         from file('src')
-        include "de/diedavids/cuba/console/**"
+        include "de/diedavids/cuba/runtimediagnose/**"
         into "$cuba.tomcat.dir/conf/runtime-diagnose"
     }
 
