@@ -7,10 +7,12 @@
         <action id="runConsoleAction"
                 caption="msg://runConsole"
                 icon="icons/run.png"
-                invoke="runGroovyDiagnose"
+                invoke="runConsole"
+                description="msg://runConsoleDescription"
                 shortcut="SHIFT-ENTER"/>
         <action id="clearConsoleAction"
                 icon="icons/erase.png"
+                description="msg://clearConsoleDescription"
                 invoke="clearConsole"/>
         <action id="maximizeConsoleAction"
                 icon="font-icon:EXPAND"
@@ -33,7 +35,8 @@
                 invoke="downloadConsoleResult"/>
         <action id="downloadDiagnoseRequestFileAction"
                 icon="icons/download.png"
-                caption="msg://downloadDiagnoseFile"
+                caption="msg://diagnoseRequestFile"
+                description="msg://diagnoseRequestFileDescription"
                 invoke="downloadDiagnoseRequestFile"/>
     </actions>
     <dialogMode height="600"

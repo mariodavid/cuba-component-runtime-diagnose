@@ -7,16 +7,19 @@
         <action id="runSqlConsoleAction"
                 caption="msg://runConsole"
                 icon="icons/run.png"
-                invoke="runSqlConsole"
+                invoke="runConsole"
+                description="msg://runConsoleDescription"
                 shortcut="SHIFT-ENTER"/>
         <action id="clearSqlConsoleAction"
                 icon="icons/erase.png"
-                invoke="clearSqlConsole"/>
+                description="msg://clearConsoleDescription"
+                invoke="clearConsole"/>
 
 
         <action id="downloadDiagnoseRequestFileAction"
                 icon="icons/download.png"
-                caption="msg://downloadDiagnoseFile"
+                caption="msg://diagnoseRequestFile"
+                description="msg://diagnoseRequestFileDescription"
                 invoke="downloadDiagnoseRequestFile"/>
 
 
@@ -46,7 +49,7 @@
             <vbox id="consoleVBox"
                   height="100%"
                   margin="true"
-                  expand="sqlConsole"
+                  expand="console"
                   spacing="true">
                 <hbox spacing="true"
                       width="100%">
@@ -69,7 +72,7 @@
                         </buttonsPanel>
                     </hbox>
                 </hbox>
-                <sourceCodeEditor id="sqlConsole"
+                <sourceCodeEditor id="console"
                                   mode="SQL"
                                   width="100%"/>
             </vbox>

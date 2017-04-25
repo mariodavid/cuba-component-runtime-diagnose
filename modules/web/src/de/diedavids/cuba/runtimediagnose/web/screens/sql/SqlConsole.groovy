@@ -2,47 +2,26 @@ package de.diedavids.cuba.runtimediagnose.web.screens.sql
 
 import com.haulmont.chile.core.model.MetaClass
 import com.haulmont.chile.core.model.MetaProperty
-import com.haulmont.cuba.core.global.GlobalConfig
-import com.haulmont.cuba.core.global.Metadata
 import com.haulmont.cuba.gui.components.*
 import com.haulmont.cuba.gui.components.actions.ExcelAction
 import com.haulmont.cuba.gui.data.DsBuilder
 import com.haulmont.cuba.gui.data.impl.ValueCollectionDatasourceImpl
-import com.haulmont.cuba.gui.export.ExportDisplay
-import com.haulmont.cuba.gui.theme.ThemeConstants
 import com.haulmont.cuba.gui.xml.layout.ComponentsFactory
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.sql.SqlDiagnoseService
 import de.diedavids.cuba.runtimediagnose.sql.SqlSelectResult
+import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleWindow
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
 
 import javax.inject.Inject
 
-class SqlConsole extends AbstractWindow {
-
-
-    @Inject
-    SourceCodeEditor sqlConsole
+class SqlConsole extends ConsoleWindow {
 
     @Inject
     SqlDiagnoseService sqlDiagnoseService
 
-    @Inject
-    TabSheet.Tab consoleResultTabResult
-
-    @Inject
-    SplitPanel consoleResultSplitter
-
-    @Inject
-    Metadata metadata
-
-    @Inject
-    GlobalConfig globalConfig
-
-    @Inject
-    protected ExportDisplay exportDisplay
 
     @Inject
     ComponentsFactory componentsFactory
@@ -54,9 +33,6 @@ class SqlConsole extends AbstractWindow {
 
 
     @Inject
-    protected ThemeConstants themeConstants
-
-    @Inject
     ButtonsPanel resultButtonPanel
 
 
@@ -66,20 +42,32 @@ class SqlConsole extends AbstractWindow {
 
     @Inject
     DiagnoseExecutionFactory diagnoseExecutionFactory
+
     @Inject
     DiagnoseFileDownloader diagnoseFileDownloader
 
 
-    void runSqlConsole() {
+    @Override
+    DiagnoseType getDianoseType() {
+        DiagnoseType.SQL
+    }
+
+    @Override
+    void doRunConsole() {
         try {
-            SqlSelectResult result = sqlDiagnoseService.runSqlDiagnose(sqlConsole.value)
+            SqlSelectResult result = sqlDiagnoseService.runSqlDiagnose(console.value)
             ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
             createResultTable(sqlResultDs)
         }
         catch (SqlConsoleSecurityException e) {
             showNotification(e.message, Frame.NotificationType.ERROR)
         }
+    }
 
+    @Override
+    void clearConsoleResult() {
+        resultTableBox.remove(resultTable)
+        excelButton.enabled = false
     }
 
     private ValueCollectionDatasourceImpl createDatasource(SqlSelectResult result) {
@@ -127,14 +115,4 @@ class SqlConsole extends AbstractWindow {
     }
 
 
-    void clearSqlConsole() {
-        sqlConsole.value = null
-    }
-
-    void downloadDiagnoseRequestFile() {
-        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlConsole.value, DiagnoseType.SQL)
-        def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution)
-        diagnoseFileDownloader.downloadFile(this, zipBytes, 'diagnose.zip')
-
-    }
 }
