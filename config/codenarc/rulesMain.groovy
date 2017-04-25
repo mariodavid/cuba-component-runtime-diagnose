@@ -3,21 +3,21 @@ ruleset {
 
 
     IllegalClassReference {
-        name = 'IpIDoNotReferenceLoadContextInController'
+        name = 'CUBADoNotReferenceLoadContextInController'
         priority = 1
         classNames = 'com.haulmont.cuba.core.global.LoadContext'
         applyToClassNames = '*Browse, *Edit, *Dialog*'
-        description = '[IPI] LoadContext should not be used in a CUBA Controller. Try SimpleDataLoader instead'
-        description = '[IPI] LoadContext should not be used in a CUBA Controller. Try SimpleDataLoader instead'
+        description = '[CUBA] LoadContext should not be used in a CUBA Controller. Try to shift this logic into a Service instead.'
+        description = '[CUBA] LoadContext should not be used in a CUBA Controller. Try to shift this logic into a Service instead.'
     }
 
     IllegalString {
-        name = 'IpIDoNotUseMetadataCreateInController'
+        name = 'CUBADoNotUseMetadataCreateInController'
         string = 'metadata.create'
         applyToFileNames = '*Browse.groovy, *Edit.groovy, *Dialog*.groovy'
         priority = 1
-        violationMessage = '[IPI] Metadata should not be used in Controller, because the REST API will not get these information'
-        description = '[IPI] Metadata should not be used in Controller, because the REST API will not get these information. Consider @PostConstruct in Entity. See <a href="https://doc.cuba-platform.com/manual-6.4/init_values.html">CUBA docs</a>'
+        violationMessage = '[CUBA] Metadata should not be used in Controller, because the REST API will not get these information'
+        description = '[CUBA] Metadata should not be used in Controller, because the REST API will not get these information. Consider @PostConstruct in Entity. See <a href="https://doc.cuba-platform.com/manual-6.4/init_values.html">CUBA docs</a>'
     }
 
 
