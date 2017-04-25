@@ -2,7 +2,7 @@ package de.diedavids.cuba.console.diagnose
 
 interface DiagnoseExecutionFactory {
 
-    public static final String NAME = 'console_DiagnoseExecutionFactory'
+    public static final String NAME = 'ddrd_DiagnoseExecutionFactory'
 
 
     DiagnoseExecution createDiagnoseExecutionFromFile(File file)

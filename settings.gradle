@@ -1,4 +1,4 @@
-rootProject.name = 'cuba-component-console'
+rootProject.name = 'cuba-component-runtime-diagnose'
 include(':console-global', ':console-core', ':console-gui', ':console-web')
 project(':console-global').projectDir = new File(settingsDir, 'modules/global')
 project(':console-core').projectDir = new File(settingsDir, 'modules/core')

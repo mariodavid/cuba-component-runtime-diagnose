@@ -10,13 +10,13 @@
                   ref="cuba_clusterInvocationSupport"/>
         <property name="remoteServices">
             <map>
-                <entry key="console_SqlConsoleService"
+                <entry key="ddrd_SqlConsoleService"
                        value="de.diedavids.cuba.console.sql.SqlDiagnoseService"/>
-                <entry key="console_DiagnoseFileValidationService"
+                <entry key="ddrd_DiagnoseFileValidationService"
                        value="de.diedavids.cuba.console.diagnose.DiagnoseFileValidationService"/>
-                <entry key="console_GroovyConsoleService"
+                <entry key="ddrd_GroovyConsoleService"
                        value="de.diedavids.cuba.console.groovy.GroovyDiagnoseService"/>
-                <entry key="console_DiagnoseWizardResultService"
+                <entry key="ddrd_DiagnoseWizardResultService"
                        value="de.diedavids.cuba.console.diagnose.DiagnoseWizardResultService"/>
             </map>
         </property>

@@ -39,7 +39,7 @@ If you want to define custom variables that are accessible in your scripts, you 
    
 The resulting map will additionally passed to the script. In order to use your bean, you have to register it in the `spring.xml` of the core module of your application like this:
  
-    <bean id="console_GroovyConsoleService" class="com.company.myapp.core.MyGroovyDiagnoseServiceBean" />
+    <bean id="ddrd_GroovyConsoleService" class="com.company.myapp.core.MyGroovyDiagnoseServiceBean" />
     
 This way, Spring will pick up your extension GroovyDiagnoseService.
     

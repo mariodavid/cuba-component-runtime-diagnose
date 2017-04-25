@@ -4,7 +4,7 @@ import de.diedavids.cuba.console.diagnose.DiagnoseExecution
 
 
 interface GroovyDiagnoseService {
-    String NAME = 'console_GroovyConsoleService'
+    String NAME = 'ddrd_GroovyConsoleService'
 
     DiagnoseExecution runGroovyDiagnose(DiagnoseExecution diagnoseExecution)
 }
