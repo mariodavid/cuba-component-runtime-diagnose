@@ -7,7 +7,7 @@ import com.haulmont.cuba.core.config.SourceType;
 import com.haulmont.cuba.core.config.defaults.Default;
 
 @Source(type = SourceType.DATABASE)
-public interface ConsoleConfiguration extends Config {
+public interface RuntimeDiagnoseConfiguration extends Config {
 
     @Property("runtime-diagnose.sql.allowDataManipulation")
     @Default("false")

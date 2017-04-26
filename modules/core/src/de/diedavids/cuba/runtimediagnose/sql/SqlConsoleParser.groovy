@@ -1,7 +1,7 @@
 package de.diedavids.cuba.runtimediagnose.sql
 
 import com.haulmont.cuba.core.global.Messages
-import de.diedavids.cuba.runtimediagnose.ConsoleConfiguration
+import de.diedavids.cuba.runtimediagnose.RuntimeDiagnoseConfiguration
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.SetStatement
@@ -27,7 +27,7 @@ import javax.inject.Inject
 class SqlConsoleParser {
 
     @Inject
-    ConsoleConfiguration configuration
+    RuntimeDiagnoseConfiguration configuration
 
     @Inject
     Messages messages

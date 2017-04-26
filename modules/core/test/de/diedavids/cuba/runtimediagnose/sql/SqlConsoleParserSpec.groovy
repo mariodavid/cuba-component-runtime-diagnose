@@ -1,7 +1,7 @@
 package de.diedavids.cuba.runtimediagnose.sql
 
 import com.haulmont.cuba.core.global.Messages
-import de.diedavids.cuba.runtimediagnose.ConsoleConfiguration
+import de.diedavids.cuba.runtimediagnose.RuntimeDiagnoseConfiguration
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import net.sf.jsqlparser.statement.SetStatement
 import net.sf.jsqlparser.statement.Statements
@@ -13,15 +13,15 @@ class SqlConsoleParserSpec extends Specification {
 
 
     SqlConsoleParser sut
-    ConsoleConfiguration consoleConfiguration
+    RuntimeDiagnoseConfiguration runtimeDiagnoseConfiguration
     Messages messages
 
     def setup() {
 
-        consoleConfiguration = Mock(ConsoleConfiguration)
+        runtimeDiagnoseConfiguration = Mock(RuntimeDiagnoseConfiguration)
         messages = Mock(Messages)
         sut = new SqlConsoleParser(
-                configuration: consoleConfiguration,
+                configuration: runtimeDiagnoseConfiguration,
                 messages: messages
         )
     }
@@ -29,7 +29,7 @@ class SqlConsoleParserSpec extends Specification {
     def "analyseSql throws a security exception if the SQL statement is data manipulation and the config does not allow data manipulation"() {
 
         given:
-        consoleConfiguration.getSqlAllowDataManipulation() >> false
+        runtimeDiagnoseConfiguration.getSqlAllowDataManipulation() >> false
 
         and:
         messages.getMessage(SqlConsoleParser, 'dataManipulationNotAllowed') >> 'nope for data manipulation'
@@ -47,7 +47,7 @@ class SqlConsoleParserSpec extends Specification {
     def "analyseSql creates a insert statement if the SQL statement is data manipulation and the config does allow data manipulation"() {
 
         given:
-        consoleConfiguration.getSqlAllowDataManipulation() >> true
+        runtimeDiagnoseConfiguration.getSqlAllowDataManipulation() >> true
 
         when:
         Statements result = sut.analyseSql("INSERT INTO SEC_USER (ID) VALUES ('e54f6d8d-29b1-439e-846c-b6180495c066')")
@@ -66,7 +66,7 @@ class SqlConsoleParserSpec extends Specification {
     def "analyseSql throws a security exception if the SQL statement is schema manipulation and the config does not allow schema manipulation"() {
 
         given:
-        consoleConfiguration.getSqlAllowSchemaManipulation() >> false
+        runtimeDiagnoseConfiguration.getSqlAllowSchemaManipulation() >> false
 
         and:
         messages.getMessage(SqlConsoleParser, 'schemaManipulationNotAllowed') >> 'nope for schema manipulation'
@@ -84,7 +84,7 @@ class SqlConsoleParserSpec extends Specification {
     def "analyseSql creates a drop statement if the SQL statement is schema manipulation and the config does allow schema manipulation"() {
 
         given:
-        consoleConfiguration.getSqlAllowSchemaManipulation() >> true
+        runtimeDiagnoseConfiguration.getSqlAllowSchemaManipulation() >> true
 
         when:
         Statements result = sut.analyseSql("DROP TABLE SEC_USER")
@@ -103,7 +103,7 @@ class SqlConsoleParserSpec extends Specification {
     def "analyseSql throws a security exception if the SQL statement is an execute operation and the config does not allow execution operations"() {
 
         given:
-        consoleConfiguration.getSqlAllowExecuteOperations() >> false
+        runtimeDiagnoseConfiguration.getSqlAllowExecuteOperations() >> false
 
         and:
         messages.getMessage(SqlConsoleParser, 'executeOperationNotAllowed') >> 'nope for execute operations'
@@ -121,7 +121,7 @@ class SqlConsoleParserSpec extends Specification {
     def "analyseSql creates a execute statement if the SQL statement is an execute operation and the config does allow execute operations"() {
 
         given:
-        consoleConfiguration.getSqlAllowExecuteOperations() >> true
+        runtimeDiagnoseConfiguration.getSqlAllowExecuteOperations() >> true
 
         when:
         Statements result = sut.analyseSql("SET OPTION = VALUE")
