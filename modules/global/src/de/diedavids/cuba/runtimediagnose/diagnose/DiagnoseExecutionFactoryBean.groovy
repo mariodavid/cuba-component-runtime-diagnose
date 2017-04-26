@@ -2,11 +2,13 @@ package de.diedavids.cuba.runtimediagnose.diagnose
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import groovy.transform.CompileStatic
 import org.springframework.stereotype.Component
 
 import javax.inject.Inject
 import java.util.zip.ZipFile
 
+@CompileStatic
 @Component(DiagnoseExecutionFactory.NAME)
 class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
 
@@ -36,7 +38,7 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     }
 
     private DiagnoseManifest createManifestFromDiagnoseFile(ZipFile diagnoseZipFile) {
-        def result = null
+        DiagnoseManifest result = null
         def manifestInputStream = zipFileHelper.readFileFromArchive(MANIFEST_FILENAME, diagnoseZipFile)
         if (manifestInputStream) {
             def manifestJson = new JsonSlurper().parse(manifestInputStream)

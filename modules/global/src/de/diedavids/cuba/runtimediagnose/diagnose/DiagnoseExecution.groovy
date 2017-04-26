@@ -33,7 +33,12 @@ class DiagnoseExecution implements Serializable{
     }
 
     String getExecutedScriptFileExtension() {
-        manifest.diagnoseType.name().toLowerCase()
+        String extension = ''
+        if (manifest) {
+            extension = manifest.diagnoseType.name().toLowerCase()
+        }
+
+        extension
     }
 
     Map<String, String> getExecutionResultFileMap() {
