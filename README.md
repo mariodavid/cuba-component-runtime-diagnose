@@ -96,9 +96,9 @@ The following configuration options allow different statement types:
 
 ## Diagnose wizard
 
-The last part is the diagnose wizard. This option is relevant if you as a developer or customer support person don't have direct access to the running application, because of security reasons or it is boxed software that is running out of your control. You could send your counterpart on customer side a text file which that should execute in the Groovy / SQL console, but this process is fairly insecure as well as error prone.
+The last part is the diagnose wizard. This option is relevant if you as a developer or customer support person don't have direct access to the running application, because of security reasons or it is boxed software that is running out of your control. You could send your counterpart on customer side a text file which the the user should execute in the Groovy / SQL console, but this process is fairly insecure as well as error prone.
 
-In these cases you can send the person a zip file (as a black box) and tell them to upload this file in the diagnose wizard. The person will be guided through the different steps, executed the scripts and gets back the execution results that should be handed back to you.
+In these cases you can send the person a zip file (as a black box) and tell them to upload this file in the diagnose wizard. The person will be guided through the different steps, executed the scripts and gets back the execution results (as a zip file) that should be handed back to you.
 
 ![Screenshot Diagnose Wizard](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/diagnose-wizard-screenshot.png)
 
