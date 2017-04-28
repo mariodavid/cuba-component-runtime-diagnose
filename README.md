@@ -12,6 +12,10 @@ It mainly consists of the three parts:
 * interactive SQL console
 * non-interactive diagnose wizard
 
+## Installation
+Currently you have to [download](https://github.com/mariodavid/cuba-component-runtime-diagnose/archive/master.zip) the app-component manually and import it into Studio. After opening it in studio, you have to execute "Run > Install app component". After that you can go into your project and add the dependency to you project through "Project Properties > Edit > custom components (+) > cuba-component-runtime-diagnose".
+
+
 ## Groovy console
 The groovy console allows you to interactivly inspect the running application. You enter a groovy script and execute it in an ad-hoc fashion.
 
