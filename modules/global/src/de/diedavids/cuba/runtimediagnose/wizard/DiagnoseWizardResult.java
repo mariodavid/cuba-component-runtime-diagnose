@@ -55,7 +55,7 @@ public class DiagnoseWizardResult extends AbstractNotPersistentEntity {
     }
 
     public String getMessage() {
-        Messages messages = AppBeans.get(Messages.class);
+        Messages messages = getMessages();
 
         String result = "";
 
@@ -71,6 +71,10 @@ public class DiagnoseWizardResult extends AbstractNotPersistentEntity {
             result = message;
         }
         return result;
+    }
+
+    protected Messages getMessages() {
+        return AppBeans.get(Messages.class);
     }
 
 }

@@ -20,7 +20,7 @@ class DiagnoseWizardResultServiceBean implements DiagnoseWizardResultService {
     @Override
     Collection<DiagnoseWizardResult> createResultsForDiagnose(DiagnoseExecution diagnose) {
         [
-                createBasicSuccessErrorResult(diagnose)
+            createBasicSuccessErrorResult(diagnose)
         ]
     }
 
