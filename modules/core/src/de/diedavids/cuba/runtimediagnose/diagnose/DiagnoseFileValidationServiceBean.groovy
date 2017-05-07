@@ -3,10 +3,12 @@ package de.diedavids.cuba.runtimediagnose.diagnose
 import com.haulmont.cuba.core.global.Metadata
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResult
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResultType
+import groovy.transform.CompileStatic
 import org.springframework.stereotype.Service
 
 import javax.inject.Inject
 
+@CompileStatic
 @Service(DiagnoseFileValidationService.NAME)
 class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService {
 
@@ -27,17 +29,17 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
         DiagnoseWizardResult diagnoseFileValidation = createDiagnoseFileValidation()
 
         def manifestAppName = diagnose.manifest.appName
-        def expectedAppName = 'runtime-diagnose-app'
         if (manifestAppName == expectedAppName) {
             diagnoseFileValidation.type = DiagnoseWizardResultType.SUCCESS
             diagnoseFileValidation.message = "Application correct ($expectedAppName)"
         }
         else {
             diagnoseFileValidation.type = DiagnoseWizardResultType.ERROR
-            diagnoseFileValidation.message = "Application wrong ($manifestAppName)"
+            diagnoseFileValidation.message = "Application wrong ($expectedAppName)"
         }
         diagnoseFileValidation
     }
+
 
     private DiagnoseWizardResult createDiagnoseFileValidation() {
         metadata.create(DiagnoseWizardResult)
@@ -48,10 +50,9 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
 
 
         def manifestVersion = diagnose.manifest.appVersion
-        def expectedVersion = '1.0'
-        if (manifestVersion == expectedVersion) {
+        if (manifestVersion == expectedAppVersion) {
             diagnoseFileValidation.type = DiagnoseWizardResultType.SUCCESS
-            diagnoseFileValidation.message = "Version correct ($expectedVersion)"
+            diagnoseFileValidation.message = "Version correct ($expectedAppVersion)"
         }
         else {
             diagnoseFileValidation.type = DiagnoseWizardResultType.ERROR
@@ -60,12 +61,12 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
         diagnoseFileValidation
     }
 
+
     private DiagnoseWizardResult checkFileProducer(DiagnoseExecution diagnose) {
         DiagnoseWizardResult diagnoseFileValidation = createDiagnoseFileValidation()
 
 
         def manifestProducer = diagnose.manifest.producer
-        def expectedProducer = 'Company Inc.'
         if (manifestProducer == expectedProducer) {
             diagnoseFileValidation.type = DiagnoseWizardResultType.SUCCESS
             diagnoseFileValidation.message = "Producer correct ($expectedProducer)"
@@ -75,6 +76,19 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
             diagnoseFileValidation.message = "Producer wrong ($manifestProducer)"
         }
         diagnoseFileValidation
+    }
+
+
+    private String getExpectedAppName() {
+        'runtime-diagnose-app'
+    }
+
+    private String getExpectedAppVersion() {
+        '1.0'
+    }
+
+    private String getExpectedProducer() {
+        'Company Inc.'
     }
 
 }
