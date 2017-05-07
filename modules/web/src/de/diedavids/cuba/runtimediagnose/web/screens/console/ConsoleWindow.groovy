@@ -8,9 +8,11 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
+import groovy.transform.CompileStatic
 
 import javax.inject.Inject
 
+@CompileStatic
 abstract class ConsoleWindow extends AbstractWindow {
 
     public static final int SPLIT_POSITION_CENTER = 50
@@ -36,7 +38,7 @@ abstract class ConsoleWindow extends AbstractWindow {
     abstract void clearConsoleResult()
 
     void clearConsole() {
-        console.value = ''
+        console.setValue('')
     }
 
 
