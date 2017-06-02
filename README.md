@@ -66,7 +66,7 @@ The possible methods are:
 Execution results can be downloaded through the corresponding button. It will create a zip file which will contain the different execution results in different files. Additionally, there is a file called `environmentInformation.log` which will include information about the current environment of execution (like information about the user that executed the script, information about the application itself etc.)
 
 ## SQL console
-The SQL console allows you to interactivly interact with the database usnig raw SQL statements. You enter a SQL script and execute it in an ad-hoc fashion.
+The SQL console allows you to interactivly interact with the database using raw SQL statements. You enter a SQL script and execute it in an ad-hoc fashion.
 
 ![Screenshot SQL-Console](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/sql-console-screenshot.png)
 
