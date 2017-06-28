@@ -39,6 +39,16 @@ cuba {
     tomcat {
         dir = "$project.rootDir/deploy/tomcat"
     }
+    uploadRepository {
+        if (cuba.artifact.isSnapshot) {
+            url = System.env.UPLOAD_REPOSITORY_SNAPSHOT
+        } else {
+            url = System.env.UPLOAD_REPOSITORY_RELEASE
+        }
+
+        user = System.env.UPLOAD_REPOSITORY_USERNAME
+        password = System.env.UPLOAD_REPOSITORY_PASSWORD
+    }
     ide {
         vcs = 'Git'
     }
