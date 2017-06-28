@@ -34,7 +34,7 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
             diagnoseFileValidation.message = "Application correct ($expectedAppName)"
         }
         else {
-            diagnoseFileValidation.type = DiagnoseWizardResultType.ERROR
+            diagnoseFileValidation.type = DiagnoseWizardResultType.WARNING
             diagnoseFileValidation.message = "Application wrong ($expectedAppName)"
         }
         diagnoseFileValidation
@@ -55,7 +55,7 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
             diagnoseFileValidation.message = "Version correct ($expectedAppVersion)"
         }
         else {
-            diagnoseFileValidation.type = DiagnoseWizardResultType.ERROR
+            diagnoseFileValidation.type = DiagnoseWizardResultType.WARNING
             diagnoseFileValidation.message = "Version wrong ($manifestVersion)"
         }
         diagnoseFileValidation
@@ -72,7 +72,7 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
             diagnoseFileValidation.message = "Producer correct ($expectedProducer)"
         }
         else {
-            diagnoseFileValidation.type = DiagnoseWizardResultType.ERROR
+            diagnoseFileValidation.type = DiagnoseWizardResultType.WARNING
             diagnoseFileValidation.message = "Producer wrong ($manifestProducer)"
         }
         diagnoseFileValidation

@@ -27,7 +27,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
         )
     }
 
-    def "validateDiagnose returns an error when the app name does not comply to the predefined value"() {
+    def "validateDiagnose returns an warning when the app name does not comply to the predefined value"() {
 
         given:
         def diagnoseExecution = new DiagnoseExecution(
@@ -45,7 +45,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
         def appNameValidation = result[0]
 
         then:
-        appNameValidation.type == DiagnoseWizardResultType.ERROR
+        appNameValidation.type == DiagnoseWizardResultType.WARNING
     }
 
     def "validateDiagnose returns a success when the app name does comply to the predefined value"() {
@@ -74,7 +74,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
         actualAppNameResult.type == DiagnoseWizardResultType.SUCCESS
     }
 
-    def "validateDiagnose returns a error when the app version does comply to the predefined value"() {
+    def "validateDiagnose returns a warning when the app version does comply to the predefined value"() {
 
         given:
         def diagnoseExecution = new DiagnoseExecution(
@@ -97,7 +97,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
 
         then:
         expectedAppVersionResult == actualAppVersionResult
-        actualAppVersionResult.type == DiagnoseWizardResultType.ERROR
+        actualAppVersionResult.type == DiagnoseWizardResultType.WARNING
     }
 
     def "validateDiagnose returns a success when the app version does comply to the predefined value"() {
@@ -126,7 +126,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
         actualAppVersionResult.type == DiagnoseWizardResultType.SUCCESS
     }
 
-    def "validateDiagnose returns a error when the app producer does comply to the predefined value"() {
+    def "validateDiagnose returns a warning when the app producer does comply to the predefined value"() {
 
         given:
         def diagnoseExecution = new DiagnoseExecution(
@@ -149,7 +149,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
 
         then:
         expectedAppProducerResult == actualAppProducerResult
-        actualAppProducerResult.type == DiagnoseWizardResultType.ERROR
+        actualAppProducerResult.type == DiagnoseWizardResultType.WARNING
     }
 
 
