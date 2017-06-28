@@ -74,7 +74,7 @@ abstract class ConsoleWindow extends AbstractWindow {
     }
 
     void downloadDiagnoseRequestFile() {
-        diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value, dianoseType)
+        diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value as String, dianoseType)
         def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution)
         diagnoseFileDownloader.downloadFile(this, zipBytes, 'diagnose.zip')
     }
