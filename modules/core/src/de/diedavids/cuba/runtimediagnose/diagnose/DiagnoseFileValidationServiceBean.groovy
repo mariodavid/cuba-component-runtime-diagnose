@@ -35,7 +35,7 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
         }
         else {
             diagnoseFileValidation.type = DiagnoseWizardResultType.WARNING
-            diagnoseFileValidation.message = "Application wrong ($expectedAppName)"
+            diagnoseFileValidation.message = "Application wrong ($manifestAppName)"
         }
         diagnoseFileValidation
     }
