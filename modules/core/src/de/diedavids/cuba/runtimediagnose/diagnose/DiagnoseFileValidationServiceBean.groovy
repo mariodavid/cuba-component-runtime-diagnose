@@ -1,5 +1,6 @@
 package de.diedavids.cuba.runtimediagnose.diagnose
 
+import com.haulmont.cuba.core.global.BuildInfo
 import com.haulmont.cuba.core.global.Metadata
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResult
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResultType
@@ -15,13 +16,15 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
     @Inject
     Metadata metadata
 
+    @Inject
+    BuildInfo buildInfo
+
 
     @Override
     Collection<DiagnoseWizardResult> validateDiagnose(DiagnoseExecution diagnose) {
         [
                 checkApplication(diagnose),
-                checkVersion(diagnose),
-                checkFileProducer(diagnose)
+                checkVersion(diagnose)
         ]
     }
 
@@ -39,7 +42,6 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
         }
         diagnoseFileValidation
     }
-
 
     private DiagnoseWizardResult createDiagnoseFileValidation() {
         metadata.create(DiagnoseWizardResult)
@@ -62,33 +64,12 @@ class DiagnoseFileValidationServiceBean implements DiagnoseFileValidationService
     }
 
 
-    private DiagnoseWizardResult checkFileProducer(DiagnoseExecution diagnose) {
-        DiagnoseWizardResult diagnoseFileValidation = createDiagnoseFileValidation()
-
-
-        def manifestProducer = diagnose.manifest.producer
-        if (manifestProducer == expectedProducer) {
-            diagnoseFileValidation.type = DiagnoseWizardResultType.SUCCESS
-            diagnoseFileValidation.message = "Producer correct ($expectedProducer)"
-        }
-        else {
-            diagnoseFileValidation.type = DiagnoseWizardResultType.WARNING
-            diagnoseFileValidation.message = "Producer wrong ($manifestProducer)"
-        }
-        diagnoseFileValidation
-    }
-
-
     private String getExpectedAppName() {
-        'runtime-diagnose-app'
+        buildInfo.content.appName
     }
 
     private String getExpectedAppVersion() {
-        '1.0'
-    }
-
-    private String getExpectedProducer() {
-        'Company Inc.'
+        buildInfo.content.version
     }
 
 }

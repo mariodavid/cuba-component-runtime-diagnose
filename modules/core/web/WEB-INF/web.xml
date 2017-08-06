@@ -6,8 +6,7 @@
     <!-- Application properties config files -->
     <context-param>
         <param-name>appPropertiesConfig</param-name>
-        <param-value>classpath:cuba-app.properties
-            classpath:de/diedavids/cuba/runtimediagnose/app.properties
+        <param-value>classpath:de/diedavids/cuba/runtimediagnose/app.properties
             /WEB-INF/local.app.properties
             "file:${catalina.home}/conf/runtime-diagnose-core/local.app.properties"</param-value>
     </context-param>

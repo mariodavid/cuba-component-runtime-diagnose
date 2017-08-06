@@ -1,5 +1,6 @@
 package de.diedavids.cuba.runtimediagnose.diagnose
 
+import com.haulmont.cuba.core.global.BuildInfo
 import com.haulmont.cuba.core.global.Messages
 import com.haulmont.cuba.core.global.Metadata
 import com.haulmont.cuba.core.global.UuidSource
@@ -11,6 +12,8 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
 
     DiagnoseFileValidationService sut
     Metadata metadata
+    BuildInfo buildInfo
+    BuildInfo.Content buildInfoContent
 
     @Override
     Map<Class, Object> getBeans() {
@@ -22,23 +25,34 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
 
     def setup() {
         metadata = Mock(Metadata)
+        buildInfo = Mock(BuildInfo)
         sut = new DiagnoseFileValidationServiceBean(
-                metadata: metadata
+                metadata: metadata,
+                buildInfo: buildInfo
         )
+
+        buildInfoContent = Mock(BuildInfo.Content)
+        buildInfo.getContent() >> buildInfoContent
     }
 
-    def "validateDiagnose returns an warning when the app name does not comply to the predefined value"() {
+    def "validateDiagnose returns a warning when the app name does not comply to the predefined value"() {
 
         given:
         def diagnoseExecution = new DiagnoseExecution(
                 manifest: new DiagnoseManifest(
-                        appName: "myApp"
+                        appName: "my-wrong-name-app"
                 )
         )
 
         and:
-        def diagnoseWizardResult = new DiagnoseWizardResult()
-        metadata.create(DiagnoseWizardResult) >> diagnoseWizardResult
+        buildInfoContent.getAppName() >> "my-app"
+
+        and:
+        def expectedAppNameResult = new DiagnoseWizardResult()
+        metadata.create(DiagnoseWizardResult) >>> [
+                expectedAppNameResult,
+                new DiagnoseWizardResult()
+        ]
 
         when:
         def result = sut.validateDiagnose(diagnoseExecution)
@@ -53,7 +67,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
         given:
         def diagnoseExecution = new DiagnoseExecution(
                 manifest: new DiagnoseManifest(
-                        appName: "runtime-diagnose-app"
+                        appName: "my-app"
                 )
         )
 
@@ -61,9 +75,11 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
         def expectedAppNameResult = new DiagnoseWizardResult()
         metadata.create(DiagnoseWizardResult) >>> [
                 expectedAppNameResult,
-                new DiagnoseWizardResult(),
                 new DiagnoseWizardResult()
         ]
+
+        and:
+        buildInfoContent.getAppName() >> "my-app"
 
         when:
         def result = sut.validateDiagnose(diagnoseExecution)
@@ -83,12 +99,16 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
                 )
         )
 
+
+        and:
+        buildInfoContent.getVersion() >> "1.2"
+
+
         and:
         def expectedAppVersionResult = new DiagnoseWizardResult()
         metadata.create(DiagnoseWizardResult) >>> [
                 new DiagnoseWizardResult(),
-                expectedAppVersionResult,
-                new DiagnoseWizardResult()
+                expectedAppVersionResult
         ]
 
         when:
@@ -109,12 +129,15 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
                 )
         )
 
+
+        and:
+        buildInfoContent.getVersion() >> "1.0"
+
         and:
         def expectedAppVersionResult = new DiagnoseWizardResult()
         metadata.create(DiagnoseWizardResult) >>> [
                 new DiagnoseWizardResult(),
-                expectedAppVersionResult,
-                new DiagnoseWizardResult()
+                expectedAppVersionResult
         ]
 
         when:
@@ -126,56 +149,4 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
         actualAppVersionResult.type == DiagnoseWizardResultType.SUCCESS
     }
 
-    def "validateDiagnose returns a warning when the app producer does comply to the predefined value"() {
-
-        given:
-        def diagnoseExecution = new DiagnoseExecution(
-                manifest: new DiagnoseManifest(
-                        producer: "Wrong Company Ltd."
-                )
-        )
-
-        and:
-        def expectedAppProducerResult = new DiagnoseWizardResult()
-        metadata.create(DiagnoseWizardResult) >>> [
-                new DiagnoseWizardResult(),
-                new DiagnoseWizardResult(),
-                expectedAppProducerResult
-        ]
-
-        when:
-        def result = sut.validateDiagnose(diagnoseExecution)
-        def actualAppProducerResult = result[2]
-
-        then:
-        expectedAppProducerResult == actualAppProducerResult
-        actualAppProducerResult.type == DiagnoseWizardResultType.WARNING
-    }
-
-
-    def "validateDiagnose returns a success when the app producer does comply to the predefined value"() {
-
-        given:
-        def diagnoseExecution = new DiagnoseExecution(
-                manifest: new DiagnoseManifest(
-                        producer: "Company Inc."
-                )
-        )
-
-        and:
-        def expectedAppProducerResult = new DiagnoseWizardResult()
-        metadata.create(DiagnoseWizardResult) >>> [
-                new DiagnoseWizardResult(),
-                new DiagnoseWizardResult(),
-                expectedAppProducerResult
-        ]
-
-        when:
-        def result = sut.validateDiagnose(diagnoseExecution)
-        def actualAppProducerResult = result[2]
-
-        then:
-        expectedAppProducerResult == actualAppProducerResult
-        actualAppProducerResult.type == DiagnoseWizardResultType.SUCCESS
-    }
 }

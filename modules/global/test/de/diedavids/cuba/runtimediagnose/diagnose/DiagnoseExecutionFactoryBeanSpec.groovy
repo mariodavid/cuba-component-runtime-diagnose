@@ -1,18 +1,27 @@
 package de.diedavids.cuba.runtimediagnose.diagnose
 
+import com.haulmont.cuba.core.global.BuildInfo
 import spock.lang.Specification
 
 class DiagnoseExecutionFactoryBeanSpec extends Specification {
 
 
     DiagnoseExecutionFactory sut
-    private ZipFileHelper zipFileHelper
+    ZipFileHelper zipFileHelper
+    BuildInfo buildInfo
+    BuildInfo.Content buildInfoContent
 
     def setup() {
         zipFileHelper = Mock(ZipFileHelper)
+        buildInfo = Mock(BuildInfo)
         sut = new DiagnoseExecutionFactoryBean(
-                zipFileHelper: zipFileHelper
+                zipFileHelper: zipFileHelper,
+                buildInfo: buildInfo
         )
+
+        buildInfoContent = Mock(BuildInfo.Content)
+        buildInfo.getContent() >> buildInfoContent
+
     }
 
     def "createAdHocDiagnoseExecution sets the diagnose type and the execution script"() {
@@ -25,6 +34,17 @@ class DiagnoseExecutionFactoryBeanSpec extends Specification {
         then:
         result.manifest.diagnoseType == diagnoseType
         result.diagnoseScript == executionScript
+    }
+
+    def "createAdHocDiagnoseExecution sets the metadata from the application"() {
+        given:
+        buildInfoContent.getAppName() >> 'my-app'
+        buildInfoContent.getVersion() >> '1.0'
+        when:
+        DiagnoseExecution result = sut.createAdHocDiagnoseExecution(null, null)
+        then:
+        result.manifest.appName == 'my-app'
+        result.manifest.appVersion == '1.0'
     }
 
     def "createDiagnoseExecutionFromFile reads the execution script from the diagnose.sql file in the zip archive"() {

@@ -1,5 +1,6 @@
 package de.diedavids.cuba.runtimediagnose.diagnose
 
+import com.haulmont.cuba.core.global.BuildInfo
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
@@ -17,6 +18,9 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     @Inject
     ZipFileHelper zipFileHelper
 
+    @Inject
+    BuildInfo buildInfo
+
 
     DiagnoseExecution createDiagnoseExecutionFromFile(File file) {
         def diagnoseZipFile = new ZipFile(file)
@@ -30,7 +34,14 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
 
     @Override
     DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript, DiagnoseType diagnoseType) {
-        new DiagnoseExecution(manifest: new DiagnoseManifest(diagnoseType: diagnoseType), diagnoseScript: diagnoseScript)
+        new DiagnoseExecution(
+            manifest: new DiagnoseManifest(
+                diagnoseType: diagnoseType,
+                appName: buildInfo.content.appName,
+                appVersion: buildInfo.content.version
+            ),
+            diagnoseScript: diagnoseScript
+        )
     }
 
     private String readDiagnoseScriptFromDiagnoseFile(DiagnoseExecution diagnoseExecution, ZipFile diagnoseZipFile) {
