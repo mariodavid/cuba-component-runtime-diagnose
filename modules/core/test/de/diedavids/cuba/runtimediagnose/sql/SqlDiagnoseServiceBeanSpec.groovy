@@ -6,7 +6,9 @@ import com.haulmont.cuba.core.global.UserSessionSource
 import com.haulmont.cuba.security.entity.User
 import com.haulmont.cuba.security.global.UserSession
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import groovy.sql.Sql
 import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.statement.Statements
@@ -27,6 +29,8 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
     DiagnoseExecutionLogService diagnoseExecutionLogService
     TimeSource timeSource
     UserSessionSource userSessionSource
+    DiagnoseExecutionFactory diagnoseExecutionFactory
+    Date currentDate
 
     def setup() {
         sqlConsoleParser = Mock(SqlConsoleParser)
@@ -36,11 +40,16 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         diagnoseExecutionLogService = Mock(DiagnoseExecutionLogService)
 
         timeSource = Mock(TimeSource)
+
+        currentDate = new Date()
+        timeSource.currentTimestamp() >> this.currentDate
+
         userSessionSource = Mock(UserSessionSource)
         def userSession = Mock(UserSession)
         userSession.getCurrentOrSubstitutedUser() >> new User(login: "admin")
         userSessionSource.getUserSession() >> userSession
 
+        diagnoseExecutionFactory = Mock(DiagnoseExecutionFactory)
         sqlConsoleService = new MockableSqlDiagnoseServiceBean(
                 sqlConsoleParser: sqlConsoleParser,
                 selectResultFactory: selectResultFactory,
@@ -48,7 +57,8 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
                 sql: sql,
                 diagnoseExecutionLogService: diagnoseExecutionLogService,
                 timeSource: timeSource,
-                userSessionSource: userSessionSource
+                userSessionSource: userSessionSource,
+                diagnoseExecutionFactory: diagnoseExecutionFactory
         )
 
         dataSource = Mock(DataSource)
@@ -88,6 +98,9 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
 
         sqlConsoleParser.analyseSql(_) >> statements
 
+        and:
+        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_,_) >> new DiagnoseExecution()
+
         when:
         sqlConsoleService.runSqlDiagnose(sqlString)
 
@@ -117,10 +130,6 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
 
         given:
         def diagnoseExecution = new DiagnoseExecution()
-
-        and:
-        def currentDate = new Date()
-        timeSource.currentTimestamp() >> currentDate
 
         when:
         sqlConsoleService.runSqlDiagnose(diagnoseExecution)
