@@ -26,8 +26,11 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
         def diagnoseZipFile = new ZipFile(file)
 
         def result = new DiagnoseExecution()
+
         result.manifest = createManifestFromDiagnoseFile(diagnoseZipFile)
         result.diagnoseScript = readDiagnoseScriptFromDiagnoseFile(result, diagnoseZipFile)
+        result.executionType = DiagnoseExecutionType.WIZARD
+
         result
 
     }
@@ -40,7 +43,8 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
                 appName: buildInfo.content.appName,
                 appVersion: buildInfo.content.version
             ),
-            diagnoseScript: diagnoseScript
+            diagnoseScript: diagnoseScript,
+            executionType: DiagnoseExecutionType.CONSOLE
         )
     }
 
@@ -60,12 +64,12 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     }
 
 
-    byte[] createExecutionResultFormDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
+    byte[] createExecutionResultFromDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
         zipFileHelper.createZipFileForEntries(diagnoseExecution.executionResultFileMap)
     }
 
     @Override
-    byte[] createDiagnoseRequestFileFormDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
+    byte[] createDiagnoseRequestFileFromDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
         def files = [
                 (getDiagnoseScriptFilename(diagnoseExecution)): diagnoseExecution.diagnoseScript,
                 'manifest.json'                               : JsonOutput.prettyPrint(JsonOutput.toJson(diagnoseExecution.manifest)),

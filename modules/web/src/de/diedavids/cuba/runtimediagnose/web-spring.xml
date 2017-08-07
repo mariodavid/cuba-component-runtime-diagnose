@@ -18,6 +18,8 @@
                        value="de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseService"/>
                 <entry key="ddcrd_DiagnoseWizardResultService"
                        value="de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseWizardResultService"/>
+                <entry key="ddcrd_DiagnoseExecutionLogService"
+                       value="de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService"/>
             </map>
         </property>
     </bean>

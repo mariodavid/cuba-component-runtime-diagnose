@@ -7,4 +7,6 @@
             template="/de/diedavids/cuba/runtimediagnose/web/screens/groovy/groovy-console.xml"/>
     <screen id="sqlConsole"
             template="/de/diedavids/cuba/runtimediagnose/web/screens/sql/sql-console.xml"/>
+    <screen id="ddcrd$DiagnoseExecutionLog.browse"
+            template="de/diedavids/cuba/runtimediagnose/web/diagnoseexecutionlog/diagnose-execution-log-browse.xml"/>
 </screen-config>

@@ -27,13 +27,13 @@ class DiagnoseExecutionFactoryBeanSpec extends Specification {
     def "createAdHocDiagnoseExecution sets the diagnose type and the execution script"() {
         given:
         def diagnoseType = DiagnoseType.GROOVY
-
         def executionScript = "1 + 2"
         when:
         DiagnoseExecution result = sut.createAdHocDiagnoseExecution(executionScript, diagnoseType)
         then:
         result.manifest.diagnoseType == diagnoseType
         result.diagnoseScript == executionScript
+        result.executionType == DiagnoseExecutionType.CONSOLE
     }
 
     def "createAdHocDiagnoseExecution sets the metadata from the application"() {
@@ -81,6 +81,18 @@ class DiagnoseExecutionFactoryBeanSpec extends Specification {
         result.diagnoseScript == "SELECT * FROM SEC_USER;"
     }
 
+    def "createDiagnoseExecutionFromFile sets the executionType to 'wizard'"() {
+
+        given:
+        File diagnoseFile = loadFileFromTestDirectory('sql-diagnose-wizard.zip')
+
+        when:
+        def result = sut.createDiagnoseExecutionFromFile(diagnoseFile)
+
+        then:
+        result.executionType == DiagnoseExecutionType.WIZARD
+    }
+
     def "createDiagnoseExecutionFromFile creates an empty manifest if the manifest information could not be found"() {
         given:
         File diagnoseFile = loadFileFromTestDirectory('sql-diagnose-wizard.zip')
@@ -112,7 +124,7 @@ class DiagnoseExecutionFactoryBeanSpec extends Specification {
         diagnoseExecution.addResult(DiagnoseExecution.RESULT_LOG_NAME, 'log entries')
 
         when:
-        sut.createExecutionResultFormDiagnoseExecution(diagnoseExecution)
+        sut.createExecutionResultFromDiagnoseExecution(diagnoseExecution)
 
         then:
         1 * zipFileHelper.createZipFileForEntries([
@@ -132,7 +144,7 @@ class DiagnoseExecutionFactoryBeanSpec extends Specification {
         )
 
         when:
-        sut.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution)
+        sut.createDiagnoseRequestFileFromDiagnoseExecution(diagnoseExecution)
 
         then:
         1 * zipFileHelper.createZipFileForEntries({

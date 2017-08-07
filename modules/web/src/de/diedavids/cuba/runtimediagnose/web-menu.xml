@@ -6,5 +6,7 @@
           insertBefore="appProperties">
         <item id="groovyConsole"/>
         <item id="sqlConsole"/>
+        <separator />
+        <item screen="ddcrd$DiagnoseExecutionLog.browse"/>
     </menu>
 </menu-config>

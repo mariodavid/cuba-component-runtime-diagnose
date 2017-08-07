@@ -17,12 +17,15 @@ class DiagnoseFileDownloader {
 
     @Inject
     GlobalConfig globalConfig
+
     @Inject
     DatatypeFormatter datatypeFormatter
+
     @Inject
     TimeSource timeSource
 
-    @Inject ExportDisplay exportDisplay
+    @Inject
+    ExportDisplay exportDisplay
 
     @Inject
     Messages messages

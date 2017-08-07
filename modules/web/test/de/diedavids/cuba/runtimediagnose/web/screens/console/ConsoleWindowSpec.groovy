@@ -10,8 +10,6 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
 import spock.lang.Specification
 
-import javax.inject.Inject
-
 class ConsoleWindowSpec extends Specification {
 
     TestGroovyConsoleWindow sut
@@ -115,7 +113,7 @@ class ConsoleWindowSpec extends Specification {
 
         given:
         def zipBytes = [] as byte[]
-        diagnoseExecutionFactory.createExecutionResultFormDiagnoseExecution(_) >> zipBytes
+        diagnoseExecutionFactory.createExecutionResultFromDiagnoseExecution(_) >> zipBytes
 
         when:
         sut.downloadConsoleResult()
@@ -138,7 +136,7 @@ class ConsoleWindowSpec extends Specification {
 
         and:
         def zipBytes = [] as byte[]
-        diagnoseExecutionFactory.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution) >> zipBytes
+        diagnoseExecutionFactory.createDiagnoseRequestFileFromDiagnoseExecution(diagnoseExecution) >> zipBytes
 
 
         when:

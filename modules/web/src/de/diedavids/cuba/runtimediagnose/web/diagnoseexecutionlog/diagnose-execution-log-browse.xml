@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="de.diedavids.cuba.runtimediagnose.web.diagnoseexecutionlog.DiagnoseExecutionLogBrowse"
+        focusComponent="diagnoseExecutionLogsTable"
+        lookupComponent="diagnoseExecutionLogsTable"
+        messagesPack="de.diedavids.cuba.runtimediagnose.web.diagnoseexecutionlog">
+    <dsContext>
+        <groupDatasource id="diagnoseExecutionLogsDs"
+                         class="de.diedavids.cuba.runtimediagnose.entity.DiagnoseExecutionLog"
+                         view="diagnoseExecutionLog-with-file-view">
+            <query>
+                <![CDATA[select e from ddcrd$DiagnoseExecutionLog e order by e.executionTimestamp desc]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="diagnoseExecutionLogsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="diagnoseExecutionLogsTable"
+                datasource="diagnoseExecutionLogsDs">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="diagnoseExecutionLogsTable"
+                    width="100%">
+            <actions>
+                <action id="downloadResultFile"
+                        caption="msg://downloadResultFile"
+                        invoke="downloadResultFile"
+                        trackSelection="true"/>
+            </actions>
+            <columns>
+                <column id="executionSuccessful"/>
+                <column id="executionTimestamp"/>
+                <column id="executionUser"/>
+                <column id="diagnoseType"/>
+                <column id="executionType"/>
+            </columns>
+            <rows datasource="diagnoseExecutionLogsDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="downloadResultFileBtn"
+                        action="diagnoseExecutionLogsTable.downloadResultFile"
+                        icon="font-icon:DOWNLOAD"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

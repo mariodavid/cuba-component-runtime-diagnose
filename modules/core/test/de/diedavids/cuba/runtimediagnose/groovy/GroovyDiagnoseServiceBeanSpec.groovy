@@ -7,7 +7,11 @@ import com.haulmont.cuba.core.global.Metadata
 import com.haulmont.cuba.core.global.Scripting
 import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
+import com.haulmont.cuba.security.entity.User
+import com.haulmont.cuba.security.global.UserSession
+import de.diedavids.cuba.runtimediagnose.RuntimeDiagnoseConfiguration
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import spock.lang.Specification
 
 class GroovyDiagnoseServiceBeanSpec extends Specification {
@@ -20,6 +24,7 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
     private TimeSource timeSource
     private Persistence persistence
     private UserSessionSource userSessionSource
+    private DiagnoseExecutionLogService diagnoseExecutionLogService
 
     def setup() {
         scripting = Mock(Scripting)
@@ -29,6 +34,10 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         timeSource = Mock(TimeSource)
         persistence = Mock(Persistence)
         userSessionSource = Mock(UserSessionSource)
+        def userSession = Mock(UserSession)
+        userSession.getCurrentOrSubstitutedUser() >> new User(login: "admin")
+        userSessionSource.getUserSession() >> userSession
+        diagnoseExecutionLogService = Mock(DiagnoseExecutionLogService)
         service = new GroovyDiagnoseServiceBean(
                 scripting: scripting,
                 dataManager: dataManager,
@@ -37,6 +46,7 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
                 timeSource: timeSource,
                 persistence: persistence,
                 userSessionSource: userSessionSource,
+                diagnoseExecutionLogService: diagnoseExecutionLogService
         )
     }
 
@@ -192,6 +202,19 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         then:
         logResult.contains "log entry in debug"
     }
+
+    def "RunGroovyDiagnose logs the execution"() {
+
+        given:
+        def diagnoseExecution = new DiagnoseExecution()
+
+        when:
+        service.runGroovyDiagnose(diagnoseExecution)
+
+        then:
+        1 * diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
+    }
+
     def "RunGroovyDiagnose returns the updated diagnoseExecution"() {
 
         given:

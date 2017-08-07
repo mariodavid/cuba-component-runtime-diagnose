@@ -53,7 +53,7 @@ abstract class ConsoleWindow extends AbstractWindow {
 
 
     void downloadConsoleResult() {
-        def zipBytes = diagnoseExecutionFactory.createExecutionResultFormDiagnoseExecution(diagnoseExecution)
+        def zipBytes = diagnoseExecutionFactory.createExecutionResultFromDiagnoseExecution(diagnoseExecution)
         diagnoseFileDownloader.downloadFile(this, zipBytes)
     }
 
@@ -75,7 +75,7 @@ abstract class ConsoleWindow extends AbstractWindow {
 
     void downloadDiagnoseRequestFile() {
         diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value as String, dianoseType)
-        def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFormDiagnoseExecution(diagnoseExecution)
+        def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFromDiagnoseExecution(diagnoseExecution)
         diagnoseFileDownloader.downloadFile(this, zipBytes, 'diagnose.zip')
     }
 }

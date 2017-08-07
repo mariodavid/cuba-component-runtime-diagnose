@@ -14,6 +14,8 @@ class DiagnoseExecution implements Serializable{
 
     Boolean executionSuccessful
 
+    DiagnoseExecutionType executionType
+
     Date executionTimestamp
 
     String executionUser

@@ -23,5 +23,12 @@ public interface RuntimeDiagnoseConfiguration extends Config {
     @Default("false")
     Boolean getSqlAllowExecuteOperations();
 
+    @Property("runtime-diagnose.log.enabled")
+    @Default("false")
+    Boolean getLogEnabled();
+
+    @Property("runtime-diagnose.log.logDiagnoseDetails")
+    @Default("false")
+    Boolean getLogDiagnoseDetails();
 
 }

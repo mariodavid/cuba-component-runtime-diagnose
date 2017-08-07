@@ -1,6 +1,12 @@
 package de.diedavids.cuba.runtimediagnose.sql
 
 import com.haulmont.cuba.core.Persistence
+import com.haulmont.cuba.core.global.TimeSource
+import com.haulmont.cuba.core.global.UserSessionSource
+import com.haulmont.cuba.security.entity.User
+import com.haulmont.cuba.security.global.UserSession
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import groovy.sql.Sql
 import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.statement.Statements
@@ -18,18 +24,31 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
     Persistence persistence
     DataSource dataSource
     Sql sql
+    DiagnoseExecutionLogService diagnoseExecutionLogService
+    TimeSource timeSource
+    UserSessionSource userSessionSource
 
     def setup() {
         sqlConsoleParser = Mock(SqlConsoleParser)
         selectResultFactory = Mock(SqlSelectResultFactory)
-
         persistence = Mock(Persistence)
         sql = Mock(Sql)
+        diagnoseExecutionLogService = Mock(DiagnoseExecutionLogService)
+
+        timeSource = Mock(TimeSource)
+        userSessionSource = Mock(UserSessionSource)
+        def userSession = Mock(UserSession)
+        userSession.getCurrentOrSubstitutedUser() >> new User(login: "admin")
+        userSessionSource.getUserSession() >> userSession
+
         sqlConsoleService = new MockableSqlDiagnoseServiceBean(
-            sqlConsoleParser: sqlConsoleParser,
+                sqlConsoleParser: sqlConsoleParser,
                 selectResultFactory: selectResultFactory,
                 persistence: persistence,
-                sql: this.sql
+                sql: sql,
+                diagnoseExecutionLogService: diagnoseExecutionLogService,
+                timeSource: timeSource,
+                userSessionSource: userSessionSource
         )
 
         dataSource = Mock(DataSource)
@@ -92,6 +111,35 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
 
         then:
         0 * sql.rows(_)
+    }
+
+    def "runSqlDiagnose adds metainformation to the diagnoseExecution"() {
+
+        given:
+        def diagnoseExecution = new DiagnoseExecution()
+
+        and:
+        def currentDate = new Date()
+        timeSource.currentTimestamp() >> currentDate
+
+        when:
+        sqlConsoleService.runSqlDiagnose(diagnoseExecution)
+
+        then:
+        diagnoseExecution.executionTimestamp == currentDate
+        diagnoseExecution.executionUser == "admin"
+    }
+
+    def "runSqlDiagnose logs the diagnose execution"() {
+
+        given:
+        def diagnoseExecution = new DiagnoseExecution()
+
+        when:
+        sqlConsoleService.runSqlDiagnose(diagnoseExecution)
+
+        then:
+        1 * diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
     }
 
 }

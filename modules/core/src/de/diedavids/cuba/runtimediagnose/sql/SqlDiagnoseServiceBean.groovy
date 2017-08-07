@@ -2,7 +2,9 @@ package de.diedavids.cuba.runtimediagnose.sql
 
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.global.TimeSource
+import com.haulmont.cuba.core.global.UserSessionSource
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import groovy.sql.Sql
 import net.sf.jsqlparser.statement.Statements
 import org.springframework.stereotype.Service
@@ -22,9 +24,14 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
     @Inject
     SqlConsoleParser sqlConsoleParser
 
-
     @Inject
     TimeSource timeSource
+
+    @Inject
+    DiagnoseExecutionLogService diagnoseExecutionLogService
+
+    @Inject
+    UserSessionSource userSessionSource
 
     @Override
     SqlSelectResult runSqlDiagnose(String sqlString) {
@@ -44,6 +51,8 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
 
 
             diagnoseExecution.executionTimestamp = timeSource.currentTimestamp()
+            diagnoseExecution.executionUser = userSessionSource.userSession.currentOrSubstitutedUser.login
+
             try {
                 def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript)
                 // TODO: create CSV file with content
@@ -53,6 +62,8 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
             catch (Exception e) {
                 diagnoseExecution.handleErrorExecution(e)
             }
+
+            diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
 
             diagnoseExecution
         }
