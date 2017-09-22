@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '6.6.1'
+    ext.cubaVersion = '6.6.3'
     repositories {
         maven {
             url 'https://repo.cuba-platform.com/content/groups/work'
@@ -59,7 +59,7 @@ dependencies {
 }
 
 
-def hsql = 'org.hsqldb:hsqldb:2.2.9'
+def oracle = files("$cuba.tomcat.dir/lib/ojdbc6.jar")
 
 allprojects {
     apply plugin: 'net.saliman.cobertura'
@@ -184,8 +184,8 @@ configure(coreModule) {
     dependencies {
         compile(globalModule)
         provided(servletApi)
-        jdbc(hsql)
-        testRuntime(hsql)
+        jdbc(oracle)
+        testRuntime(oracle)
 
         compile 'com.github.jsqlparser:jsqlparser:0.9.7'
 
@@ -206,19 +206,21 @@ configure(coreModule) {
     }
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
-        dbms = 'hsql'
+        oracleSystemPassword = 'oracle'
+        oracleSystemUser = 'system'
+        dbms = 'oracle'
         host = 'localhost'
-        dbName = 'ddcrd2'
-        dbUser = 'sa'
-        dbPassword = ''
+        dbName = 'XE'
+        dbUser = 'cuba_component_runtime_diagnose'
+        dbPassword = 'cuba'
     }
 
     task updateDb(dependsOn: assembleDbScripts, description: 'Updates local database', type: CubaDbUpdate) {
-        dbms = 'hsql'
+        dbms = 'oracle'
         host = 'localhost'
-        dbName = 'ddcrd2'
-        dbUser = 'sa'
-        dbPassword = ''
+        dbName = 'XE'
+        dbUser = 'cuba_component_runtime_diagnose'
+        dbPassword = 'cuba'
     }
 }
 
