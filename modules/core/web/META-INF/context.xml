@@ -1,14 +1,14 @@
 <Context>
     <!-- Database connection -->
-    <Resource driverClassName="oracle.jdbc.OracleDriver"
+    <Resource driverClassName="org.hsqldb.jdbc.JDBCDriver"
               maxIdle="2"
               maxTotal="20"
               maxWaitMillis="5000"
               name="jdbc/CubaDS"
-              password="cuba"
+              password=""
               type="javax.sql.DataSource"
-              url="jdbc:oracle:thin:@//localhost/XE"
-              username="cuba_component_runtime_diagnose"/>
+              url="jdbc:hsqldb:hsql://localhost/ddcrd2"
+              username="sa"/>
     <!-- Switch off session serialization -->
     <Manager pathname=""/>
     <!--<Resource driverClassName="org.postgresql.Driver"
@@ -29,13 +29,13 @@
           type="javax.sql.DataSource"
           url="jdbc:mysql://192.168.99.100/mysql?useSSL=false&amp;allowMultiQueries=true"
           username="root"/>-->
-    <!--<Resource driverClassName="org.hsqldb.jdbc.JDBCDriver"
+    <!--<Resource driverClassName="oracle.jdbc.OracleDriver"
           maxIdle="2"
           maxTotal="20"
           maxWaitMillis="5000"
           name="jdbc/CubaDS"
-          password=""
+          password="cuba"
           type="javax.sql.DataSource"
-          url="jdbc:hsqldb:hsql://localhost/ddcrd2"
-          username="sa"/>-->
+          url="jdbc:oracle:thin:@//localhost/XE"
+          username="cuba_component_runtime_diagnose"/>-->
 </Context>

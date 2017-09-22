@@ -15,7 +15,7 @@ buildscript {
         classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
 
 
-        classpath 'net.saliman:gradle-cobertura-plugin:2.3.2'
+        classpath 'net.saliman:gradle-cobertura-plugin:2.5.0'
     }
 }
 
@@ -30,6 +30,9 @@ def servletApi = 'org.apache.tomcat:tomcat-servlet-api:8.0.26'
 apply(plugin: 'idea')
 apply(plugin: 'cuba')
 
+def bintrayRepositoryUrl = "https://api.bintray.com/maven/mariodavid/cuba-components/cuba-component-runtime-diagnose/;publish=1"
+
+
 cuba {
     artifact {
         group = 'de.diedavids.cuba.runtimediagnose'
@@ -41,13 +44,13 @@ cuba {
     }
     uploadRepository {
         if (cuba.artifact.isSnapshot) {
-            url = System.env.UPLOAD_REPOSITORY_SNAPSHOT
+            url = System.properties['uploadRepositorySnapshot'] ?: System.env.UPLOAD_REPOSITORY_SNAPSHOT
         } else {
-            url = System.env.UPLOAD_REPOSITORY_RELEASE
+            url = System.properties['uploadRepositoryRelease'] ?: System.env.UPLOAD_REPOSITORY_RELEASE ?: bintrayRepositoryUrl
         }
 
-        user = System.env.UPLOAD_REPOSITORY_USERNAME
-        password = System.env.UPLOAD_REPOSITORY_PASSWORD
+        user = System.properties['uploadRepositoryUsername'] ?: System.env.UPLOAD_REPOSITORY_USERNAME
+        password = System.properties['uploadRepositoryPassword'] ?:System.env.UPLOAD_REPOSITORY_PASSWORD
     }
     ide {
         vcs = 'Git'
@@ -59,7 +62,7 @@ dependencies {
 }
 
 
-def oracle = files("$cuba.tomcat.dir/lib/ojdbc6.jar")
+def hsql = 'org.hsqldb:hsqldb:2.2.9'
 
 allprojects {
     apply plugin: 'net.saliman.cobertura'
@@ -184,8 +187,8 @@ configure(coreModule) {
     dependencies {
         compile(globalModule)
         provided(servletApi)
-        jdbc(oracle)
-        testRuntime(oracle)
+        jdbc(hsql)
+        testRuntime(hsql)
 
         compile 'com.github.jsqlparser:jsqlparser:0.9.7'
 
@@ -206,21 +209,19 @@ configure(coreModule) {
     }
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
-        oracleSystemPassword = 'oracle'
-        oracleSystemUser = 'system'
-        dbms = 'oracle'
+        dbms = 'hsql'
         host = 'localhost'
-        dbName = 'XE'
-        dbUser = 'cuba_component_runtime_diagnose'
-        dbPassword = 'cuba'
+        dbName = 'ddcrd2'
+        dbUser = 'sa'
+        dbPassword = ''
     }
 
     task updateDb(dependsOn: assembleDbScripts, description: 'Updates local database', type: CubaDbUpdate) {
-        dbms = 'oracle'
+        dbms = 'hsql'
         host = 'localhost'
-        dbName = 'XE'
-        dbUser = 'cuba_component_runtime_diagnose'
-        dbPassword = 'cuba'
+        dbName = 'ddcrd2'
+        dbUser = 'sa'
+        dbPassword = ''
     }
 }
 
