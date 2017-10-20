@@ -1,5 +1,6 @@
 package de.diedavids.cuba.runtimediagnose.sql
 
+import com.haulmont.cuba.core.entity.Entity
 import com.haulmont.cuba.core.entity.KeyValueEntity
 import com.haulmont.cuba.core.global.DatatypeFormatter
 import org.springframework.stereotype.Component
@@ -14,12 +15,19 @@ class SqlSelectResultFactoryBean implements SqlSelectResultFactory {
     DatatypeFormatter datatypeFormatter
 
     @Override
-    SqlSelectResult createFromRows(List<Map> rows) {
+    SqlSelectResult createFromRows(List<Object> rows) {
 
         def result = new SqlSelectResult()
 
-        rows[0].keySet().each {result.addColumn(it.toString())}
-        rows.each {result.addEntity(createKeyValueEntity(it))}
+        def queryValue = rows[0]
+
+        if (queryValue instanceof Entity) {
+            queryValue.metaClass.properties.each {result.addColumn(it.name)}
+            rows.each {result.addEntity(createKeyValueEntity(it.properties))}
+        } else if (queryValue instanceof Map) {
+            ((Map) queryValue).keySet().each {result.addColumn(it.toString())}
+            rows.each {result.addEntity(createKeyValueEntity(it))}
+        }
 
         result
     }

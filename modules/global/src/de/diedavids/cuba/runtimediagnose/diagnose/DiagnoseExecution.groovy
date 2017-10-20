@@ -34,6 +34,10 @@ class DiagnoseExecution implements Serializable{
         manifest.diagnoseType == DiagnoseType.SQL
     }
 
+    boolean isJPQL() {
+        manifest.diagnoseType == DiagnoseType.JPQL
+    }
+
     String getExecutedScriptFileExtension() {
         String extension = ''
         if (manifest) {

@@ -62,7 +62,7 @@ class GroovyConsole extends ConsoleWindow {
     }
 
     @Override
-    DiagnoseType getDianoseType() {
+    DiagnoseType getDiagnoseType() {
         DiagnoseType.GROOVY
     }
 

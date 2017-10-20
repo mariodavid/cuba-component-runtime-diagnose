@@ -1,6 +1,8 @@
 package de.diedavids.cuba.runtimediagnose.sql
 
 import com.haulmont.cuba.core.Persistence
+import com.haulmont.cuba.core.Query
+import com.haulmont.cuba.core.Transaction
 import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
@@ -8,6 +10,7 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import groovy.sql.Sql
+import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.Statements
 import org.springframework.stereotype.Service
 
@@ -39,21 +42,34 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
     DiagnoseExecutionFactory diagnoseExecutionFactory
 
     @Override
-    SqlSelectResult runSqlDiagnose(String sqlString) {
-        def sql = createSqlConnection(persistence.dataSource)
-        def sqlStatements = sqlConsoleParser.analyseSql(sqlString)
+    SqlSelectResult runSqlDiagnose(String queryString, DiagnoseType diagnoseType) {
 
-        if (statementsAvailable(sqlStatements)) {
-            def sqlStatement = sqlStatements.statements[0].toString()
-            DiagnoseExecution diagnoseExecution = createAdHocDiagnose(sqlStatement)
+        def queryStatements = sqlConsoleParser.analyseSql(queryString)
 
+        if (statementsAvailable(queryStatements)) {
+            def queryStatement = queryStatements.statements[0].toString()
+
+            DiagnoseExecution diagnoseExecution
             try {
-                SqlSelectResult sqlSelectResult = executeSqlStatement(sql, sqlStatement)
+                SqlSelectResult sqlSelectResult
+                switch (diagnoseType) {
+                    case DiagnoseType.JPQL:
+                        sqlSelectResult = executeJpqlStatement(queryStatement)
+                        diagnoseExecution = createAdHocDiagnose(queryStatement, DiagnoseType.JPQL)
+                        break
+                    case DiagnoseType.SQL:
+                        def sql = createSqlConnection(persistence.dataSource)
+                        sqlSelectResult = executeStatement(sql, queryStatement)
+                        diagnoseExecution = createAdHocDiagnose(queryStatement, DiagnoseType.SQL)
+                        break
+                    default:
+                        throw new IllegalArgumentException("DiagnoseType is not supported (" + diagnoseType + ")")
+                }
+
                 diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
                 diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
-                sqlSelectResult
-            }
-            catch (Exception e) {
+                return sqlSelectResult
+            } catch (Exception e) {
                 diagnoseExecution.handleErrorExecution(e)
                 diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
                 selectResultFactory.createFromRows([])
@@ -61,13 +77,28 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
         }
     }
 
-    private SqlSelectResult executeSqlStatement(Sql sql, String sqlStatement) {
-        def rows = sql.rows(sqlStatement)
+    private SqlSelectResult executeJpqlStatement(String queryStatement) {
+        Statements statements = CCJSqlParserUtil.parseStatements(queryStatement)
+
+        return persistence.callInTransaction {
+            Query q = persistence.getEntityManager().createQuery(queryStatement)
+
+            if (sqlConsoleParser.containsDataManipulation(statements)) {
+                q.executeUpdate()
+                return new SqlSelectResult()
+            } else {
+                return selectResultFactory.createFromRows(q.getResultList())
+            }
+        }
+    }
+
+    private SqlSelectResult executeStatement(Sql sql, String queryString) {
+        def rows = sql.rows(queryString)
         selectResultFactory.createFromRows(rows)
     }
 
-    private DiagnoseExecution createAdHocDiagnose(String sqlStatement) {
-        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlStatement, DiagnoseType.SQL)
+    private DiagnoseExecution createAdHocDiagnose(String sqlStatement, DiagnoseType diagnoseType) {
+        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlStatement, diagnoseType)
         setDiagnoseExecutionMetadata(diagnoseExecution)
         diagnoseExecution
     }
@@ -78,12 +109,12 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
     }
 
     @Override
-    DiagnoseExecution runSqlDiagnose(DiagnoseExecution diagnoseExecution) {
+    DiagnoseExecution runSqlDiagnose(DiagnoseExecution diagnoseExecution, DiagnoseType diagnoseType) {
         if (diagnoseExecution) {
             setDiagnoseExecutionMetadata(diagnoseExecution)
 
             try {
-                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript)
+                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript, diagnoseType)
                 // TODO: create CSV file with content
                 diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
 
