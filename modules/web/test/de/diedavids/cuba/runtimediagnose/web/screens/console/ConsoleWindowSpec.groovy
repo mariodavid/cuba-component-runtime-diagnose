@@ -153,7 +153,7 @@ class TestGroovyConsoleWindow extends ConsoleWindow {
 
     boolean consoleRunExecuted = false
     @Override
-    DiagnoseType getDianoseType() {
+    DiagnoseType getDiagnoseType() {
         DiagnoseType.GROOVY
     }
 
