@@ -142,7 +142,7 @@ In these cases you can send the person a zip file (as a black box) and tell them
 
 ### Checks on the diagnose file
 There are some checks in place in the wizard that will ensure the correctness of the zip file. Within the zip archive, there has to be the following files:
-* diagnose.groovy / diganose.sql
+* diagnose.groovy / diagnose.sql
 * manifest.json
 
 The diagnose.(sql|groovy) contains the executable script. The manifest file describes some metadata on the diagnose archive. Here's a valid manifest.json file:
