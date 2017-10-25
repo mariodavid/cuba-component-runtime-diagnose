@@ -12,10 +12,43 @@ It mainly consists of the three parts:
 * interactive SQL console
 * non-interactive diagnose wizard
 
-## Installation
-Currently you have to [download](https://github.com/mariodavid/cuba-component-runtime-diagnose/archive/master.zip) the app-component manually and import it into Studio. After opening it in studio, you have to execute "Run > Install app component". After that you can go into your project and add the dependency to you project through "Project Properties > Edit > custom components (+) > cuba-component-runtime-diagnose".
 
-Note: This manual installation step will probably simplify with Version 6.6 of CUBA and studio.
+## Installation
+
+1. Add the following maven repository `https://dl.bintray.com/mariodavid/cuba-components` to the build.gradle of your CUBA application:
+
+
+    buildscript {
+        
+        //...
+        
+        repositories {
+        
+            // ...
+        
+            maven {
+                url  "https://dl.bintray.com/mariodavid/cuba-components"
+            }
+        }
+        
+        // ...
+    }
+
+2. Select a version of the add-on which is compatible with the platform version used in your project:
+
+| Platform Version | Add-on Version |
+| ---------------- | -------------- |
+| 6.6.x            | 0.2.x          |
+| 6.5.x            | 0.1.x          |
+
+
+The latest version is: `0.2.0`
+
+Add custom application component to your project:
+
+* Artifact group: `de.diedavids.cuba.runtimediagnose`
+* Artifact name: `runtime-diagnose-global`
+* Version: *add-on version*
 
 ## Groovy console
 The groovy console allows you to interactivly inspect the running application. You enter a groovy script and execute it in an ad-hoc fashion.

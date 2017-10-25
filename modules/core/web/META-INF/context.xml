@@ -29,4 +29,13 @@
           type="javax.sql.DataSource"
           url="jdbc:mysql://192.168.99.100/mysql?useSSL=false&amp;allowMultiQueries=true"
           username="root"/>-->
+    <!--<Resource driverClassName="oracle.jdbc.OracleDriver"
+          maxIdle="2"
+          maxTotal="20"
+          maxWaitMillis="5000"
+          name="jdbc/CubaDS"
+          password="cuba"
+          type="javax.sql.DataSource"
+          url="jdbc:oracle:thin:@//localhost/XE"
+          username="cuba_component_runtime_diagnose"/>-->
 </Context>
