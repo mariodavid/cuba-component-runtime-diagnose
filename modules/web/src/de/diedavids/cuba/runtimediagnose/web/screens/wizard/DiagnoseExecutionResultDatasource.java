@@ -13,7 +13,11 @@ import java.util.UUID;
 
 public class DiagnoseExecutionResultDatasource extends CustomCollectionDatasource<DiagnoseWizardResult, UUID> {
 
-    private DiagnoseWizardResultService diagnoseWizardResultService = AppBeans.get(DiagnoseWizardResultService.NAME);
+    private DiagnoseWizardResultService diagnoseWizardResultService = getDiagnoseWizardResultService();
+
+    private DiagnoseWizardResultService getDiagnoseWizardResultService() {
+        return AppBeans.get(DiagnoseWizardResultService.NAME);
+    }
 
     @Override
     protected Collection<DiagnoseWizardResult> getEntities(Map params) {

@@ -10,7 +10,11 @@ import java.util.*;
 
 public class DiagnoseFileValidationDatasource extends CustomCollectionDatasource<DiagnoseWizardResult, UUID> {
 
-    private DiagnoseFileValidationService diagnoseFileValidationService = AppBeans.get(DiagnoseFileValidationService.NAME);
+    private DiagnoseFileValidationService diagnoseFileValidationService = getDiagnoseFileValidationService();
+
+    protected DiagnoseFileValidationService getDiagnoseFileValidationService() {
+        return AppBeans.get(DiagnoseFileValidationService.NAME);
+    }
 
     @Override
     protected Collection<DiagnoseWizardResult> getEntities(Map params) {
