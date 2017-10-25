@@ -72,7 +72,7 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     byte[] createDiagnoseRequestFileFromDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
         def files = [
                 (getDiagnoseScriptFilename(diagnoseExecution)): diagnoseExecution.diagnoseScript,
-                'manifest.json'                               : JsonOutput.prettyPrint(JsonOutput.toJson(diagnoseExecution.manifest)),
+                (MANIFEST_FILENAME)                           : JsonOutput.prettyPrint(JsonOutput.toJson(diagnoseExecution.manifest)),
         ]
         zipFileHelper.createZipFileForEntries(files)
     }
@@ -80,19 +80,4 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     protected String getDiagnoseScriptFilename(DiagnoseExecution diagnoseExecution) {
         "diagnose.${diagnoseExecution.executedScriptFileExtension}"
     }
-
-    protected String createEnvironmentInformation() {
-
-        def environmentContent = [
-                'App Name'          : 'globalConfig.webContextName',
-                'Execution User'    : 'userSession.user.instanceName',
-                'Client Information': 'userSession.clientInfo'
-        ]
-
-        environmentContent.collect { k, v ->
-            "$k: $v"
-        }.join('\n')
-
-    }
-
 }

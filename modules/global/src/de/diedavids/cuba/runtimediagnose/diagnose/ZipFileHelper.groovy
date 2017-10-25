@@ -1,5 +1,6 @@
 package de.diedavids.cuba.runtimediagnose.diagnose
 
+import groovy.transform.CompileStatic
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
@@ -12,6 +13,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
 @Component
+@CompileStatic
 class ZipFileHelper {
 
     String readFileContentFromArchive(String filename, ZipFile diagnoseZipFile) {
@@ -19,10 +21,10 @@ class ZipFileHelper {
     }
 
     InputStream readFileFromArchive(String filename, ZipFile diagnoseZipFile) {
-        ZipEntry foundFile = diagnoseZipFile.entries().find { it.name == filename } as ZipEntry
-        diagnoseZipFile.getInputStream(foundFile)
-    }
+        ZipEntry foundFile = diagnoseZipFile.entries().find { ZipEntry zipEntry -> zipEntry.name == filename } as ZipEntry
+        foundFile ? diagnoseZipFile.getInputStream(foundFile) : createEmptyInputStream()
 
+    }
 
     byte[] createZipFileForEntries(Map<String, String> fileEntries) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
@@ -38,6 +40,10 @@ class ZipFileHelper {
 
         byteArrayOutputStream.toByteArray()
 
+    }
+
+    protected InputStream createEmptyInputStream() {
+        new ByteArrayInputStream(''.getBytes('UTF-8'))
     }
 
     protected void addArchiveEntryToZipFile(ZipArchiveOutputStream zipOutputStream, String fileName, byte[] fileContent) {
