@@ -43,7 +43,7 @@ It mainly consists of the three parts:
 | 6.5.x            | 0.1.x          |
 
 
-The latest version is: `0.2.0`
+The latest version is: [ ![Download](https://api.bintray.com/packages/mariodavid/cuba-components/cuba-component-runtime-diagnose/images/download.svg) ](https://bintray.com/mariodavid/cuba-components/cuba-component-runtime-diagnose/_latestVersion)
 
 Add custom application component to your project:
 
