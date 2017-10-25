@@ -8,11 +8,13 @@ import com.haulmont.cuba.gui.components.Frame
 import com.haulmont.cuba.gui.export.ByteArrayDataProvider
 import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.export.ExportFormat
+import groovy.transform.CompileStatic
 import org.springframework.stereotype.Component
 
 import javax.inject.Inject
 
 @Component
+@CompileStatic
 class DiagnoseFileDownloader {
 
     @Inject
@@ -31,16 +33,22 @@ class DiagnoseFileDownloader {
     Messages messages
 
     String createResultFilename() {
-        def dateString = datatypeFormatter.formatDateTime(timeSource.currentTimestamp()).replace(' ', '-')
-        def appName = globalConfig.webContextName
-        "${appName}-diagnose-execution-${dateString}.zip"
+        "${appName}-diagnose-execution-${currentDateFilenameString}.zip"
+    }
+
+    private String getAppName() {
+        globalConfig.webContextName
+    }
+
+    private String getCurrentDateFilenameString() {
+        def now = timeSource.currentTimestamp()
+        datatypeFormatter.formatDateTime(now).replace(' ', '-')
     }
 
     void downloadFile(Frame frame, byte[] zipBytes, String filename = createResultFilename()) {
 
         try {
-            exportDisplay.show(new ByteArrayDataProvider(zipBytes),
-                    filename, ExportFormat.ZIP)
+            exportDisplay.show(new ByteArrayDataProvider(zipBytes), filename, ExportFormat.ZIP)
             frame.showNotification(messages.formatMessage(getClass(),'diagnoseResultsDownloadedMessage'))
         } catch (Exception e) {
             frame.showNotification(messages.formatMessage(getClass(),'exportFailed'), e.message, Frame.NotificationType.ERROR)

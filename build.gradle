@@ -80,7 +80,7 @@ cobertura {
     coverageFormats = ['html', 'xml']
     coverageMergeDatafiles = files
     coverageCheckTotalBranchRate = 42
-    coverageCheckTotalLineRate = 55
+    coverageCheckTotalLineRate = 57
     coverageCheckHaltOnFailure = true
     coverageSourceDirs = sourceDirs
 //    coverageCheckLineRate = 1
