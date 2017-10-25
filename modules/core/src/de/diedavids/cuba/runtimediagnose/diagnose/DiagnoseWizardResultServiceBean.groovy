@@ -4,11 +4,13 @@ import com.haulmont.cuba.core.global.Messages
 import com.haulmont.cuba.core.global.Metadata
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResult
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResultType
+import groovy.transform.CompileStatic
 import org.springframework.stereotype.Service
 
 import javax.inject.Inject
 
 @Service(DiagnoseWizardResultService.NAME)
+@CompileStatic
 class DiagnoseWizardResultServiceBean implements DiagnoseWizardResultService {
 
     @Inject

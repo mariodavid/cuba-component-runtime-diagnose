@@ -50,4 +50,35 @@ class DiagnoseWizardResultServiceBeanSpec extends SpecificationWithApplicationCo
         results[0].type == DiagnoseWizardResultType.SUCCESS
         results[0].message == 'worked out'
     }
+
+    def "createResultsForDiagnose returns a error wizardResult in case the execution was not sucessful"() {
+
+        given:
+        def diagnose = new DiagnoseExecution(
+            executionSuccessful: false
+        )
+
+        and:
+        messages.getMessage(DiagnoseWizardResultServiceBean, 'diagnoseExecutedError') >> "didn't work"
+        when:
+        def results = sut.createResultsForDiagnose(diagnose)
+        then:
+        results[0].type == DiagnoseWizardResultType.ERROR
+        results[0].message == "didn't work"
+    }
+
+    def "createResultsForDiagnose returns a error wizardResult in case the execution is not set"() {
+
+        given:
+        def diagnose = new DiagnoseExecution(
+            executionSuccessful: null
+        )
+        and:
+        messages.getMessage(DiagnoseWizardResultServiceBean, 'diagnoseExecutedError') >> "didn't work"
+        when:
+        def results = sut.createResultsForDiagnose(diagnose)
+        then:
+        results[0].type == DiagnoseWizardResultType.ERROR
+        results[0].message == "didn't work"
+    }
 }
