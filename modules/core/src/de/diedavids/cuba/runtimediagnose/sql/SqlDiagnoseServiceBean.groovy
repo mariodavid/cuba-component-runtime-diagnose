@@ -2,7 +2,6 @@ package de.diedavids.cuba.runtimediagnose.sql
 
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.Query
-import com.haulmont.cuba.core.Transaction
 import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
@@ -43,56 +42,62 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
 
     @Override
     SqlSelectResult runSqlDiagnose(String queryString, DiagnoseType diagnoseType) {
-
         def queryStatements = sqlConsoleParser.analyseSql(queryString)
 
-        if (statementsAvailable(queryStatements)) {
-            def queryStatement = queryStatements.statements[0].toString()
-
-            DiagnoseExecution diagnoseExecution
-            try {
-                SqlSelectResult sqlSelectResult
-                switch (diagnoseType) {
-                    case DiagnoseType.JPQL:
-                        sqlSelectResult = executeJpqlStatement(queryStatement)
-                        diagnoseExecution = createAdHocDiagnose(queryStatement, DiagnoseType.JPQL)
-                        break
-                    case DiagnoseType.SQL:
-                        def sql = createSqlConnection(persistence.dataSource)
-                        sqlSelectResult = executeStatement(sql, queryStatement)
-                        diagnoseExecution = createAdHocDiagnose(queryStatement, DiagnoseType.SQL)
-                        break
-                    default:
-                        throw new IllegalArgumentException("DiagnoseType is not supported (" + diagnoseType + ")")
-                }
-
-                diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
-                diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
-                return sqlSelectResult
-            } catch (Exception e) {
-                diagnoseExecution.handleErrorExecution(e)
-                diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
-                selectResultFactory.createFromRows([])
-            }
+        if (!statementsAvailable(queryStatements)) {
+            return selectResultFactory.createFromRows([])
         }
+
+        def queryStatement = queryStatements.statements[0].toString()
+
+        DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType)
+
+        SqlSelectResult sqlSelectResult
+        try {
+            sqlSelectResult = getQueryResult(diagnoseType, queryStatement)
+            diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
+            diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
+        } catch (Exception e) {
+            sqlSelectResult = selectResultFactory.createFromRows([])
+            diagnoseExecution.handleErrorExecution(e)
+            diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
+        }
+
+        sqlSelectResult
     }
 
-    private SqlSelectResult executeJpqlStatement(String queryStatement) {
+    protected SqlSelectResult getQueryResult(DiagnoseType diagnoseType, String queryStatement) {
+        SqlSelectResult sqlSelectResult
+        switch (diagnoseType) {
+            case DiagnoseType.JPQL:
+                sqlSelectResult = executeJpqlStatement(queryStatement)
+                break
+            case DiagnoseType.SQL:
+                def sql = createSqlConnection(persistence.dataSource)
+                sqlSelectResult = executeStatement(sql, queryStatement)
+                break
+            default:
+                throw new IllegalArgumentException('DiagnoseType is not supported (' + diagnoseType + ')')
+        }
+        sqlSelectResult
+    }
+
+    protected SqlSelectResult executeJpqlStatement(String queryStatement) {
         Statements statements = CCJSqlParserUtil.parseStatements(queryStatement)
 
-        return persistence.callInTransaction {
-            Query q = persistence.getEntityManager().createQuery(queryStatement)
+        persistence.callInTransaction {
+            Query q = persistence.entityManager.createQuery(queryStatement)
 
             if (sqlConsoleParser.containsDataManipulation(statements)) {
                 q.executeUpdate()
-                return new SqlSelectResult()
+                new SqlSelectResult()
             } else {
-                return selectResultFactory.createFromRows(q.getResultList())
+                selectResultFactory.createFromRows(q.resultList)
             }
         }
     }
 
-    private SqlSelectResult executeStatement(Sql sql, String queryString) {
+    protected SqlSelectResult executeStatement(Sql sql, String queryString) {
         def rows = sql.rows(queryString)
         selectResultFactory.createFromRows(rows)
     }

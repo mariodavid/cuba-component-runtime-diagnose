@@ -18,8 +18,8 @@ class JpqlConsole  extends AbstractWindow {
 
         openFrame(
                 consoleFrame,
-                "console-frame",
-                ParamsMap.of("diagnoseType", DiagnoseType.JPQL)
+                'console-frame',
+                ParamsMap.of('diagnoseType', DiagnoseType.JPQL)
         )
     }
 }

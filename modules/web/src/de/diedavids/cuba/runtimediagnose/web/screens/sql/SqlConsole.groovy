@@ -18,8 +18,8 @@ class SqlConsole extends AbstractWindow {
 
         openFrame(
                 consoleFrame,
-                "console-frame",
-                ParamsMap.of("diagnoseType", DiagnoseType.SQL)
+                'console-frame',
+                ParamsMap.of('diagnoseType', DiagnoseType.SQL)
         )
     }
 }

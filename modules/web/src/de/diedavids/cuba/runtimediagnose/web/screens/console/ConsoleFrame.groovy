@@ -50,7 +50,7 @@ class ConsoleFrame extends ConsoleWindow {
     @Inject
     SourceCodeEditor console
 
-    @WindowParam(name="diagnoseType")
+    @WindowParam(name='diagnoseType')
     protected DiagnoseType diagnoseType
 
     @Override

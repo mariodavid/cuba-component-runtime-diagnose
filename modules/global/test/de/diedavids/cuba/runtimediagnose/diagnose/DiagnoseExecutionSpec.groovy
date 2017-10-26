@@ -28,6 +28,13 @@ class DiagnoseExecutionSpec extends Specification {
         sut.isSQL()
     }
 
+    def "isJPQL returns true if the type is JPQL"() {
+        given:
+        sut.manifest = new DiagnoseManifest(diagnoseType: DiagnoseType.JPQL)
+        expect:
+        sut.isJPQL()
+    }
+
     def "getExecutedScriptFileExtension returns sql for SQL"() {
         given:
         sut.manifest = new DiagnoseManifest(diagnoseType: DiagnoseType.SQL)
