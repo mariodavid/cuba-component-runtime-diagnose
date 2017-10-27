@@ -59,15 +59,16 @@ public class DiagnoseWizardResult extends AbstractNotPersistentEntity {
 
         String result = "";
 
-        if (result.equals(messageCode) && messagePack != null) {
-            result = messages.getMessage(messagePack, messageCode);
-        }
+        if (messageCode != null) {
 
-        if (result.equals(messageCode)) {
-            result = messages.getMainMessage(messageCode);
+            if (messagePack != null) {
+                result = messages.getMessage(messagePack, messageCode);
+            }
+            else {
+                result = messages.getMainMessage(messageCode);
+            }
         }
-
-        if (message != null) {
+        else if (message != null) {
             result = message;
         }
         return result;
