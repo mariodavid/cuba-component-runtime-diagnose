@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
+    <item id="diagnoseWizard"
+          insertAfter="logWindow"/>
+    <menu id="consoleMenu"
+          insertBefore="appProperties">
+        <item id="groovyConsole"/>
+        <item id="sqlConsole"/>
+        <item id="jpqlConsole"/>
+        <separator />
+        <item screen="ddcrd$DiagnoseExecutionLog.browse"/>
+    </menu>
+</menu-config>
