@@ -22,8 +22,8 @@ ruleset {
 
 
     MethodSize {
-        maxLines = 25
-        priority = 1
+        maxLines = 30
+        priority = 2
     }
     MethodCount {
         maxMethods = 20

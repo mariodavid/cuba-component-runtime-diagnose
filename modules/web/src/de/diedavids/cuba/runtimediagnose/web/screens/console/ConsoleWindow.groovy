@@ -41,7 +41,6 @@ abstract class ConsoleWindow extends AbstractWindow {
         console.setValue('')
     }
 
-
     void runConsole() {
         if (console.value) {
             doRunConsole()
@@ -49,8 +48,6 @@ abstract class ConsoleWindow extends AbstractWindow {
             showNotification(formatMessage('noScriptDefined'), Frame.NotificationType.WARNING)
         }
     }
-
-
 
     void downloadConsoleResult() {
         def zipBytes = diagnoseExecutionFactory.createExecutionResultFromDiagnoseExecution(diagnoseExecution)

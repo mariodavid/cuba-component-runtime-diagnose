@@ -22,7 +22,6 @@ class DiagnoseWizard extends AbstractWindow {
     public static final String WIZARD_STEP_1 = 'step1'
     public static final String WIZARD_STEP_3 = 'step3'
 
-
     @Inject Accordion wizardAccordion
     @Inject Table diagnoseFileValidationTable
     @Inject Table diagnoseWizardResultsTable
@@ -92,7 +91,6 @@ class DiagnoseWizard extends AbstractWindow {
         diagnoseExecution = groovyDiagnoseService.runGroovyDiagnose(diagnoseExecution)
         diagnoseWizardResultsDs.refresh([diagnose: diagnoseExecution])
     }
-
 
     void runSqlDiagnose(DiagnoseType diagnoseType) {
         diagnoseExecution = sqlDiagnoseService.runSqlDiagnose(diagnoseExecution, diagnoseType)

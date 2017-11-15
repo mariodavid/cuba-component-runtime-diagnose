@@ -10,9 +10,14 @@ class SqlSelectResultFactorySpec extends Specification{
 
     SqlSelectResultFactoryBean delegate
     String predefinedPropName
+    MetaProperty predefinedMetaProperty
 
     void setup() {
         predefinedPropName = "name"
+        predefinedMetaProperty = Mock(MetaProperty){
+            getName() >> predefinedPropName
+            getJavaType() >> String.class
+        }
 
         delegate = new SqlSelectResultFactoryBean()
     }
@@ -32,13 +37,31 @@ class SqlSelectResultFactorySpec extends Specification{
 
     def "createFromRows with Entity argument returns SqlSelectResult"() {
         given:
-        MetaProperty metaProperty = Mock(MetaProperty){
-            getName() >> predefinedPropName
+        User user = Mock(User) {
+            getMetaClass() >> Mock(MetaClass) {
+                getProperties() >> [predefinedMetaProperty]
+            }
         }
 
-        User user = Mock(User){
-            getMetaClass() >> Mock(MetaClass){
-                getProperties() >> [metaProperty]
+        when:
+        def result = delegate.createFromRows([user])
+
+        then:
+        result != null
+        result.columns == [(predefinedPropName)]
+        result.entities.size() > 0
+    }
+
+    def "sqlSelectResult columns not contains collections"() {
+        given:
+        MetaProperty collectionMetaProperty = Mock(MetaProperty) {
+            getName() >> predefinedPropName
+            getJavaType() >> Collection.class
+        }
+
+        User user = Mock(User) {
+            getMetaClass() >> Mock(MetaClass) {
+                getProperties() >> [predefinedMetaProperty, collectionMetaProperty]
             }
         }
 

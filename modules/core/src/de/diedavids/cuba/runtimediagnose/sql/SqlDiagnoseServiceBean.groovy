@@ -9,7 +9,6 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import groovy.sql.Sql
-import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.Statements
 import org.springframework.stereotype.Service
 
@@ -40,21 +39,26 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
     @Inject
     DiagnoseExecutionFactory diagnoseExecutionFactory
 
+    @Inject
+    JpqlConsoleParser jpqlConsoleParser
+
     @Override
     SqlSelectResult runSqlDiagnose(String queryString, DiagnoseType diagnoseType) {
-        def queryStatements = sqlConsoleParser.analyseSql(queryString)
-
+        Statements queryStatements = sqlConsoleParser.analyseSql(queryString)
+        // analyzeSql are gonna return null in some cases
         if (!statementsAvailable(queryStatements)) {
             return selectResultFactory.createFromRows([])
         }
 
+        if (DiagnoseType.JPQL == diagnoseType) {
+            jpqlConsoleParser.analyseJpql(queryString)
+        }
+
         def queryStatement = queryStatements.statements[0].toString()
-
         DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType)
-
         SqlSelectResult sqlSelectResult
         try {
-            sqlSelectResult = getQueryResult(diagnoseType, queryStatement)
+            sqlSelectResult = getQueryResult(diagnoseType, queryStatement, queryStatements)
             diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
             diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
         } catch (Exception e) {
@@ -66,11 +70,11 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
         sqlSelectResult
     }
 
-    protected SqlSelectResult getQueryResult(DiagnoseType diagnoseType, String queryStatement) {
+    protected SqlSelectResult getQueryResult(DiagnoseType diagnoseType, String queryStatement, Statements queryStatements) {
         SqlSelectResult sqlSelectResult
         switch (diagnoseType) {
             case DiagnoseType.JPQL:
-                sqlSelectResult = executeJpqlStatement(queryStatement)
+                sqlSelectResult = executeJpqlStatement(queryStatement, queryStatements)
                 break
             case DiagnoseType.SQL:
                 def sql = createSqlConnection(persistence.dataSource)
@@ -82,13 +86,11 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
         sqlSelectResult
     }
 
-    protected SqlSelectResult executeJpqlStatement(String queryStatement) {
-        Statements statements = CCJSqlParserUtil.parseStatements(queryStatement)
-
+    protected SqlSelectResult executeJpqlStatement(String queryStatement, Statements queryStatements) {
         persistence.callInTransaction {
             Query q = persistence.entityManager.createQuery(queryStatement)
 
-            if (sqlConsoleParser.containsDataManipulation(statements)) {
+            if (sqlConsoleParser.containsDataManipulation(queryStatements)) {
                 q.executeUpdate()
                 new SqlSelectResult()
             } else {
@@ -122,7 +124,6 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
                 def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript, diagnoseType)
                 // TODO: create CSV file with content
                 diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
-
             }
             catch (Exception e) {
                 diagnoseExecution.handleErrorExecution(e)

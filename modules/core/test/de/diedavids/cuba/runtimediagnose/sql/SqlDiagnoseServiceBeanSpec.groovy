@@ -24,6 +24,7 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
     MockableSqlDiagnoseServiceBean sqlConsoleService
 
     SqlConsoleParser sqlConsoleParser
+    JpqlConsoleParser jpqlConsoleParser
     SqlSelectResultFactory selectResultFactory
     Transaction transaction
     Persistence persistence
@@ -37,6 +38,7 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
 
     def setup() {
         sqlConsoleParser = Mock(SqlConsoleParser)
+        jpqlConsoleParser = Mock(JpqlConsoleParser)
         selectResultFactory = Mock(SqlSelectResultFactory)
         transaction = Mock(Transaction)
         persistence = Mock(Persistence)
@@ -58,6 +60,7 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         diagnoseExecutionFactory = Mock(DiagnoseExecutionFactory)
         sqlConsoleService = new MockableSqlDiagnoseServiceBean(
                 sqlConsoleParser: sqlConsoleParser,
+                jpqlConsoleParser: jpqlConsoleParser,
                 selectResultFactory: selectResultFactory,
                 persistence: persistence,
                 sql: sql,
@@ -269,9 +272,10 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
 
         given:
         def diagnoseType = DiagnoseType.GROOVY
+        Statements statements = Mock(Statements)
 
         when:
-        sqlConsoleService.getQueryResult(diagnoseType, _ as String)
+        sqlConsoleService.getQueryResult(diagnoseType, _ as String, statements)
 
         then:
         thrown(IllegalArgumentException)
