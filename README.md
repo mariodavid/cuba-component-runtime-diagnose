@@ -164,3 +164,16 @@ The `diagnoseType` has to be either `GROOVY` or `SQL`.
 If the values in the manifest file do not match the expected values from the application, the script cannot be executed.
 
 The diagnose files can be created manually or preferably from the Groovy / SQL Console. After defining the diagnose script, the "Download Diagnose File" lets the developer create the diagnose file that can be handed to the customer representative. 
+
+
+## Audit Log of diagnose execution
+
+Since running these kind of operations can be dangerous sometimes, there is the possibility to write an audit log for the execution
+of those diagnosis. The audit log is written for ad-hoc diagnosis as well as diagnose wizard executions.
+
+The audit logging can be enabled through CUBAs App properties UI: `Administration > Application properties`
+
+* `runtime-diagnose.log.enabled` - enables / disables the audit logging feature for diagnose executions
+* `runtime-diagnose.log.logDiagnoseDetails` - enables / disables detailed logging, including the content of the diagnose script, diagnose result
+
+
