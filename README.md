@@ -11,7 +11,7 @@ It is based on the idea of the [Grails console](http://plugins.grails.org/plugin
 It mainly consists of the three parts:
 
 * interactive Groovy console
-* interactive SQL console
+* interactive JPQL / SQL console
 * non-interactive diagnose wizard
 
 
@@ -101,19 +101,22 @@ The possible methods are:
 
 Execution results can be downloaded through the corresponding button. It will create a zip file which will contain the different execution results in different files. Additionally, there is a file called `environmentInformation.log` which will include information about the current environment of execution (like information about the user that executed the script, information about the application itself etc.)
 
-## SQL console
-The SQL console allows you to interactivly interact with the database using raw SQL statements. You enter a SQL script and execute it in an ad-hoc fashion.
+## JPQL / SQL console
+The JPQL / SQL console allows you to interactivly interact with the database using raw JPQL / SQL statements. You enter a JPQL / SQL script and execute it in an ad-hoc fashion.
 
 ![Screenshot SQL-Console](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/sql-console-screenshot.png)
 
 
-> NOTE: for normal data diagnosis the [Entity inspector](https://doc.cuba-platform.com/manual-6.4/entity_inspector.html) is oftentimes more user friendly, even for debugging purposes. Usage of the SQL-console is to be preferable to the entity inspector if you want to access data across tables using joins e.g.
+> NOTE: for normal data diagnosis the [Entity inspector](https://doc.cuba-platform.com/manual-6.4/entity_inspector.html) is oftentimes more user friendly, even for debugging purposes. 
+Usage of the SQL-console is to be preferable to the entity inspector if you want to access data across tables using joins for example.
+The JPQL console is useful if you want to test your JPQL queries that you want to use in your application e.g. 
 
 
-Results of a SQL statement are displayed in a table in the result tab. The result can be downloaded using the Excel button in the Results tab.
+Results of a JPQL / SQL statement are displayed in a table in the result tab. The result can be downloaded using the Excel button in the Results tab.
 
 ### Security of the SQL-Console
-By default, only SELECT stements are allowed to execute through the SQL-Console. If you want to execute other types of SQL statements like `INSERT` or `ALTER` it has to be explicitly configured the application component through CUBAs App properties UI: `Administration > Application properties > console`
+By default, only SELECT stements are allowed to execute through the SQL-Console. 
+If you want to execute other types of SQL statements like `INSERT` or `ALTER` it has to be explicitly configured the application component through CUBAs App properties UI: `Administration > Application properties > console`
 
 The following configuration options allow different statement types:
 * `runtime-diagnose.sql.allowDataManipulation`
