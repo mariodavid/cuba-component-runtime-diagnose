@@ -56,6 +56,10 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
 
         def queryStatement = queryStatements.statements[0].toString()
         DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType)
+        executeAdHocDiagnose(diagnoseType, queryStatement, queryStatements, diagnoseExecution)
+    }
+
+    private void executeAdHocDiagnose(DiagnoseType diagnoseType, String queryStatement, Statements queryStatements, DiagnoseExecution diagnoseExecution) {
         SqlSelectResult sqlSelectResult
         try {
             sqlSelectResult = getQueryResult(diagnoseType, queryStatement, queryStatements)
