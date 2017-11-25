@@ -1,6 +1,7 @@
 package de.diedavids.cuba.runtimediagnose.sql
 
 import com.haulmont.cuba.core.Persistence
+import com.haulmont.cuba.core.Query
 import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
@@ -38,36 +39,73 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
     @Inject
     DiagnoseExecutionFactory diagnoseExecutionFactory
 
+    @Inject
+    JpqlConsoleParser jpqlConsoleParser
+
     @Override
-    SqlSelectResult runSqlDiagnose(String sqlString) {
-        def sql = createSqlConnection(persistence.dataSource)
-        def sqlStatements = sqlConsoleParser.analyseSql(sqlString)
+    SqlSelectResult runSqlDiagnose(String queryString, DiagnoseType diagnoseType) {
+        Statements queryStatements = sqlConsoleParser.analyseSql(queryString)
+        // analyzeSql are gonna return null in some cases
+        if (!statementsAvailable(queryStatements)) {
+            return selectResultFactory.createFromRows([])
+        }
 
-        if (statementsAvailable(sqlStatements)) {
-            def sqlStatement = sqlStatements.statements[0].toString()
-            DiagnoseExecution diagnoseExecution = createAdHocDiagnose(sqlStatement)
+        if (DiagnoseType.JPQL == diagnoseType) {
+            jpqlConsoleParser.analyseJpql(queryString)
+        }
 
-            try {
-                SqlSelectResult sqlSelectResult = executeSqlStatement(sql, sqlStatement)
-                diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
-                diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
-                sqlSelectResult
-            }
-            catch (Exception e) {
-                diagnoseExecution.handleErrorExecution(e)
-                diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
-                selectResultFactory.createFromRows([])
+        def queryStatement = queryStatements.statements[0].toString()
+        DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType)
+        SqlSelectResult sqlSelectResult
+        try {
+            sqlSelectResult = getQueryResult(diagnoseType, queryStatement, queryStatements)
+            diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
+            diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
+        } catch (Exception e) {
+            sqlSelectResult = selectResultFactory.createFromRows([])
+            diagnoseExecution.handleErrorExecution(e)
+            diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
+        }
+
+        sqlSelectResult
+    }
+
+    protected SqlSelectResult getQueryResult(DiagnoseType diagnoseType, String queryStatement, Statements queryStatements) {
+        SqlSelectResult sqlSelectResult
+        switch (diagnoseType) {
+            case DiagnoseType.JPQL:
+                sqlSelectResult = executeJpqlStatement(queryStatement, queryStatements)
+                break
+            case DiagnoseType.SQL:
+                def sql = createSqlConnection(persistence.dataSource)
+                sqlSelectResult = executeStatement(sql, queryStatement)
+                break
+            default:
+                throw new IllegalArgumentException('DiagnoseType is not supported (' + diagnoseType + ')')
+        }
+        sqlSelectResult
+    }
+
+    protected SqlSelectResult executeJpqlStatement(String queryStatement, Statements queryStatements) {
+        persistence.callInTransaction {
+            Query q = persistence.entityManager.createQuery(queryStatement)
+
+            if (sqlConsoleParser.containsDataManipulation(queryStatements)) {
+                q.executeUpdate()
+                new SqlSelectResult()
+            } else {
+                selectResultFactory.createFromRows(q.resultList)
             }
         }
     }
 
-    private SqlSelectResult executeSqlStatement(Sql sql, String sqlStatement) {
-        def rows = sql.rows(sqlStatement)
+    protected SqlSelectResult executeStatement(Sql sql, String queryString) {
+        def rows = sql.rows(queryString)
         selectResultFactory.createFromRows(rows)
     }
 
-    private DiagnoseExecution createAdHocDiagnose(String sqlStatement) {
-        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlStatement, DiagnoseType.SQL)
+    private DiagnoseExecution createAdHocDiagnose(String sqlStatement, DiagnoseType diagnoseType) {
+        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlStatement, diagnoseType)
         setDiagnoseExecutionMetadata(diagnoseExecution)
         diagnoseExecution
     }
@@ -78,15 +116,14 @@ class SqlDiagnoseServiceBean implements SqlDiagnoseService {
     }
 
     @Override
-    DiagnoseExecution runSqlDiagnose(DiagnoseExecution diagnoseExecution) {
+    DiagnoseExecution runSqlDiagnose(DiagnoseExecution diagnoseExecution, DiagnoseType diagnoseType) {
         if (diagnoseExecution) {
             setDiagnoseExecutionMetadata(diagnoseExecution)
 
             try {
-                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript)
+                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript, diagnoseType)
                 // TODO: create CSV file with content
                 diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
-
             }
             catch (Exception e) {
                 diagnoseExecution.handleErrorExecution(e)

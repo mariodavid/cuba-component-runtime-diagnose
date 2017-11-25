@@ -8,6 +8,7 @@ import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.upload.FileUploadingAPI
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseService
 import de.diedavids.cuba.runtimediagnose.sql.SqlDiagnoseService
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
@@ -20,7 +21,6 @@ class DiagnoseWizard extends AbstractWindow {
     public static final String WIZARD_STEP_2 = 'step2'
     public static final String WIZARD_STEP_1 = 'step1'
     public static final String WIZARD_STEP_3 = 'step3'
-
 
     @Inject Accordion wizardAccordion
     @Inject Table diagnoseFileValidationTable
@@ -92,9 +92,8 @@ class DiagnoseWizard extends AbstractWindow {
         diagnoseWizardResultsDs.refresh([diagnose: diagnoseExecution])
     }
 
-
-    void runSqlDiagnose() {
-        diagnoseExecution = sqlDiagnoseService.runSqlDiagnose(diagnoseExecution)
+    void runSqlDiagnose(DiagnoseType diagnoseType) {
+        diagnoseExecution = sqlDiagnoseService.runSqlDiagnose(diagnoseExecution, diagnoseType)
         diagnoseWizardResultsDs.refresh([diagnose: diagnoseExecution])
     }
 
@@ -102,8 +101,8 @@ class DiagnoseWizard extends AbstractWindow {
         if (diagnoseExecution.isGroovy()) {
             runGroovyDiagnose()
         }
-        else if( diagnoseExecution.isSQL()) {
-            runSqlDiagnose()
+        else if( diagnoseExecution.isSQL() || diagnoseExecution.isJPQL()) {
+            runSqlDiagnose(diagnoseExecution.manifest.diagnoseType)
         }
         progressToStep3()
     }

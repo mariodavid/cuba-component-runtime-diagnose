@@ -1,4 +1,4 @@
-package de.diedavids.cuba.runtimediagnose.web.screens.sql
+package de.diedavids.cuba.runtimediagnose.web.screens.jpql
 
 import com.haulmont.bali.util.ParamsMap
 import com.haulmont.cuba.gui.components.AbstractWindow
@@ -7,7 +7,7 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 
 import javax.inject.Inject
 
-class SqlConsole extends AbstractWindow {
+class JpqlConsole  extends AbstractWindow {
 
     @Inject
     protected Frame consoleFrame
@@ -19,7 +19,7 @@ class SqlConsole extends AbstractWindow {
         openFrame(
                 consoleFrame,
                 'console-frame',
-                ParamsMap.of('diagnoseType', DiagnoseType.SQL)
+                ParamsMap.of('diagnoseType', DiagnoseType.JPQL)
         )
     }
 }

@@ -4,6 +4,6 @@ interface SqlSelectResultFactory {
 
     public static final String NAME = 'ddcrd_SqlSelectResultFactory'
 
-    SqlSelectResult createFromRows(List<Map> rows)
+    SqlSelectResult createFromRows(List<Object> rows)
 
 }

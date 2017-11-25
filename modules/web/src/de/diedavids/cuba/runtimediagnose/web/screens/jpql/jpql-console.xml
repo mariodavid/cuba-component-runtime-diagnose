@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
         caption="msg://caption"
-        class="de.diedavids.cuba.runtimediagnose.web.screens.sql.SqlConsole"
-        messagesPack="de.diedavids.cuba.runtimediagnose.web.screens.sql">
+        class="de.diedavids.cuba.runtimediagnose.web.screens.jpql.JpqlConsole"
+        messagesPack="de.diedavids.cuba.runtimediagnose.web.screens.jpql">
     <layout height="100%"
             width="100%"
             expand="consoleFrame">

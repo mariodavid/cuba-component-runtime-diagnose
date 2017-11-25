@@ -34,8 +34,6 @@ class GroovyConsole extends ConsoleWindow {
 
     DiagnoseExecution diagnoseExecution
 
-
-
     @Override
     void doRunConsole() {
         diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value, DiagnoseType.GROOVY)
@@ -62,7 +60,7 @@ class GroovyConsole extends ConsoleWindow {
     }
 
     @Override
-    DiagnoseType getDianoseType() {
+    DiagnoseType getDiagnoseType() {
         DiagnoseType.GROOVY
     }
 

@@ -5,5 +5,6 @@ import groovy.transform.CompileStatic
 @CompileStatic
 enum DiagnoseType {
     GROOVY,
-    SQL
+    SQL,
+    JPQL
 }

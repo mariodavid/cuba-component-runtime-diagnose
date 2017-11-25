@@ -9,4 +9,8 @@
             template="/de/diedavids/cuba/runtimediagnose/web/screens/sql/sql-console.xml"/>
     <screen id="ddcrd$DiagnoseExecutionLog.browse"
             template="de/diedavids/cuba/runtimediagnose/web/diagnoseexecutionlog/diagnose-execution-log-browse.xml"/>
+    <screen id="console-frame"
+            template="/de/diedavids/cuba/runtimediagnose/web/screens/console/console-frame.xml"/>
+    <screen id="jpqlConsole"
+            template="/de/diedavids/cuba/runtimediagnose/web/screens/jpql/jpql-console.xml"/>
 </screen-config>

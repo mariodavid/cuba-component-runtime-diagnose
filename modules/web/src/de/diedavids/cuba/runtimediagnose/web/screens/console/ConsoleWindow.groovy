@@ -31,7 +31,7 @@ abstract class ConsoleWindow extends AbstractWindow {
 
     DiagnoseExecution diagnoseExecution
 
-    abstract DiagnoseType getDianoseType()
+    abstract DiagnoseType getDiagnoseType()
 
     abstract void doRunConsole()
 
@@ -41,7 +41,6 @@ abstract class ConsoleWindow extends AbstractWindow {
         console.setValue('')
     }
 
-
     void runConsole() {
         if (console.value) {
             doRunConsole()
@@ -49,8 +48,6 @@ abstract class ConsoleWindow extends AbstractWindow {
             showNotification(formatMessage('noScriptDefined'), Frame.NotificationType.WARNING)
         }
     }
-
-
 
     void downloadConsoleResult() {
         def zipBytes = diagnoseExecutionFactory.createExecutionResultFromDiagnoseExecution(diagnoseExecution)
@@ -74,7 +71,7 @@ abstract class ConsoleWindow extends AbstractWindow {
     }
 
     void downloadDiagnoseRequestFile() {
-        diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value as String, dianoseType)
+        diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value as String, diagnoseType)
         def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFromDiagnoseExecution(diagnoseExecution)
         diagnoseFileDownloader.downloadFile(this, zipBytes, 'diagnose.zip')
     }
