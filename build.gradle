@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '6.6.5'
+    ext.cubaVersion = '6.7.3'
     repositories {
         maven {
             url 'https://repo.cuba-platform.com/content/groups/work'
@@ -40,8 +40,8 @@ def bintrayRepositoryUrl = "https://api.bintray.com/maven/mariodavid/cuba-compon
 cuba {
     artifact {
         group = 'de.diedavids.cuba.runtimediagnose'
-        version = '0.3.1'
-        isSnapshot = false
+        version = '0.4.0'
+        isSnapshot = true
     }
     tomcat {
         dir = "$project.rootDir/deploy/tomcat"
