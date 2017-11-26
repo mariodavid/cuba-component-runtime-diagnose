@@ -40,7 +40,7 @@ def bintrayRepositoryUrl = "https://api.bintray.com/maven/mariodavid/cuba-compon
 cuba {
     artifact {
         group = 'de.diedavids.cuba.runtimediagnose'
-        version = '0.3.0'
+        version = '0.3.1'
         isSnapshot = false
     }
     tomcat {
