@@ -1,8 +1,13 @@
 package de.diedavids.cuba.runtimediagnose.sql
 
+import com.haulmont.cuba.core.global.AppBeans
 import com.haulmont.cuba.core.global.Messages
+import com.haulmont.cuba.core.global.QueryParserAstBased
+import com.haulmont.cuba.core.sys.jpql.DomainModel
+import com.haulmont.cuba.core.sys.jpql.DomainModelBuilder
 import de.diedavids.cuba.runtimediagnose.RuntimeDiagnoseConfiguration
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.SetStatement
 import net.sf.jsqlparser.statement.Statements
@@ -24,7 +29,7 @@ import org.springframework.stereotype.Component
 import javax.inject.Inject
 
 @Component
-class SqlConsoleParser {
+class DatabaseQueryParser {
 
     @Inject
     RuntimeDiagnoseConfiguration configuration
@@ -42,9 +47,9 @@ class SqlConsoleParser {
         Drop, CreateTable, CreateView, Alter, AlterView, CreateIndex
     ]
 
-    Statements analyseSql(String sqlString) {
+    Statements analyseQueryString(String queryString, DiagnoseType diagnoseType) {
 
-        Statements statements = CCJSqlParserUtil.parseStatements(sqlString)
+        Statements statements = CCJSqlParserUtil.parseStatements(queryString)
 
         if (!configuration.sqlAllowDataManipulation && containsDataManipulation(statements)) {
             throw new SqlConsoleSecurityException(messages.getMessage(getClass(), 'dataManipulationNotAllowed'))
@@ -58,9 +63,27 @@ class SqlConsoleParser {
             throw new SqlConsoleSecurityException(messages.getMessage(getClass(), 'executeOperationNotAllowed'))
         }
 
+
+        if (DiagnoseType.JPQL == diagnoseType) {
+            analyseJpql(queryString)
+        }
+
         statements
     }
 
+    void analyseJpql(String queryString) {
+        QueryParserAstBased parser = new QueryParserAstBased(ScriptManagerUtilsHolder.domainModelInstance, queryString)
+        parser.queryPaths
+    }
+
+    private static class ScriptManagerUtilsHolder {
+        private static class ScriptManagerUtilLazyHolder {
+            public static final DomainModel DOMAIN_MODEL_INSTANCE = AppBeans.get(DomainModelBuilder).produce()
+        }
+        static DomainModel getDomainModelInstance() {
+            ScriptManagerUtilLazyHolder.DOMAIN_MODEL_INSTANCE
+        }
+    }
     boolean containsDataManipulation(Statements statements) {
         containsIllegalOperation(statements, DATA_MANIPULATION_OPERATIONS)
     }

@@ -18,13 +18,12 @@ import spock.lang.Specification
 
 import javax.sql.DataSource
 
-class SqlDiagnoseServiceBeanSpec extends Specification {
+class DatabaseDiagnoseServiceBeanSpec extends Specification {
 
 
-    MockableSqlDiagnoseServiceBean sqlConsoleService
+    MockableDatabaseDiagnoseServiceBean databaseDiagnoseServiceBean
 
-    SqlConsoleParser sqlConsoleParser
-    JpqlConsoleParser jpqlConsoleParser
+    DatabaseQueryParser databaseQueryParser
     SqlSelectResultFactory selectResultFactory
     Transaction transaction
     Persistence persistence
@@ -37,8 +36,7 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
     Date currentDate
 
     def setup() {
-        sqlConsoleParser = Mock(SqlConsoleParser)
-        jpqlConsoleParser = Mock(JpqlConsoleParser)
+        databaseQueryParser = Mock(DatabaseQueryParser)
         selectResultFactory = Mock(SqlSelectResultFactory)
         transaction = Mock(Transaction)
         persistence = Mock(Persistence)
@@ -58,9 +56,8 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         userSessionSource.getUserSession() >> userSession
 
         diagnoseExecutionFactory = Mock(DiagnoseExecutionFactory)
-        sqlConsoleService = new MockableSqlDiagnoseServiceBean(
-                sqlConsoleParser: sqlConsoleParser,
-                jpqlConsoleParser: jpqlConsoleParser,
+        databaseDiagnoseServiceBean = new MockableDatabaseDiagnoseServiceBean(
+                databaseQueryParser: databaseQueryParser,
                 selectResultFactory: selectResultFactory,
                 persistence: persistence,
                 sql: sql,
@@ -76,27 +73,27 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
 
     }
 
-    def "executeSql uses SqlConsoleParser to analyse the sql statements"() {
+    def "runSqlDiagnose uses DatabaseQueryParser to analyse the sql statements"() {
 
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
         when:
-        sqlConsoleService.runSqlDiagnose(sqlString, DiagnoseType.SQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
         then:
-        1 * sqlConsoleParser.analyseSql(sqlString)
+        1 * databaseQueryParser.analyseQueryString(sqlString, DiagnoseType.SQL)
     }
 
-    def "executeJpql uses SqlConsoleParser to analyse the jpql statements"() {
+    def "runSqlDiagnose uses DatabaseQueryParser to analyse the jpql statements"() {
 
         given:
         def sqlString = 'select u from sec$User u'
         when:
-        sqlConsoleService.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
         then:
-        1 * sqlConsoleParser.analyseSql(sqlString)
+        1 * databaseQueryParser.analyseQueryString(sqlString, DiagnoseType.JPQL)
     }
 
-    def "executeSql creates a SQL object with the datasource from persistence"() {
+    def "runSqlDiagnose creates a SQL object with the datasource from persistence"() {
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
 
@@ -106,19 +103,19 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         sqlStatement.toString() >> sqlString
         statements.getStatements() >> [sqlStatement]
 
-        sqlConsoleParser.analyseSql(_) >> statements
+        databaseQueryParser.analyseQueryString(_,_) >> statements
 
         and:
         diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String,_ as DiagnoseType) >> new DiagnoseExecution()
 
         when:
-        sqlConsoleService.runSqlDiagnose(sqlString, DiagnoseType.SQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
 
         then:
-        sqlConsoleService.actualDataSource == dataSource
+        databaseDiagnoseServiceBean.actualDataSource == dataSource
     }
 
-    def "executeSql executes the sql script if there is at least one result of the sql parser"() {
+    def "runSqlDiagnose executes the sql script if there is at least one result of the sql parser"() {
 
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
@@ -129,19 +126,19 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         sqlStatement.toString() >> sqlString
         statements.getStatements() >> [sqlStatement]
 
-        sqlConsoleParser.analyseSql(_) >> statements
+        databaseQueryParser.analyseQueryString(_,_) >> statements
 
         and:
         diagnoseExecutionFactory.createAdHocDiagnoseExecution(_,_) >> new DiagnoseExecution()
 
         when:
-        sqlConsoleService.runSqlDiagnose(sqlString, DiagnoseType.SQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
 
         then:
         1 * sql.rows(sqlString)
     }
 
-    def "executeJpql executes the jpql script if there is at least one result of the jpql parser"() {
+    def "runSqlDiagnose executes the jpql script if there is at least one result of the jpql parser"() {
 
         given:
         def sqlString = 'select u from sec$User u'
@@ -152,19 +149,19 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         sqlStatement.toString() >> sqlString
         statements.getStatements() >> [sqlStatement]
 
-        sqlConsoleParser.analyseSql(_ as String) >> statements
+        databaseQueryParser.analyseQueryString(_ as String, DiagnoseType.JPQL) >> statements
 
         and:
         diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String,_ as DiagnoseType) >> new DiagnoseExecution()
 
         when:
-        sqlConsoleService.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
 
         then:
         1 * persistence.callInTransaction(_ as Transaction.Callable)
     }
 
-    def "executeSql executes no sql script if there is no result of the sql parser"() {
+    def "runSqlDiagnose executes no sql script if there is no result of the sql parser"() {
 
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
@@ -173,16 +170,16 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         def statements = Mock(Statements)
         statements.getStatements() >> []
 
-        sqlConsoleParser.analyseSql(_) >> statements
+        databaseQueryParser.analyseQueryString(_, DiagnoseType.SQL) >> statements
 
         when:
-        sqlConsoleService.runSqlDiagnose(sqlString, DiagnoseType.SQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
 
         then:
         0 * sql.rows(_)
     }
 
-    def "executeJpql executes no sql script if there is no result of the jpql parser"() {
+    def "runSqlDiagnose executes no sql script if there is no result of the jpql parser"() {
 
         given:
         def sqlString = 'select u from sec$User u'
@@ -191,16 +188,16 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         def statements = Mock(Statements)
         statements.getStatements() >> []
 
-        sqlConsoleParser.analyseSql(_) >> statements
+        databaseQueryParser.analyseQueryString(_, DiagnoseType.JPQL) >> statements
 
         when:
-        sqlConsoleService.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
 
         then:
         0 * sql.rows(_)
     }
 
-    def "executeSql executes no jpql script if there is no result of the jpql parser"() {
+    def "runSqlDiagnose executes no jpql script if there is no result of the jpql parser"() {
 
         given:
         def sqlString = 'select u from sec$User u'
@@ -209,10 +206,10 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         def statements = Mock(Statements)
         statements.getStatements() >> []
 
-        sqlConsoleParser.analyseSql(_) >> statements
+        databaseQueryParser.analyseQueryString(_, DiagnoseType.JPQL) >> statements
 
         when:
-        sqlConsoleService.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
 
         then:
         0 * sql.rows(_)
@@ -224,20 +221,7 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         def diagnoseExecution = new DiagnoseExecution()
 
         when:
-        sqlConsoleService.runSqlDiagnose(diagnoseExecution, DiagnoseType.SQL)
-
-        then:
-        diagnoseExecution.executionTimestamp == currentDate
-        diagnoseExecution.executionUser == "admin"
-    }
-
-    def "runJpqlDiagnose adds metainformation to the diagnoseExecution"() {
-
-        given:
-        def diagnoseExecution = new DiagnoseExecution()
-
-        when:
-        sqlConsoleService.runSqlDiagnose(diagnoseExecution, DiagnoseType.JPQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(diagnoseExecution, DiagnoseType.SQL)
 
         then:
         diagnoseExecution.executionTimestamp == currentDate
@@ -250,19 +234,7 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         def diagnoseExecution = new DiagnoseExecution()
 
         when:
-        sqlConsoleService.runSqlDiagnose(diagnoseExecution, DiagnoseType.SQL)
-
-        then:
-        1 * diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
-    }
-
-    def "runJpqlDiagnose logs the diagnose execution"() {
-
-        given:
-        def diagnoseExecution = new DiagnoseExecution()
-
-        when:
-        sqlConsoleService.runSqlDiagnose(diagnoseExecution, DiagnoseType.JPQL)
+        databaseDiagnoseServiceBean.runSqlDiagnose(diagnoseExecution, DiagnoseType.SQL)
 
         then:
         1 * diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
@@ -275,14 +247,14 @@ class SqlDiagnoseServiceBeanSpec extends Specification {
         Statements statements = Mock(Statements)
 
         when:
-        sqlConsoleService.getQueryResult(diagnoseType, _ as String, statements)
+        databaseDiagnoseServiceBean.getQueryResult(diagnoseType, _ as String, statements)
 
         then:
         thrown(IllegalArgumentException)
     }
 }
 
-class MockableSqlDiagnoseServiceBean extends SqlDiagnoseServiceBean {
+class MockableDatabaseDiagnoseServiceBean extends DatabaseDiagnoseServiceBean {
 
     Sql sql
 

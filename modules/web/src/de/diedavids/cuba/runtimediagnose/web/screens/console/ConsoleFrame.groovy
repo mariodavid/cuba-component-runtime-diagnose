@@ -11,8 +11,8 @@ import com.haulmont.cuba.gui.xml.layout.ComponentsFactory
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
-import de.diedavids.cuba.runtimediagnose.sql.SqlDiagnoseService
-import de.diedavids.cuba.runtimediagnose.sql.SqlSelectResult
+import de.diedavids.cuba.runtimediagnose.sql.DatabaseDiagnoseService
+import de.diedavids.cuba.runtimediagnose.sql.DatabaseQueryResult
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
 
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class ConsoleFrame extends ConsoleWindow {
 
     @Inject
-    SqlDiagnoseService sqlDiagnoseService
+    DatabaseDiagnoseService databaseDiagnoseService
 
     @Inject
     ComponentsFactory componentsFactory
@@ -64,7 +64,7 @@ class ConsoleFrame extends ConsoleWindow {
     @Override
     void doRunConsole() {
         try {
-            SqlSelectResult result = sqlDiagnoseService.runSqlDiagnose(console.value, diagnoseType)
+            DatabaseQueryResult result = databaseDiagnoseService.runSqlDiagnose(console.value, diagnoseType)
             ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
             createResultTable(sqlResultDs)
         }
@@ -79,7 +79,7 @@ class ConsoleFrame extends ConsoleWindow {
         excelButton.enabled = false
     }
 
-    private ValueCollectionDatasourceImpl createDatasource(SqlSelectResult result) {
+    private ValueCollectionDatasourceImpl createDatasource(DatabaseQueryResult result) {
         ValueCollectionDatasourceImpl sqlResultDs = creteValueCollectionDs()
         result.entities.each { sqlResultDs.includeItem(it) }
         result.columns.each { sqlResultDs.addProperty(it) }

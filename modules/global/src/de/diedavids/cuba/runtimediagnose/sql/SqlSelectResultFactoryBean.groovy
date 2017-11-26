@@ -16,8 +16,8 @@ class SqlSelectResultFactoryBean implements SqlSelectResultFactory {
     DatatypeFormatter datatypeFormatter
 
     @Override
-    SqlSelectResult createFromRows(List<Object> rows) {
-        def result = new SqlSelectResult()
+    DatabaseQueryResult createFromRows(List<Object> rows) {
+        def result = new DatabaseQueryResult()
         def queryValue = rows[0]
 
         if (queryValue instanceof Entity) {
