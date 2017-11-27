@@ -11,8 +11,8 @@ import com.haulmont.cuba.gui.xml.layout.ComponentsFactory
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
-import de.diedavids.cuba.runtimediagnose.sql.DbDiagnoseService
-import de.diedavids.cuba.runtimediagnose.sql.DbQueryResult
+import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
+import de.diedavids.cuba.runtimediagnose.db.DbQueryResult
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
 
 import javax.inject.Inject

@@ -10,7 +10,7 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseService
-import de.diedavids.cuba.runtimediagnose.sql.DbDiagnoseService
+import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResultType
 

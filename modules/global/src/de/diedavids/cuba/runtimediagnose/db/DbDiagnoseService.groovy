@@ -1,4 +1,4 @@
-package de.diedavids.cuba.runtimediagnose.sql
+package de.diedavids.cuba.runtimediagnose.db
 
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType

@@ -1,4 +1,4 @@
-package de.diedavids.cuba.runtimediagnose.sql
+package de.diedavids.cuba.runtimediagnose.db
 
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.Transaction
@@ -97,7 +97,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
 
-        and: "the sql parser returns one sql statement"
+        and: "the db parser returns one db statement"
         def statements = Mock(Statements)
         def sqlStatement = Mock(Statement)
         sqlStatement.toString() >> sqlString
@@ -120,7 +120,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
 
-        and: "the sql parser returns one sql statement"
+        and: "the db parser returns one db statement"
         def statements = Mock(Statements)
         def sqlStatement = Mock(Statement)
         sqlStatement.toString() >> sqlString
@@ -143,7 +143,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'select u from sec$User u'
 
-        and: "the sql parser returns one jpql statement"
+        and: "the db parser returns one jpql statement"
         def statements = Mock(Statements)
         def sqlStatement = Mock(Statement)
         sqlStatement.toString() >> sqlString
@@ -166,7 +166,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
 
-        and: "the sql parser returns one sql statement"
+        and: "the db parser returns one db statement"
         def statements = Mock(Statements)
         statements.getStatements() >> []
 
@@ -184,7 +184,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'select u from sec$User u'
 
-        and: "the sql parser returns one sql statement"
+        and: "the db parser returns one db statement"
         def statements = Mock(Statements)
         statements.getStatements() >> []
 
@@ -202,7 +202,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'select u from sec$User u'
 
-        and: "the sql parser returns one sql statement"
+        and: "the db parser returns one db statement"
         def statements = Mock(Statements)
         statements.getStatements() >> []
 

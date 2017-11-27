@@ -1,4 +1,4 @@
-package de.diedavids.cuba.runtimediagnose.sql
+package de.diedavids.cuba.runtimediagnose.db
 
 import com.haulmont.cuba.core.global.Messages
 import de.diedavids.cuba.runtimediagnose.RuntimeDiagnoseConfiguration

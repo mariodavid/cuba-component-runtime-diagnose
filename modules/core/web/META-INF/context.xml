@@ -17,7 +17,7 @@
           maxWaitMillis="5000"
           name="jdbc/CubaDS"
           password="postgres"
-          type="javax.sql.DataSource"
+          type="javax.db.DataSource"
           url="jdbc:postgresql://192.168.99.100/postgres"
           username="postgres"/>-->
     <!--<Resource driverClassName="com.mysql.jdbc.Driver"
@@ -26,7 +26,7 @@
           maxWaitMillis="5000"
           name="jdbc/CubaDS"
           password="mysql"
-          type="javax.sql.DataSource"
+          type="javax.db.DataSource"
           url="jdbc:mysql://192.168.99.100/mysql?useSSL=false&amp;allowMultiQueries=true"
           username="root"/>-->
     <!--<Resource driverClassName="oracle.jdbc.OracleDriver"
@@ -35,7 +35,7 @@
           maxWaitMillis="5000"
           name="jdbc/CubaDS"
           password="cuba"
-          type="javax.sql.DataSource"
+          type="javax.db.DataSource"
           url="jdbc:oracle:thin:@//localhost/XE"
           username="cuba_component_runtime_diagnose"/>-->
 </Context>

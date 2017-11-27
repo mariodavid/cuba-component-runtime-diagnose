@@ -1,4 +1,4 @@
-package de.diedavids.cuba.runtimediagnose.sql
+package de.diedavids.cuba.runtimediagnose.db
 
 import com.haulmont.chile.core.model.MetaClass
 import com.haulmont.cuba.core.entity.Entity

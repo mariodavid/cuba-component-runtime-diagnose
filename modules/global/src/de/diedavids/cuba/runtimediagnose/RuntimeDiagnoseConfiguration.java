@@ -9,17 +9,17 @@ import com.haulmont.cuba.core.config.defaults.Default;
 @Source(type = SourceType.DATABASE)
 public interface RuntimeDiagnoseConfiguration extends Config {
 
-    @Property("runtime-diagnose.sql.allowDataManipulation")
+    @Property("runtime-diagnose.db.allowDataManipulation")
     @Default("false")
     Boolean getSqlAllowDataManipulation();
 
 
-    @Property("runtime-diagnose.sql.allowSchemaManipulation")
+    @Property("runtime-diagnose.db.allowSchemaManipulation")
     @Default("false")
     Boolean getSqlAllowSchemaManipulation();
 
 
-    @Property("runtime-diagnose.sql.allowExecuteOperations")
+    @Property("runtime-diagnose.db.allowExecuteOperations")
     @Default("false")
     Boolean getSqlAllowExecuteOperations();
 

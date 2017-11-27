@@ -11,7 +11,7 @@
         <property name="remoteServices">
             <map>
                 <entry key="ddcrd_SqlConsoleService"
-                       value="de.diedavids.cuba.runtimediagnose.sql.DbDiagnoseService"/>
+                       value="de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService"/>
                 <entry key="ddcrd_DiagnoseFileValidationService"
                        value="de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseFileValidationService"/>
                 <entry key="ddcrd_GroovyConsoleService"

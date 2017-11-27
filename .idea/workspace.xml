@@ -2,15 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1378b93a-daf2-4e9f-a037-be6b7f23d01d" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DatabaseDiagnoseServiceBean.groovy" afterPath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBean.groovy" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DatabaseQueryParser.groovy" afterPath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DbQueryParser.groovy" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DatabaseDiagnoseServiceBeanSpec.groovy" afterPath="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBeanSpec.groovy" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DatabaseQueryParserSpec.groovy" afterPath="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DbQueryParserSpec.groovy" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/DatabaseDiagnoseService.groovy" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseService.groovy" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/DatabaseQueryResult.groovy" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/DbQueryResult.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultFactory.groovy" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultFactory.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultFactoryBean.groovy" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultFactoryBean.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultSpec.groovy" afterPath="$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultSpec.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBean.groovy" afterPath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/db/DbDiagnoseServiceBean.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DbQueryParser.groovy" afterPath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/db/DbQueryParser.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/messages.properties" afterPath="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/db/messages.properties" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBeanSpec.groovy" afterPath="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/db/DbDiagnoseServiceBeanSpec.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DbQueryParserSpec.groovy" afterPath="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/db/DbQueryParserSpec.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseService.groovy" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/db/DbDiagnoseService.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/DbQueryResult.groovy" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/db/DbQueryResult.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultFactory.groovy" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/db/SqlSelectResultFactory.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultFactoryBean.groovy" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/db/SqlSelectResultFactoryBean.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultFactorySpec.groovy" afterPath="$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/db/SqlSelectResultFactorySpec.groovy" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/sql/SqlSelectResultSpec.groovy" afterPath="$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/db/SqlSelectResultSpec.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/core/web/META-INF/context.xml" afterPath="$PROJECT_DIR$/modules/core/web/META-INF/context.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/RuntimeDiagnoseConfiguration.java" afterPath="$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/RuntimeDiagnoseConfiguration.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/web/src/de/diedavids/cuba/runtimediagnose/web-spring.xml" afterPath="$PROJECT_DIR$/modules/web/src/de/diedavids/cuba/runtimediagnose/web-spring.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/web/src/de/diedavids/cuba/runtimediagnose/web/screens/console/ConsoleFrame.groovy" afterPath="$PROJECT_DIR$/modules/web/src/de/diedavids/cuba/runtimediagnose/web/screens/console/ConsoleFrame.groovy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/web/src/de/diedavids/cuba/runtimediagnose/web/screens/wizard/DiagnoseWizard.groovy" afterPath="$PROJECT_DIR$/modules/web/src/de/diedavids/cuba/runtimediagnose/web/screens/wizard/DiagnoseWizard.groovy" />
@@ -44,6 +49,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="30" column="32" lean-forward="false" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DiagnoseExecutionFactoryBeanSpec.groovy" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/diagnose/DiagnoseExecutionFactoryBeanSpec.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="511">
+              <caret line="156" column="0" lean-forward="true" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DiagnoseExecutionSpec.groovy" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/diagnose/DiagnoseExecutionSpec.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="86">
+              <caret line="41" column="47" lean-forward="false" selection-start-line="41" selection-start-column="47" selection-end-line="41" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="web-app.properties" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modules/web/src/de/diedavids/cuba/runtimediagnose/web-app.properties">
           <provider selected="true" editor-type-id="text-editor">
@@ -66,8 +101,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DbDiagnoseServiceBeanSpec.groovy" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBeanSpec.groovy">
+      <file leaf-file-name="DbDiagnoseServiceBeanSpec.groovy" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/db/DbDiagnoseServiceBeanSpec.groovy">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="494">
               <caret line="95" column="30" lean-forward="false" selection-start-line="95" selection-start-column="30" selection-end-line="95" selection-end-column="30" />
@@ -100,7 +135,7 @@
         </entry>
       </file>
       <file leaf-file-name="DbDiagnoseServiceBean.groovy" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBean.groovy">
+        <entry file="file://$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/db/DbDiagnoseServiceBean.groovy">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="239">
               <caret line="55" column="31" lean-forward="false" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
@@ -110,43 +145,10 @@
         </entry>
       </file>
       <file leaf-file-name="DbQueryResult.groovy" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/DbQueryResult.groovy">
+        <entry file="file://$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/db/DbQueryResult.groovy">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
               <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RELEASE.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RELEASE.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="225">
-                <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-                <folding />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gradle-wrapper.properties" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="rulesMain.groovy" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/codenarc/rulesMain.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="5" lean-forward="false" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -161,6 +163,9 @@
       <find>database</find>
       <find>databaseDiagnoseService</find>
       <find>databaseQuer</find>
+      <find>DiagnoseExecutionFactoryBeanSpec</find>
+      <find>.file</find>
+      <find>executedScriptFileExtension</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -1930,6 +1935,8 @@
         <option value="$PROJECT_DIR$/modules/web/src/de/diedavids/cuba/runtimediagnose/web/screens/console/ConsoleFrame.groovy" />
         <option value="$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBean.groovy" />
         <option value="$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBeanSpec.groovy" />
+        <option value="$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/diagnose/DiagnoseExecutionSpec.groovy" />
+        <option value="$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/diagnose/DiagnoseExecutionFactoryBeanSpec.groovy" />
       </list>
     </option>
   </component>
@@ -1940,8 +1947,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1920" />
-    <option name="y" value="-157" />
+    <option name="x" value="-1356" />
+    <option name="y" value="-29" />
     <option name="width" value="1920" />
     <option name="height" value="1057" />
   </component>
@@ -2041,7 +2048,7 @@
               <item name="core" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="runtimediagnose" type="462c0819:PsiDirectoryNode" />
-              <item name="sql" type="462c0819:PsiDirectoryNode" />
+              <item name="db" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cuba-component-runtime-diagnose" type="b2602c69:ProjectViewProjectNode" />
@@ -2071,7 +2078,31 @@
               <item name="global" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="runtimediagnose" type="462c0819:PsiDirectoryNode" />
-              <item name="sql" type="462c0819:PsiDirectoryNode" />
+              <item name="db" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cuba-component-runtime-diagnose" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cuba-component-runtime-diagnose" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="global" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="cuba-component-runtime-diagnose" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cuba-component-runtime-diagnose" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="global" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="runtimediagnose" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cuba-component-runtime-diagnose" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cuba-component-runtime-diagnose" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="global" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="runtimediagnose" type="462c0819:PsiDirectoryNode" />
+              <item name="diagnose" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cuba-component-runtime-diagnose" type="b2602c69:ProjectViewProjectNode" />
@@ -2195,7 +2226,7 @@
       <updated>1510142010778</updated>
       <workItem from="1510142014426" duration="1229000" />
       <workItem from="1511620462998" duration="3682000" />
-      <workItem from="1511632811588" duration="2257000" />
+      <workItem from="1511632811588" duration="3252000" />
     </task>
     <task id="LOCAL-00001" summary="updated to CUBA 6.6.5">
       <created>1511620513238</created>
@@ -2215,10 +2246,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7168000" />
+    <option name="totallyTimeSpent" value="8163000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1920" y="-157" width="1920" height="1057" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Key Promoter X" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2228,9 +2260,9 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32776934" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32694355" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23003195" sideWeight="0.49675852" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23003195" sideWeight="0.49675852" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25346112" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2300,79 +2332,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="43" column="20" lean-forward="false" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
-          <folding>
-            <marker date="1511766686000" expanded="true" signature="1136:1902" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1151:1262" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1274:1284" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1322:1328" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1350:1864" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1390:1404" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1390:1506" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1496:1506" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1512:1526" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1512:1650" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1640:1650" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1873:1883" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1894:1900" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1917:1923" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1981:1983" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="2036:2042" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="2079:2081" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="2400:2733" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="2946:3449" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3071:3302" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3334:3397" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3413:3423" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3441:3447" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3511:4680" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3626:3781" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3800:3810" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3875:3881" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3899:3909" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3975:3981" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3998:4460" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4575:4675" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4706:4990" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4764:4983" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4783:4977" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5014:6271" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5036:5074" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5093:5263" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5328:5602" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5436:5596" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5485:5503" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="5572:5586" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="5676:5793" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5904:6032" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6141:6269" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6294:6528" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6313:6351" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6385:6526" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6551:7731" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6572:6582" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="6592:6598" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="6617:6681" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6718:6812" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6828:6838" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="6857:6863" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="6897:7038" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7098:7108" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="7136:7142" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="7251:7520" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7354:7514" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7403:7421" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="7490:7504" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="7594:7729" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7811:7969" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8138:8339" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8232:8317" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8246:8260" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8301:8311" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="8369:8375" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8396:8398" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="8435:8441" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8477:8479" ph="}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2450,79 +2410,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="960">
           <caret line="64" column="55" lean-forward="false" selection-start-line="64" selection-start-column="55" selection-end-line="64" selection-end-column="55" />
-          <folding>
-            <marker date="1511766686000" expanded="true" signature="1136:1902" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1151:1262" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1274:1284" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1322:1328" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1350:1864" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1390:1404" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1390:1506" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1496:1506" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1512:1526" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1512:1650" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1640:1650" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1873:1883" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1894:1900" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1917:1923" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1981:1983" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="2036:2042" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="2079:2081" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="2400:2733" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="2946:3449" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3071:3302" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3334:3397" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3413:3423" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3441:3447" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3511:4680" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3626:3781" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3800:3810" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3875:3881" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3899:3909" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3975:3981" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3998:4460" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4575:4675" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4706:4990" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4764:4983" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4783:4977" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5014:6271" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5036:5074" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5093:5263" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5328:5602" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5436:5596" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5485:5503" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="5572:5586" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="5676:5793" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5904:6032" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6141:6269" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6294:6528" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6313:6351" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6385:6526" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6551:7731" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6572:6582" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="6592:6598" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="6617:6681" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6718:6812" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6828:6838" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="6857:6863" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="6897:7038" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7098:7108" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="7136:7142" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="7251:7520" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7354:7514" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7403:7421" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="7490:7504" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="7594:7729" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7811:7969" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8138:8339" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8232:8317" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8246:8260" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8301:8311" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="8369:8375" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8396:8398" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="8435:8441" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8477:8479" ph="}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2555,86 +2443,6 @@
         <state relative-caret-position="195">
           <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="43" column="20" lean-forward="false" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
-          <folding>
-            <marker date="1511766686000" expanded="true" signature="1136:1902" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1151:1262" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1274:1284" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1322:1328" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1350:1864" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1390:1404" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1390:1506" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1496:1506" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1512:1526" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1512:1650" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="1640:1650" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1873:1883" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1894:1900" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="1917:1923" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="1981:1983" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="2036:2042" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="2079:2081" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="2400:2733" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="2946:3449" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3071:3302" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3334:3397" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3413:3423" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3441:3447" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3511:4680" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3626:3781" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="3800:3810" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3875:3881" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3899:3909" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="3975:3981" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="3998:4460" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4575:4675" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4706:4990" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4764:4983" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="4783:4977" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5014:6271" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5036:5074" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5093:5263" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5328:5602" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5436:5596" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5485:5503" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="5572:5586" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="5676:5793" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="5904:6032" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6141:6269" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6294:6528" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6313:6351" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6385:6526" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6551:7731" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6572:6582" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="6592:6598" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="6617:6681" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6718:6812" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="6828:6838" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="6857:6863" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="6897:7038" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7098:7108" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="7136:7142" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="7251:7520" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7354:7514" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7403:7421" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="7490:7504" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="7594:7729" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="7811:7969" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8138:8339" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8232:8317" ph="{...}" />
-            <marker date="1511766686000" expanded="true" signature="8246:8260" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8301:8311" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="8369:8375" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8396:8398" ph="}" />
-            <marker date="1511766686000" expanded="true" signature="8435:8441" ph="{" />
-            <marker date="1511766686000" expanded="true" signature="8477:8479" ph="}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2710,7 +2518,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/sql/DbQueryResult.groovy">
+    <entry file="file://$PROJECT_DIR$/modules/global/src/de/diedavids/cuba/runtimediagnose/db/DbQueryResult.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
@@ -2718,7 +2526,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBean.groovy">
+    <entry file="file://$PROJECT_DIR$/modules/core/src/de/diedavids/cuba/runtimediagnose/db/DbDiagnoseServiceBean.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="239">
           <caret line="55" column="31" lean-forward="false" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
@@ -2726,10 +2534,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/sql/DbDiagnoseServiceBeanSpec.groovy">
+    <entry file="file://$PROJECT_DIR$/modules/core/test/de/diedavids/cuba/runtimediagnose/db/DbDiagnoseServiceBeanSpec.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
           <caret line="95" column="30" lean-forward="false" selection-start-line="95" selection-start-column="30" selection-end-line="95" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="30" column="32" lean-forward="false" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/diagnose/DiagnoseExecutionSpec.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="41" column="47" lean-forward="false" selection-start-line="41" selection-start-column="47" selection-end-line="41" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/global/test/de/diedavids/cuba/runtimediagnose/diagnose/DiagnoseExecutionFactoryBeanSpec.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="511">
+          <caret line="156" column="0" lean-forward="true" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
           <folding />
         </state>
       </provider>
