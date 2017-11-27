@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cuba-component-runtime-diagnose.iml" filepath="$PROJECT_DIR$/cuba-component-runtime-diagnose.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cuba-component-runtime-diagnose_main.iml" filepath="$PROJECT_DIR$/.idea/modules/cuba-component-runtime-diagnose_main.iml" group="cuba-component-runtime-diagnose" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cuba-component-runtime-diagnose_test.iml" filepath="$PROJECT_DIR$/.idea/modules/cuba-component-runtime-diagnose_test.iml" group="cuba-component-runtime-diagnose" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/core/runtime-diagnose-core.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/core/runtime-diagnose-core.iml" group="runtime-diagnose-core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/core/runtime-diagnose-core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/core/runtime-diagnose-core_main.iml" group="runtime-diagnose-core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/core/runtime-diagnose-core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/core/runtime-diagnose-core_test.iml" group="runtime-diagnose-core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/global/runtime-diagnose-global.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/global/runtime-diagnose-global.iml" group="runtime-diagnose-global" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/global/runtime-diagnose-global_main.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/global/runtime-diagnose-global_main.iml" group="runtime-diagnose-global" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/global/runtime-diagnose-global_test.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/global/runtime-diagnose-global_test.iml" group="runtime-diagnose-global" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/gui/runtime-diagnose-gui.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/gui/runtime-diagnose-gui.iml" group="runtime-diagnose-gui" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/gui/runtime-diagnose-gui_main.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/gui/runtime-diagnose-gui_main.iml" group="runtime-diagnose-gui" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/gui/runtime-diagnose-gui_test.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/gui/runtime-diagnose-gui_test.iml" group="runtime-diagnose-gui" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/web/runtime-diagnose-web.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/web/runtime-diagnose-web.iml" group="runtime-diagnose-web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/web/runtime-diagnose-web_main.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/web/runtime-diagnose-web_main.iml" group="runtime-diagnose-web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/modules/web/runtime-diagnose-web_test.iml" filepath="$PROJECT_DIR$/.idea/modules/modules/web/runtime-diagnose-web_test.iml" group="runtime-diagnose-web" />
+    </modules>
+  </component>
+</project>

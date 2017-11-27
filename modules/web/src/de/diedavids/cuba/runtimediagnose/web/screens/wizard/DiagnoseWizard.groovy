@@ -10,7 +10,7 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseService
-import de.diedavids.cuba.runtimediagnose.sql.DatabaseDiagnoseService
+import de.diedavids.cuba.runtimediagnose.sql.DbDiagnoseService
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResultType
 
@@ -38,7 +38,7 @@ class DiagnoseWizard extends AbstractWindow {
     @Inject TimeSource timeSource
 
     @Inject GroovyDiagnoseService groovyDiagnoseService
-    @Inject DatabaseDiagnoseService databaseDiagnoseService
+    @Inject DbDiagnoseService dbDiagnoseService
     @Inject DiagnoseExecutionFactory diagnoseExecutionFactory
     @Inject DiagnoseFileDownloader diagnoseFileDownloader
 
@@ -93,7 +93,7 @@ class DiagnoseWizard extends AbstractWindow {
     }
 
     void runSqlDiagnose(DiagnoseType diagnoseType) {
-        diagnoseExecution = databaseDiagnoseService.runSqlDiagnose(diagnoseExecution, diagnoseType)
+        diagnoseExecution = dbDiagnoseService.runSqlDiagnose(diagnoseExecution, diagnoseType)
         diagnoseWizardResultsDs.refresh([diagnose: diagnoseExecution])
     }
 

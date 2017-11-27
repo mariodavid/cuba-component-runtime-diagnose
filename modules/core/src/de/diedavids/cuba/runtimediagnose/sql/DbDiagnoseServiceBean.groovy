@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service
 import javax.inject.Inject
 import javax.sql.DataSource
 
-@Service(DatabaseDiagnoseService.NAME)
-class DatabaseDiagnoseServiceBean implements DatabaseDiagnoseService {
+@Service(DbDiagnoseService.NAME)
+class DbDiagnoseServiceBean implements DbDiagnoseService {
 
     @Inject
     Persistence persistence
@@ -25,7 +25,7 @@ class DatabaseDiagnoseServiceBean implements DatabaseDiagnoseService {
     SqlSelectResultFactory selectResultFactory
 
     @Inject
-    DatabaseQueryParser databaseQueryParser
+    DbQueryParser dbQueryParser
 
     @Inject
     TimeSource timeSource
@@ -41,8 +41,8 @@ class DatabaseDiagnoseServiceBean implements DatabaseDiagnoseService {
 
 
     @Override
-    DatabaseQueryResult runSqlDiagnose(String queryString, DiagnoseType diagnoseType) {
-        Statements queryStatements = databaseQueryParser.analyseQueryString(queryString, diagnoseType)
+    DbQueryResult runSqlDiagnose(String queryString, DiagnoseType diagnoseType) {
+        Statements queryStatements = dbQueryParser.analyseQueryString(queryString, diagnoseType)
 
         if (!statementsAvailable(queryStatements)) {
             return selectResultFactory.createFromRows([])
@@ -50,22 +50,22 @@ class DatabaseDiagnoseServiceBean implements DatabaseDiagnoseService {
 
         def queryStatement = queryStatements.statements[0].toString()
         DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType)
-        DatabaseQueryResult databaseQueryResult
+        DbQueryResult dbQueryResult
         try {
-            databaseQueryResult = getQueryResult(diagnoseType, queryStatement, queryStatements)
-            diagnoseExecution.handleSuccessfulExecution(databaseQueryResult.entities[0].toString())
+            dbQueryResult = getQueryResult(diagnoseType, queryStatement, queryStatements)
+            diagnoseExecution.handleSuccessfulExecution(dbQueryResult.entities[0].toString())
             diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
         } catch (Exception e) {
-            databaseQueryResult = selectResultFactory.createFromRows([])
+            dbQueryResult = selectResultFactory.createFromRows([])
             diagnoseExecution.handleErrorExecution(e)
             diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
         }
 
-        databaseQueryResult
+        dbQueryResult
     }
 
-    protected DatabaseQueryResult getQueryResult(DiagnoseType diagnoseType, String queryStatement, Statements queryStatements) {
-        DatabaseQueryResult sqlSelectResult
+    protected DbQueryResult getQueryResult(DiagnoseType diagnoseType, String queryStatement, Statements queryStatements) {
+        DbQueryResult sqlSelectResult
         switch (diagnoseType) {
             case DiagnoseType.JPQL:
                 sqlSelectResult = executeJpqlStatement(queryStatement, queryStatements)
@@ -80,20 +80,20 @@ class DatabaseDiagnoseServiceBean implements DatabaseDiagnoseService {
         sqlSelectResult
     }
 
-    protected DatabaseQueryResult executeJpqlStatement(String queryStatement, Statements queryStatements) {
+    protected DbQueryResult executeJpqlStatement(String queryStatement, Statements queryStatements) {
         persistence.callInTransaction {
             Query q = persistence.entityManager.createQuery(queryStatement)
 
-            if (databaseQueryParser.containsDataManipulation(queryStatements)) {
+            if (dbQueryParser.containsDataManipulation(queryStatements)) {
                 q.executeUpdate()
-                new DatabaseQueryResult()
+                new DbQueryResult()
             } else {
                 selectResultFactory.createFromRows(q.resultList)
             }
         }
     }
 
-    protected DatabaseQueryResult executeSqlStatement(Sql sql, String queryString) {
+    protected DbQueryResult executeSqlStatement(Sql sql, String queryString) {
         def rows = sql.rows(queryString)
         selectResultFactory.createFromRows(rows)
     }

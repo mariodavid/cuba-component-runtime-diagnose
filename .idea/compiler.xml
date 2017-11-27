@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="cuba-component-runtime-diagnose_main" target="1.8" />
+      <module name="cuba-component-runtime-diagnose_test" target="1.8" />
+      <module name="runtime-diagnose-core_main" target="1.8" />
+      <module name="runtime-diagnose-core_test" target="1.8" />
+      <module name="runtime-diagnose-global_main" target="1.8" />
+      <module name="runtime-diagnose-global_test" target="1.8" />
+      <module name="runtime-diagnose-gui_main" target="1.8" />
+      <module name="runtime-diagnose-gui_test" target="1.8" />
+      <module name="runtime-diagnose-web_main" target="1.8" />
+      <module name="runtime-diagnose-web_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

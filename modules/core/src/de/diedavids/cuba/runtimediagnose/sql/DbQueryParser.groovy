@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component
 import javax.inject.Inject
 
 @Component
-class DatabaseQueryParser {
+class DbQueryParser {
 
     @Inject
     RuntimeDiagnoseConfiguration configuration

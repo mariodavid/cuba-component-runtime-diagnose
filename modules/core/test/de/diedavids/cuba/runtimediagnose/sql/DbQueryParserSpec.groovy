@@ -10,10 +10,10 @@ import net.sf.jsqlparser.statement.drop.Drop
 import net.sf.jsqlparser.statement.insert.Insert
 import spock.lang.Specification
 
-class DatabaseQueryParserSpec extends Specification {
+class DbQueryParserSpec extends Specification {
 
 
-    DatabaseQueryParser sut
+    DbQueryParser sut
     RuntimeDiagnoseConfiguration runtimeDiagnoseConfiguration
     Messages messages
 
@@ -21,7 +21,7 @@ class DatabaseQueryParserSpec extends Specification {
 
         runtimeDiagnoseConfiguration = Mock(RuntimeDiagnoseConfiguration)
         messages = Mock(Messages)
-        sut = new DatabaseQueryParser(
+        sut = new DbQueryParser(
                 configuration: runtimeDiagnoseConfiguration,
                 messages: messages
         )
@@ -33,7 +33,7 @@ class DatabaseQueryParserSpec extends Specification {
         runtimeDiagnoseConfiguration.getSqlAllowDataManipulation() >> false
 
         and:
-        messages.getMessage(DatabaseQueryParser, 'dataManipulationNotAllowed') >> 'nope for data manipulation'
+        messages.getMessage(DbQueryParser, 'dataManipulationNotAllowed') >> 'nope for data manipulation'
 
         when:
         sut.analyseQueryString("INSERT INTO SEC_USER(ID) VALUES ('e54f6d8d-29b1-439e-846c-b6180495c066');", DiagnoseType.SQL)
@@ -70,7 +70,7 @@ class DatabaseQueryParserSpec extends Specification {
         runtimeDiagnoseConfiguration.getSqlAllowSchemaManipulation() >> false
 
         and:
-        messages.getMessage(DatabaseQueryParser, 'schemaManipulationNotAllowed') >> 'nope for schema manipulation'
+        messages.getMessage(DbQueryParser, 'schemaManipulationNotAllowed') >> 'nope for schema manipulation'
 
         when:
         sut.analyseQueryString("DROP TABLE SEC_USER", DiagnoseType.SQL)
@@ -107,7 +107,7 @@ class DatabaseQueryParserSpec extends Specification {
         runtimeDiagnoseConfiguration.getSqlAllowExecuteOperations() >> false
 
         and:
-        messages.getMessage(DatabaseQueryParser, 'executeOperationNotAllowed') >> 'nope for execute operations'
+        messages.getMessage(DbQueryParser, 'executeOperationNotAllowed') >> 'nope for execute operations'
 
         when:
         sut.analyseQueryString("EXECUTE MY_STORED_PROCEDURE", DiagnoseType.SQL)

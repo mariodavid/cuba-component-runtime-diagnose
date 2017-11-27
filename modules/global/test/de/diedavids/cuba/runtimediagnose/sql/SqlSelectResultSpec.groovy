@@ -6,11 +6,11 @@ import spock.lang.Specification
 class SqlSelectResultSpec extends Specification {
 
 
-    DatabaseQueryResult sqlSelectResult
+    DbQueryResult sqlSelectResult
 
     def setup() {
 
-        sqlSelectResult = new DatabaseQueryResult(
+        sqlSelectResult = new DbQueryResult(
 
         )
     }
