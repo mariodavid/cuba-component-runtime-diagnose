@@ -113,9 +113,9 @@ class DbQueryParser {
     }
 
     String excludeComments(String queryString) {
-        Pattern.compile("/\\*.*?\\*/", Pattern.DOTALL)
+        Pattern.compile('/\\*.*?\\*/', Pattern.DOTALL)
                 .matcher(queryString)
-                .replaceAll("")
-                .replaceAll("--.*\n?", "");
+                .replaceAll('')
+                .replaceAll('--.*\n?', '')
     }
 }
