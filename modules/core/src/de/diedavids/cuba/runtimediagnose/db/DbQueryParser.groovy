@@ -27,6 +27,7 @@ import net.sf.jsqlparser.statement.update.Update
 import org.springframework.stereotype.Component
 
 import javax.inject.Inject
+import java.util.regex.Pattern
 
 @Component
 class DbQueryParser {
@@ -65,7 +66,8 @@ class DbQueryParser {
 
 
         if (DiagnoseType.JPQL == diagnoseType) {
-            analyseJpql(queryString)
+            String queryStringWithoutComments = excludeComments(queryString)
+            analyseJpql(queryStringWithoutComments)
         }
 
         statements
@@ -108,5 +110,12 @@ class DbQueryParser {
         }
 
         containsIllegalOperation
+    }
+
+    String excludeComments(String queryString) {
+        Pattern.compile("/\\*.*?\\*/", Pattern.DOTALL)
+                .matcher(queryString)
+                .replaceAll("")
+                .replaceAll("--.*\n?", "");
     }
 }
