@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.0] - 2017-11-29
+
+### Added
+- support for comments in JPQL console
+
+### Dependencies
+- CUBA 6.7.x
+
+## [0.3.1] - 2017-11-26
+
+
+## [0.3.0] - 2017-11-25
+
+### Added
+- JPQL support
 
 ## [0.2.0] - 2017-09-22
 

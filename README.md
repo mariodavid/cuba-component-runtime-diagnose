@@ -40,6 +40,7 @@ It mainly consists of the three parts:
 
 | Platform Version | Add-on Version |
 | ---------------- | -------------- |
+| 6.7.x            | 0.4.x          |
 | 6.6.x            | 0.2.x - 0.3.x  |
 | 6.5.x            | 0.1.x          |
 
