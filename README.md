@@ -114,6 +114,9 @@ The JPQL console is useful if you want to test your JPQL queries that you want t
 
 Results of a JPQL / SQL statement are displayed in a table in the result tab. The result can be downloaded using the Excel button in the Results tab.
 
+The JPQL / SQL console supports comments in the form of `-- single line comment` and `/* multi line comments */`.
+
+
 ### Security of the SQL-Console
 By default, only SELECT stements are allowed to execute through the SQL-Console. 
 If you want to execute other types of SQL statements like `INSERT` or `ALTER` it has to be explicitly configured the application component through CUBAs App properties UI: `Administration > Application properties > console`
