@@ -9,6 +9,7 @@ import net.sf.jsqlparser.statement.Statements
 import net.sf.jsqlparser.statement.drop.Drop
 import net.sf.jsqlparser.statement.insert.Insert
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class DbQueryParserSpec extends Specification {
 
@@ -134,5 +135,33 @@ class DbQueryParserSpec extends Specification {
         and:
         dropStatement instanceof SetStatement
         dropStatement.toString() == "SET OPTION = VALUE"
+    }
+
+    @Unroll
+    def "excludeComments excludes single line and multiline comments from SQL query"() {
+        when:
+        def escape = { String str -> str.replace('*', '\\*')}
+        String result = sut.excludeComments(query)
+
+        then:
+        result ==~ /\s*${escape(expectedQuery)}\s*/
+
+        where:
+        query << [
+"""-- first comment
+select * from SEC_USER""",
+
+"""
+/* multi-line
+   comment*/
+select * from SEC_USER""",
+
+"""
+/* multi-line
+   line */
+-- single line comment
+select * from SEC_USER"""]
+        expectedQuery << ["select * from SEC_USER", "select * from SEC_USER", "select * from SEC_USER"]
+
     }
 }
