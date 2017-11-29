@@ -9,6 +9,7 @@ import net.sf.jsqlparser.statement.Statements
 import net.sf.jsqlparser.statement.drop.Drop
 import net.sf.jsqlparser.statement.insert.Insert
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class DbQueryParserSpec extends Specification {
 
@@ -134,5 +135,70 @@ class DbQueryParserSpec extends Specification {
         and:
         dropStatement instanceof SetStatement
         dropStatement.toString() == "SET OPTION = VALUE"
+    }
+
+    @Unroll
+    def "excludeComments excludes single line and multiline comments from SQL query (#type)"() {
+        given:
+        def escape = { String str -> str.replace('*', '\\*')}
+
+        when:
+        String result = sut.excludeComments(query)
+
+        then:
+        result ==~ /\s*${escape("select * from SEC_USER")}\s*/
+
+        where:
+        query << [
+"""-- first comment
+select * from SEC_USER""",
+
+"""
+/* multi-line
+   comment*/
+select * from SEC_USER""",
+
+"""
+/* multi-line
+   line */
+-- single line comment
+select * from SEC_USER"""]
+        type << ["single line", "multi-line", "mixing"]
+    }
+
+    @Unroll
+    def "analyseQueryString exludes comments in JPQL queries (#type)"() {
+        given:
+        def localSut = new DbQueryParser() {
+            @Override
+            void analyseJpql(String queryString) {}
+        }
+        localSut.with {
+            configuration = runtimeDiagnoseConfiguration
+            messages = messages
+        }
+
+        when:
+        Statements result = localSut.analyseQueryString(query, DiagnoseType.JPQL)
+
+        then:
+        result.statements[0].toString() == "select * from SEC_USER".toUpperCase()
+
+        where:
+        query << [
+"""-- first comment
+select * from SEC_USER""",
+
+"""
+/* multi-line
+   comment*/
+select * from SEC_USER""",
+
+"""
+/* multi-line
+   line */
+-- single line comment
+select * from SEC_USER"""]
+        type << ["single line", "multi-line", "mixing"]
     }
 }
