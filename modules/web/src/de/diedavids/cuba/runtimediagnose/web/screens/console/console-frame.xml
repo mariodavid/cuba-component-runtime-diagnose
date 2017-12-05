@@ -51,7 +51,7 @@
                     <hbox spacing="true"
                           width="100%">
                         <hbox>
-                            <buttonsPanel>
+                            <buttonsPanel id="consoleInstrumentalPanel">
                                 <button id="sqlRunBtn"
                                         action="runSqlConsoleAction"/>
                                 <button id="sqlClearBtn"
