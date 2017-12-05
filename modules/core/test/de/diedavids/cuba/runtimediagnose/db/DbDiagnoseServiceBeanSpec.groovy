@@ -301,6 +301,29 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         then:
         thrown(IllegalArgumentException)
     }
+
+    def "getSqlQuery if argument is correct jpql"() {
+
+        given:
+        String jpqlQuery = 'select u from sec$User u'
+        String sqlQuery = 'SELECT * FROM SEC_USER'
+        EntityManager em = Mock()
+        javax.persistence.EntityManager delegate = Mock()
+        EJBQueryImpl query = Mock()
+        DatabaseQuery databaseQuery = Mock()
+
+        databaseQuery.getSQLString() >> sqlQuery
+        query.databaseQuery >> databaseQuery
+        delegate.createQuery(_) >> query
+        em.delegate >> delegate
+        persistence.getEntityManager() >> em
+
+        when:
+        String result = dbDiagnoseServiceBean.getSqlQuery(jpqlQuery)
+
+        then:
+        result == sqlQuery
+    }
 }
 
 class MockableDbDiagnoseServiceBean extends DbDiagnoseServiceBean {

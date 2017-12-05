@@ -143,7 +143,7 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         EntityManager eclipseEm = persistence.entityManager.delegate
         EJBQueryImpl query = eclipseEm.createQuery(jpqlQuery) as EJBQueryImpl
 
-        query.databaseQuery.getSQLStrings()
+        query.databaseQuery.getSQLString()
     }
 
     protected boolean statementsAvailable(Statements sqlStatements) {
