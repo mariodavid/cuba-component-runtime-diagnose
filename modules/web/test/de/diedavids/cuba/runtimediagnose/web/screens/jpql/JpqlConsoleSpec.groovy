@@ -4,6 +4,7 @@ import com.haulmont.cuba.core.global.RemoteException
 import com.haulmont.cuba.gui.components.AbstractWindow
 import com.haulmont.cuba.gui.components.Frame
 import com.haulmont.cuba.gui.components.SourceCodeEditor
+import com.haulmont.cuba.web.gui.components.WebSourceCodeEditor
 import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
 import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleFrame
 import spock.lang.Specification
@@ -14,6 +15,7 @@ import static com.haulmont.cuba.gui.WindowManager.OpenType.DIALOG
 
 class JpqlConsoleSpec extends Specification {
 
+    JpqlConsole sut
     ConsoleFrame predefinedConsoleFrame
     SourceCodeEditor predefinedCodeEditor
     DbDiagnoseService predefinedDbDiagnoseService
@@ -25,6 +27,7 @@ class JpqlConsoleSpec extends Specification {
             getComponent('console') >> predefinedCodeEditor
         }
         predefinedDbDiagnoseService = Mock()
+        sut = new JpqlConsole()
     }
 
     @Unroll
@@ -114,5 +117,22 @@ class JpqlConsoleSpec extends Specification {
         then:
         countOpenSqlDialog == 1
 
+    }
+
+    @Unroll
+    def "codeEditorIsEmpty check"() {
+        given:
+        SourceCodeEditor editor = new WebSourceCodeEditor()
+        editor.value = values
+
+        expect:
+        sut.codeEditorIsEmpty(editor) == res
+        !sut.codeEditorIsEmpty(null)
+
+        where:
+        values | res
+        null   | true
+        ''     | true
+        "str"  | false
     }
 }

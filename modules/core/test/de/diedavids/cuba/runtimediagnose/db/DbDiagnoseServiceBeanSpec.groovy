@@ -1,5 +1,6 @@
 package de.diedavids.cuba.runtimediagnose.db
 
+import com.haulmont.cuba.core.EntityManager
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.Transaction
 import com.haulmont.cuba.core.global.TimeSource
@@ -14,7 +15,10 @@ import groovy.sql.GroovyRowResult
 import groovy.sql.Sql
 import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.statement.Statements
+import org.eclipse.persistence.internal.jpa.EJBQueryImpl
+import org.eclipse.persistence.queries.DatabaseQuery
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import javax.sql.DataSource
 
@@ -40,7 +44,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         selectResultFactory = Mock(SqlSelectResultFactory)
         transaction = Mock(Transaction)
         persistence = Mock(Persistence)
-        sql = Mock(Sql){
+        sql = Mock(Sql) {
             rows(_ as String) >> new ArrayList<GroovyRowResult>()
         }
         diagnoseExecutionLogService = Mock(DiagnoseExecutionLogService)
@@ -103,10 +107,10 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         sqlStatement.toString() >> sqlString
         statements.getStatements() >> [sqlStatement]
 
-        dbQueryParser.analyseQueryString(_,_) >> statements
+        dbQueryParser.analyseQueryString(_, _) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String,_ as DiagnoseType) >> new DiagnoseExecution()
+        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String, _ as DiagnoseType) >> new DiagnoseExecution()
 
         when:
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
@@ -126,10 +130,10 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         sqlStatement.toString() >> sqlString
         statements.getStatements() >> [sqlStatement]
 
-        dbQueryParser.analyseQueryString(_,_) >> statements
+        dbQueryParser.analyseQueryString(_, _) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_,_) >> new DiagnoseExecution()
+        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_, _) >> new DiagnoseExecution()
 
         when:
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
@@ -152,7 +156,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_ as String, DiagnoseType.JPQL) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String,_ as DiagnoseType) >> new DiagnoseExecution()
+        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String, _ as DiagnoseType) >> new DiagnoseExecution()
 
         when:
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
@@ -248,6 +252,51 @@ class DbDiagnoseServiceBeanSpec extends Specification {
 
         when:
         dbDiagnoseServiceBean.getQueryResult(diagnoseType, _ as String, statements)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Unroll
+    def "getSqlQuery return null if argument is empty"() {
+
+        given:
+        EntityManager em = Mock()
+        javax.persistence.EntityManager delegate = Mock()
+        EJBQueryImpl query = Mock()
+        DatabaseQuery databaseQuery = Mock()
+
+        databaseQuery.getSQLString() >> sqlQuery
+        query.databaseQuery >> databaseQuery
+        delegate.createQuery(jpqlQuery) >> query
+        em.delegate >> delegate
+        persistence.getEntityManager() >> em
+
+
+        when:
+        String res = dbDiagnoseServiceBean.getSqlQuery(jpqlQuery)
+
+        then:
+        res == sqlQuery
+
+        where:
+        jpqlQuery | sqlQuery
+        null      | null
+        ''        | null
+    }
+
+    def "getSqlQuery thrown IllegalArgumentException if argument is not jpql"() {
+
+        given:
+        String noJpql = "this string is not JPQL"
+        EntityManager em = Mock()
+        javax.persistence.EntityManager delegate = Mock()
+        delegate.createQuery(_) >> { throw new IllegalArgumentException() }
+        em.delegate >> delegate
+        persistence.getEntityManager() >> em
+
+        when:
+        dbDiagnoseServiceBean.getSqlQuery(noJpql)
 
         then:
         thrown(IllegalArgumentException)
