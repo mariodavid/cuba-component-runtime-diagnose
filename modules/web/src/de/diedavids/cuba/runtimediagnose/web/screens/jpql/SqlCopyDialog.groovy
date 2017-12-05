@@ -25,12 +25,15 @@ class SqlCopyDialog extends AbstractWindow {
         copyBtn.setStyleName(copyButtonClass)
         textArea.setStyleName(sqlTextContentClass)
         textArea.value = params.get('sqlQuery')
-
-        JavaScript.current.execute(addCopyButtonListener())
+        executeJs()
     }
 
     void onCancelBtnClick() {
         close('closeSqlDialog')
+    }
+
+    void executeJs() {
+        JavaScript.current.execute(addCopyButtonListener())
     }
 
     String addCopyButtonListener() {
