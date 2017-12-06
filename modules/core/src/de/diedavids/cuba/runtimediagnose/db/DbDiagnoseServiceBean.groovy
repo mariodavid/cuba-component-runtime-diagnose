@@ -137,7 +137,7 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
     @Transactional
     @Override
     String getSqlQuery(String jpqlQuery) {
-        if (StringUtils.isNotBlank(jpqlQuery)) {
+        if (StringUtils.isBlank(jpqlQuery)) {
             return null
         }
 
