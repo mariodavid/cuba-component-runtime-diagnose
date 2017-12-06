@@ -10,6 +10,7 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import groovy.sql.Sql
 import net.sf.jsqlparser.statement.Statements
+import org.apache.commons.lang.StringUtils
 import org.eclipse.persistence.internal.jpa.EJBQueryImpl
 import org.springframework.stereotype.Service
 
@@ -18,7 +19,7 @@ import javax.persistence.EntityManager
 import javax.sql.DataSource
 import javax.transaction.Transactional
 
-@Service(DbDiagnoseService.NAME)
+@Service(NAME)
 class DbDiagnoseServiceBean implements DbDiagnoseService {
 
     @Inject
@@ -136,7 +137,7 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
     @Transactional
     @Override
     String getSqlQuery(String jpqlQuery) {
-        if (jpqlQuery == null || jpqlQuery == '') {
+        if (StringUtils.isNotBlank(jpqlQuery)) {
             return null
         }
 
