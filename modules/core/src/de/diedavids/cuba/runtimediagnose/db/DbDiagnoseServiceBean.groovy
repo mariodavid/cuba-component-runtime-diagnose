@@ -19,7 +19,7 @@ import javax.persistence.EntityManager
 import javax.sql.DataSource
 import javax.transaction.Transactional
 
-@Service(NAME)
+@Service(DbDiagnoseService.NAME)
 class DbDiagnoseServiceBean implements DbDiagnoseService {
 
     @Inject
