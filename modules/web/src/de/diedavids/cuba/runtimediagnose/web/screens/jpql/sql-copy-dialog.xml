@@ -6,16 +6,14 @@
     <layout margin="true"
             spacing="true">
         <textArea id="sqlTextArea"
+                  editable="false"
                   width="100%"/>
-        <buttonsPanel align="MIDDLE_CENTER"
+        <buttonsPanel align="TOP_RIGHT"
                       width="100%">
             <button id="copyBtn"
-                    align="MIDDLE_LEFT"
-                    caption="msg://copy"/>
-            <button id="cancelBtn"
-                    align="MIDDLE_RIGHT"
-                    caption="msg://cancel"
-                    invoke="onCancelBtnClick"/>
+                    align="TOP_RIGHT"
+                    caption="msg://copy"
+                    icon="font-icon:CLIPBOARD"/>
         </buttonsPanel>
     </layout>
 </window>

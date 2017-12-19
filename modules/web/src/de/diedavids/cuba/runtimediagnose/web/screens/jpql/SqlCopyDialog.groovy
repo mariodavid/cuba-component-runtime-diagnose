@@ -13,8 +13,6 @@ class SqlCopyDialog extends AbstractWindow {
     TextArea textArea
     @Named('copyBtn')
     Button copyBtn
-    @Named('cancelBtn')
-    Button cancelBtn
 
     String copyButtonClass = 'copy-sql-button'
     String sqlTextContentClass = "sql-text-content-${UUID.randomUUID()}"
@@ -26,10 +24,6 @@ class SqlCopyDialog extends AbstractWindow {
         textArea.setStyleName(sqlTextContentClass)
         textArea.value = params.get('sqlQuery')
         executeJs()
-    }
-
-    void onCancelBtnClick() {
-        close('closeSqlDialog')
     }
 
     void executeJs() {
