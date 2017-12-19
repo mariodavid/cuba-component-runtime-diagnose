@@ -10,10 +10,14 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import groovy.sql.Sql
 import net.sf.jsqlparser.statement.Statements
+import org.apache.commons.lang.StringUtils
+import org.eclipse.persistence.internal.jpa.EJBQueryImpl
 import org.springframework.stereotype.Service
 
 import javax.inject.Inject
+import javax.persistence.EntityManager
 import javax.sql.DataSource
+import javax.transaction.Transactional
 
 @Service(DbDiagnoseService.NAME)
 class DbDiagnoseServiceBean implements DbDiagnoseService {
@@ -127,6 +131,20 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
 
             diagnoseExecution
         }
+    }
+
+    @SuppressWarnings(['UnnecessaryGetter'])
+    @Transactional
+    @Override
+    String getSqlQuery(String jpqlQuery) {
+        if (StringUtils.isBlank(jpqlQuery)) {
+            return null
+        }
+
+        EntityManager eclipseEm = persistence.entityManager.delegate
+        EJBQueryImpl query = eclipseEm.createQuery(jpqlQuery) as EJBQueryImpl
+
+        query.databaseQuery.getSQLString()
     }
 
     protected boolean statementsAvailable(Statements sqlStatements) {
