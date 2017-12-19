@@ -34,24 +34,6 @@ class SqlCopyDialogSpec extends Specification {
         sqlCopyDialog.addCopyButtonListener() == js
     }
 
-    def "onCancelBtnClick test"() {
-        given:
-        int countCloseWindow = 0
-        SqlCopyDialog dialog = new SqlCopyDialog() {
-            @Override
-            public boolean close(String actionId) {
-                countCloseWindow++
-                return true
-            }
-        }
-
-        when:
-        dialog.onCancelBtnClick()
-
-        then:
-        countCloseWindow == 1
-    }
-
     def "init check params"() {
 
         given:
