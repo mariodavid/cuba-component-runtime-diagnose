@@ -117,6 +117,8 @@ Results of a JPQL / SQL statement are displayed in a table in the result tab. Th
 
 The JPQL / SQL console supports comments in the form of `-- single line comment` and `/* multi line comments */`.
 
+In the JPQL console you additionally have the possibility to convert your written JPQL into an equivivalent SQL query. 
+This can be handy sometimes when working with the default mechanism of CUBA to load in data via SQL files e.g. 
 
 ### Security of the SQL-Console
 By default, only SELECT stements are allowed to execute through the SQL-Console. 

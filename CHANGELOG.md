@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.1] - 2017-12-19
+
+### Added
+- possibility to convert JPQL to SQL in the JPQL console
+
 ## [0.4.0] - 2017-11-29
 
 ### Added
