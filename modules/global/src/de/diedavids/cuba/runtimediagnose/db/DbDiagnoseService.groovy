@@ -8,4 +8,5 @@ interface DbDiagnoseService {
 
     DbQueryResult runSqlDiagnose(String queryString, DiagnoseType diagnoseType)
     DiagnoseExecution runSqlDiagnose(DiagnoseExecution diagnoseExecution, DiagnoseType diagnoseType)
+    String getSqlQuery(String jpqlQuery)
 }
