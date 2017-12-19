@@ -22,10 +22,10 @@ class JpqlConsole extends AbstractWindow {
 
     @Inject
     DbDiagnoseService dbDiagnoseService
+
     @Inject
     ConsoleFrame consoleFrame
-    @Inject
-    Messages messages
+
     @Inject
     ComponentsFactory componentsFactory
 
@@ -78,7 +78,7 @@ class JpqlConsole extends AbstractWindow {
         }
     }
 
-    static String removeFirstAndLastSquareBrackets(String query) {
+    String removeFirstAndLastSquareBrackets(String query) {
         query.replaceAll('^\\[?', '')
                 .replaceAll(']$', '')
     }

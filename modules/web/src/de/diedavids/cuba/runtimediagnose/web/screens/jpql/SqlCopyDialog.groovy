@@ -11,6 +11,7 @@ class SqlCopyDialog extends AbstractWindow {
 
     @Named('sqlTextArea')
     TextArea textArea
+
     @Named('copyBtn')
     Button copyBtn
 
@@ -20,13 +21,14 @@ class SqlCopyDialog extends AbstractWindow {
     @Override
     void init(Map<String, Object> params) {
         super.init(params)
-        copyBtn.setStyleName(copyButtonClass)
-        textArea.setStyleName(sqlTextContentClass)
+        copyBtn.styleName = copyButtonClass
+        textArea.styleName = sqlTextContentClass
         textArea.value = params.get('sqlQuery')
-        executeJs()
+
+        initJavascriptButtonListener()
     }
 
-    void executeJs() {
+    void initJavascriptButtonListener() {
         JavaScript.current.execute(addCopyButtonListener())
     }
 
@@ -35,7 +37,6 @@ class SqlCopyDialog extends AbstractWindow {
             try {
                 var copyButton = document.querySelector('.${copyButtonClass}')
                 copyButton.addEventListener('click', function(){
-                    console.log('clicked!');
                     var textarea = document.querySelector('.${sqlTextContentClass}').querySelector('textarea');
                     textarea.select();
                     document.execCommand('copy');
