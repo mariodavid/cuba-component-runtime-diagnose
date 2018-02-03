@@ -1,0 +1,13 @@
+# Configuration for new-issue-welcome - https://github.com/behaviorbot/new-issue-welcome
+
+newIssueWelcomeComment: |
+  👋 Thanks for opening your first issue here! If you're reporting a 🐞 bug, it would be great if you include steps to reproduce it. 
+  
+newPRWelcomeComment: |
+  💖 Thanks for opening this pull request! 💖
+  Here is a list of things that will help get it across the finish line:
+  - Run `./gradlew check` locally to catch formatting errors earlier.
+  - Include tests when adding/changing behavior.
+
+firstPRMergeComment: >
+  Congrats on merging your first pull request! 🎉🎉🎉
