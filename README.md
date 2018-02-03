@@ -14,11 +14,9 @@ It mainly consists of the three parts:
 * interactive JPQL / SQL console
 * non-interactive diagnose wizard
 
-
 ## Installation
 
 1. Add the following maven repository `https://dl.bintray.com/mariodavid/cuba-components` to the build.gradle of your CUBA application:
-
 
     buildscript {
         
