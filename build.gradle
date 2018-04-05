@@ -150,9 +150,7 @@ configure([globalModule, coreModule, guiModule, webModule]) {
         coverageReportDir = new File("$buildDir/reports/cobertura")
 
         coverageExcludes = [
-                '.*Generator',
-                '.*Enum',
-                '.*Hilfe.*' // Hilfe wird vorerst deaktiviert, da die Hilfe noch einem großen Refactoring unterliegt und dies bisher nur ein Proof of Concept ist
+                '.*Enum'
         ]
     }
 
