@@ -19,14 +19,14 @@ It mainly consists of the three parts:
 
 1. Add the following maven repository `https://dl.bintray.com/mariodavid/cuba-components` to the build.gradle of your CUBA application:
 
-    
-    buildscript {
-        repositories {
+
+        buildscript {
+          repositories {
             maven {
-                url  "https://dl.bintray.com/mariodavid/cuba-components"
+              url  "https://dl.bintray.com/mariodavid/cuba-components"
             }
-        }
-    }
+          }
+       }
     
 
 
