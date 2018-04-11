@@ -8,3 +8,6 @@ deploy/*
 modules/*/build/*
 out
 test-run
+.idea
+.ideaDataSources
+classes
