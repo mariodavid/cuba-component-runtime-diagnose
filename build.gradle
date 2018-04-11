@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '6.7.12'
+    ext.cubaVersion = '6.8.5'
     repositories {
         maven {
             url 'https://repo.cuba-platform.com/content/groups/work'
@@ -40,7 +40,7 @@ def bintrayRepositoryUrl = "https://api.bintray.com/maven/mariodavid/cuba-compon
 cuba {
     artifact {
         group = 'de.diedavids.cuba.runtimediagnose'
-        version = '0.4.1'
+        version = '1.0.0'
         isSnapshot = false
     }
     tomcat {
@@ -307,7 +307,7 @@ task restart(dependsOn: ['stop', ':runtime-diagnose-core:deploy', ':runtime-diag
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.4'
+    gradleVersion = '4.3.1'
 }
 
 apply from: 'extra.gradle'

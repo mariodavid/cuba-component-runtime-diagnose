@@ -1,11 +1,11 @@
 package de.diedavids.cuba.runtimediagnose.web.screens.jpql
 
+
 import static com.haulmont.cuba.gui.WindowManager.OpenType.DIALOG
 import static com.haulmont.cuba.gui.components.Frame.NotificationType.ERROR
 import static com.haulmont.cuba.gui.components.Frame.NotificationType.WARNING
 
 import com.haulmont.bali.util.ParamsMap
-import com.haulmont.cuba.core.global.Messages
 import com.haulmont.cuba.core.global.RemoteException
 import com.haulmont.cuba.gui.components.AbstractWindow
 import com.haulmont.cuba.gui.components.Button
@@ -17,6 +17,7 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleFrame
 
 import javax.inject.Inject
+
 
 class JpqlConsole extends AbstractWindow {
 
