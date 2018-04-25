@@ -19,7 +19,12 @@ Studio settings:
 * pass: `mysql`
 
 #### Oracle
-`docker run -d -p 49160:22 -p 49161:1521 -e ORACLE_ALLOW_REMOTE=true wnameless/oracle-xe-11g`
+`docker run -d -p 1521:1521 --name oracle -e ORACLE_ALLOW_REMOTE=true wnameless/oracle-xe-11g`
+Studio settings: 
+* JDBC: `jdbc:oracle:thin:@//localhost/xe`
+* connection params: ``
+* user: `system`
+* pass: `oracle`
 
 #### MS-SQL
 `docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=mssqlserver' -p 1433:1433 -d --name mssql microsoft/mssql-server-linux:latest`
