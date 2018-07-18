@@ -15,6 +15,8 @@ buildscript {
         classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
 
 
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
+
         classpath 'net.saliman:gradle-cobertura-plugin:2.5.0'
         classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2"
     }
@@ -34,27 +36,56 @@ def servletApi = 'org.apache.tomcat:tomcat-servlet-api:8.0.26'
 apply(plugin: 'idea')
 apply(plugin: 'cuba')
 
-def bintrayRepositoryUrl = "https://api.bintray.com/maven/mariodavid/cuba-components/cuba-component-runtime-diagnose/;publish=1"
+
+subprojects {
+    apply plugin: 'com.jfrog.bintray'
+
+    bintray {
+        user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('UPLOAD_REPOSITORY_USERNAME')
+        key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('UPLOAD_REPOSITORY_PASSWORD')
+
+        configurations = ['archives']
+
+        publish = true
+
+        override = false
+
+        // metadata
+        pkg {
+            repo = 'cuba-components'
+            name = 'cuba-component-runtime-diagnose'
+            desc = 'CUBA component for interactive runtime application diagnose and debugging'
+            userOrg = 'mariodavid'
+
+            websiteUrl = 'https://github.com/mariodavid/cuba-component-runtime-diagnose'
+            issueTrackerUrl = 'https://github.com/mariodavid/cuba-component-runtime-diagnose/issues'
+            vcsUrl = 'https://github.com/mariodavid/cuba-component-runtime-diagnose.git'
+
+            licenses = ["Apache-2.0"]
+
+            labels = ['runtime-diagnose', 'cuba-patform', 'cuba-component']
+            githubRepo = 'mariodavid/cuba-component-runtime-diagnose'
+            githubReleaseNotesFile = 'CHANGELOG.md'
+
+            version {
+                name = "${cuba.artifact.version}"
+                desc = ''
+                released = new Date()
+                vcsTag = "${cuba.artifact.version}"
+            }
+        }
+    }
+}
 
 
 cuba {
     artifact {
         group = 'de.diedavids.cuba.runtimediagnose'
-        version = '1.0.0'
-        isSnapshot = false
+        version = '1.1.0'
+        isSnapshot = true
     }
     tomcat {
         dir = "$project.rootDir/deploy/tomcat"
-    }
-    uploadRepository {
-        if (cuba.artifact.isSnapshot) {
-            url = System.properties['uploadRepositorySnapshot'] ?: System.env.UPLOAD_REPOSITORY_SNAPSHOT
-        } else {
-            url = System.properties['uploadRepositoryRelease'] ?: System.env.UPLOAD_REPOSITORY_RELEASE ?: bintrayRepositoryUrl
-        }
-
-        user = System.properties['uploadRepositoryUsername'] ?: System.env.UPLOAD_REPOSITORY_USERNAME
-        password = System.properties['uploadRepositoryPassword'] ?:System.env.UPLOAD_REPOSITORY_PASSWORD
     }
     ide {
         vcs = 'Git'
