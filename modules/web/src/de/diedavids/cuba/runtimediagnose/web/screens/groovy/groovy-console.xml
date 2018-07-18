@@ -73,6 +73,7 @@
                     </hbox>
                 </hbox>
                 <sourceCodeEditor id="console"
+                                  handleTabKey="true"
                                   mode="Groovy"
                                   width="100%"/>
             </vbox>

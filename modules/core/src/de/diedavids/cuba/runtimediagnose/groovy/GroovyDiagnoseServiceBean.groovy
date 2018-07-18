@@ -4,6 +4,7 @@ import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.global.*
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
+import de.diedavids.cuba.runtimediagnose.groovy.binding.GroovyScriptBindingSupplier
 import org.springframework.stereotype.Service
 
 import javax.inject.Inject
@@ -36,6 +37,10 @@ class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
     @Inject
     DiagnoseExecutionLogService diagnoseExecutionLogService
 
+    @Inject
+    List<GroovyScriptBindingSupplier> groovyScriptBindingSuppliers
+
+
 
     DiagnoseExecution runGroovyDiagnose(DiagnoseExecution diagnoseExecution) {
         if (diagnoseExecution) {
@@ -61,22 +66,36 @@ class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
     }
 
     protected Binding createBinding(GroovyConsoleLogger log) {
-        def binding = new Binding()
-        setDefaultBindingVariables(binding, log)
+        def binding = scriptBinding
 
+        binding.setVariable('log', log)
+
+        /**
+         * for backwards comparible reasons.
+         * TODO: remove in 1.2.0
+         */
         additionalBindingVariableMap.each { k, v ->
             binding.setVariable(k, v)
         }
         binding
     }
 
-    protected void setDefaultBindingVariables(Binding binding, GroovyConsoleLogger log) {
-        binding.setVariable('log', log)
-        binding.setVariable('dataManager', dataManager)
-        binding.setVariable('metadata', metadata)
-        binding.setVariable('persistence', persistence)
+
+    protected Binding getScriptBinding() {
+
+        Map<String, Object> bindingValues = [:]
+        groovyScriptBindingSuppliers.each {
+            bindingValues += it.binding
+        }
+
+        new Binding(bindingValues)
     }
 
+
+    /**
+     * @deprecated use GroovyScriptBindingSupplier instead
+     */
+    @Deprecated
     protected Map<String, Object> getAdditionalBindingVariableMap() {
         [:]
     }

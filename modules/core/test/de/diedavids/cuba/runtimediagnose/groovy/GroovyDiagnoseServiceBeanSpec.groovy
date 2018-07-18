@@ -71,23 +71,6 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         1 * scripting.evaluateGroovy("println 'hello world'",_)
     }
 
-    def "RunGroovyDiagnose creates a binding with an instance of common variables"() {
-
-        given:
-        def diagnoseExecution = new DiagnoseExecution()
-
-        when:
-        service.runGroovyDiagnose(diagnoseExecution)
-
-        then:
-        1 * scripting.evaluateGroovy(_,{
-            it instanceof Binding &&
-                    it.getVariable('log') instanceof GroovyConsoleLogger &&
-                    it.getVariable('dataManager') == dataManager &&
-                    it.getVariable('metadata') == metadata &&
-                    it.getVariable('persistence') == persistence
-        })
-    }
 
     def "RunGroovyDiagnose creates a binding with an instance of GroovyConsoleLogger"() {
 

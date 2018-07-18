@@ -5,10 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.1.0] - 2018-07-19
+
+### Added
+
+- handle tab key in groovy & SQL console
+- GroovyScriptBindingSupplier mechanism to add binding variables for groovy scripts
+
+
+### Dependencies
+- CUBA 6.9.x
+
+
 ## [1.0.0] - 2018-04-11
 
 This is a marker release. It is meant to show the the majority of the APIs according to the Semver conventions.
-
 
 ### Dependencies
 - CUBA 6.8.x

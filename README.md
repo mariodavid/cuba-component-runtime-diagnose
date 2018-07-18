@@ -54,26 +54,27 @@ The console uses the [Scripting](https://doc.cuba-platform.com/manual-6.4/script
 
 ### Using existing classes
 
-In order to use existing platform beans or your application specific beans, you can use `AppBeans.get()` to get a reference to abitrary Spring beans.
+In order to use existing platform beans or your application specific beans, you can use `bean(TimeSource)` to get a reference to abitrary Spring beans.
 
 > NOTE: To reference classes by name you have to manually add the corresponding import statements at the top of the scripts
 
-If you want to define custom variables that are accessible in your scripts, you have to extend the `GroovyDiagnoseServiceBean` like this:
+If you want to define custom variables that are accessible in your scripts, you create a Spring bean which implements `GroovyScriptBindingSupplier`.
 
-    class MyGroovyDiagnoseServiceBean extends GroovyDiagnoseServiceBean {
+    @Component('myapp_MyAdditionalBindingSupplier')
+    class MyAdditionalBindingSupplier implements GroovyScriptBindingSupplier {
     
+        @Inject
+        TimeSource timeSource
+        
         @Override
-        protected Map<String, Object> getAdditionalBindingVariableMap() {
-            [now: new Date()]
+        Map<String, Object> getBinding() {
+            [ timeSource: timeSource ]
         }
     }
-   
-The resulting map will additionally passed to the script. In order to use your bean, you have to register it in the `spring.xml` of the core module of your application like this:
- 
-    <bean id="ddcrd_GroovyConsoleService" class="com.company.myapp.core.MyGroovyDiagnoseServiceBean" />
     
-This way, Spring will pick up your extension GroovyDiagnoseService.
-    
+You can define multiple Spring beans that implement `GroovyScriptBindingSupplier` in your project. 
+All Maps will be merged and be accessible in the groovy script.
+
 ### Execution results
 
 There are different results of a groovy script (displayed in the different tabs). The actual result of the script (meaning the return value of the last statement) is displayed in the first tab. The stacktrace tab displayes the stacktrace of a possible exception that occurs during script execution. The tab executed script shows the actual executed script.
