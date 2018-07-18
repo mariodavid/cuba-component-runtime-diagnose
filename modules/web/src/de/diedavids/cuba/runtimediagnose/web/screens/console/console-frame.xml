@@ -70,6 +70,7 @@
                         </hbox>
                     </hbox>
                     <sourceCodeEditor id="console"
+                                      handleTabKey="true"
                                       mode="SQL"
                                       width="100%"/>
                 </vbox>
