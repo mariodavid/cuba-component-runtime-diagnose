@@ -17,19 +17,8 @@ It mainly consists of the three parts:
 
 ## Installation
 
-1. Add the following maven repository `https://dl.bintray.com/mariodavid/cuba-components` to the build.gradle of your CUBA application:
 
-
-        buildscript {
-          repositories {
-            maven {
-              url  "https://dl.bintray.com/mariodavid/cuba-components"
-            }
-          }
-       }
-    
-
-
+1. `runtime-diagnose` is available in the [CUBA marketplace](https://www.cuba-platform.com/marketplace)
 2. Select a version of the add-on which is compatible with the platform version used in your project:
 
 | Platform Version | Add-on Version |
@@ -48,8 +37,14 @@ Add custom application component to your project:
 * Artifact name: `runtime-diagnose-global`
 * Version: *add-on version*
 
+```groovy
+dependencies {
+  appComponent("de.diedavids.cuba.runtimediagnose:runtime-diagnose-global:*addon-version*")
+}
+```
+
 ## Groovy console
-The groovy console allows you to interactivly inspect the running application. You enter a groovy script and execute it in an ad-hoc fashion.
+The groovy console allows you to interactively inspect the running application. You enter a groovy script and execute it in an ad-hoc fashion.
 
 ![Screenshot Groovy-Console](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/groovy-console-screenshot.png)
 
