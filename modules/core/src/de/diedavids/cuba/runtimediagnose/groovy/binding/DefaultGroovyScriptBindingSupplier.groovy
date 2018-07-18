@@ -27,7 +27,6 @@ class DefaultGroovyScriptBindingSupplier implements GroovyScriptBindingSupplier 
     @Inject
     Metadata metadata
 
-
     @Override
     Map<String, Object> getBinding() {
         [
@@ -52,6 +51,5 @@ class DefaultGroovyScriptBindingSupplier implements GroovyScriptBindingSupplier 
             new Sql(dataSource)
         }
     }
-
 
 }
