@@ -11,7 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - handle tab key in groovy & SQL console
 - GroovyScriptBindingSupplier mechanism to add binding variables for groovy scripts
-
+- added following shorthand methods in groovy scripts:
+  - `bean(String springBeanName)` gives you a arbitrary bean of the Spring context
+  - `getSql()` returns a instance of `groovy.sql.SQL` for the main datasource
+  - `getSql('myDatasourceName')` returns a instance of `groovy.sql.SQL` for the given additional datasource
+      
 
 ### Dependencies
 - CUBA 6.9.x
