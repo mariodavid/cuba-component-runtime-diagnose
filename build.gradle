@@ -2,6 +2,8 @@
 buildscript {
     ext.cubaVersion = '6.9.3'
     repositories {
+
+        mavenLocal()
         maven {
             url 'https://repo.cuba-platform.com/content/groups/work'
             credentials {
@@ -9,11 +11,19 @@ buildscript {
                 password(rootProject.hasProperty('repoPass') ? rootProject['repoPass'] : 'cuba123')
             }
         }
-        
+
+
+        maven {
+            url  "https://dl.bintray.com/mariodavid/cuba-components"
+        }
+
+        maven {
+            url  "https://dl.bintray.com/balvi/cuba-components"
+        }
+
     }
     dependencies {
         classpath "com.haulmont.gradle:cuba-plugin:$cubaVersion"
-
 
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
 
@@ -25,16 +35,36 @@ buildscript {
 
 apply plugin: "com.github.kt3k.coveralls"
 
-def globalModule = project(':runtime-diagnose-global')
-def coreModule = project(':runtime-diagnose-core')
-def guiModule = project(':runtime-diagnose-gui')
-def webModule = project(':runtime-diagnose-web')
+
+def modulePrefix = 'runtime-diagnose'
+
+def globalModule = project(":${modulePrefix}-global")
+def coreModule = project(":${modulePrefix}-core")
+def guiModule = project(":${modulePrefix}-gui")
+def webModule = project(":${modulePrefix}-web")
 
 def servletApi = 'javax.servlet:javax.servlet-api:3.1.0'
 
 
 apply(plugin: 'idea')
 apply(plugin: 'cuba')
+
+
+
+
+cuba {
+    artifact {
+        group = 'de.diedavids.cuba.runtimediagnose'
+        version = "1.1.0"
+        isSnapshot = false
+    }
+    tomcat {
+        dir = "$project.rootDir/deploy/tomcat"
+    }
+    ide {
+        vcs = 'Git'
+    }
+}
 
 
 subprojects {
@@ -78,26 +108,13 @@ subprojects {
 }
 
 
-cuba {
-    artifact {
-        group = 'de.diedavids.cuba.runtimediagnose'
-        version = '1.1.0'
-        isSnapshot = false
-    }
-    tomcat {
-        dir = "$project.rootDir/deploy/tomcat"
-    }
-    ide {
-        vcs = 'Git'
-    }
-}
-
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
 }
 
 
 def hsql = 'org.hsqldb:hsqldb:2.2.9'
+
 
 allprojects {
     apply plugin: 'net.saliman.cobertura'
@@ -139,6 +156,7 @@ configure([globalModule, coreModule, guiModule, webModule]) {
     dependencies {
         testCompile('junit:junit:4.12')
 
+
         testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
         testCompile('org.springframework:spring-test:4.3.1.RELEASE')
         testRuntime "cglib:cglib-nodep:3.2.4"
@@ -156,8 +174,10 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 
 configure([globalModule, coreModule, guiModule, webModule]) {
     apply(plugin: 'groovy')
+
     apply plugin: 'net.saliman.cobertura'
     apply plugin: 'codenarc'
+
 
     codenarc {
         toolVersion = "0.24"
@@ -192,22 +212,19 @@ configure([globalModule, coreModule, guiModule, webModule]) {
         main { groovy { srcDirs = ["src"] } }
         test { groovy { srcDirs = ["test"] } }
     }
-
-
-
 }
 
 configure(globalModule) {
     task enhance(type: CubaEnhancing)
-    
-    
+
     jar {
         manifest {
             attributes('App-Component-Id': cuba.artifact.group)
             attributes('App-Component-Version': cuba.artifact.version + (cuba.artifact.isSnapshot ? '-SNAPSHOT' : ''))
         }
     }
-    
+
+
 }
 
 configure(coreModule) {
@@ -227,18 +244,20 @@ configure(coreModule) {
 
     }
 
-    task cleanConf(description: 'Cleans up conf directory') << {
-        def dir = new File(cuba.tomcat.dir, '/conf/runtime-diagnose-core')
-        if (dir.isDirectory()) {
-            ant.delete(includeemptydirs: true) {
-                fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties')
+    task cleanConf(description: 'Cleans up conf directory') {
+        doLast {
+            def dir = new File(cuba.tomcat.dir, "/conf/${modulePrefix}-core")
+            if (dir.isDirectory()) {
+                ant.delete(includeemptydirs: true) {
+                    fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties')
+                }
             }
         }
     }
 
     task deploy(dependsOn: [assemble, cleanConf], type: CubaDeployment) {
-        appName = 'runtime-diagnose-core'
-        appJars('runtime-diagnose-global', 'runtime-diagnose-core')
+        appName = "${modulePrefix}-core"
+        appJars(modulePrefix + '-global', modulePrefix + '-core')
     }
 
     task createDb(dependsOn: assembleDbScripts, description: 'Creates local database', type: CubaDbCreation) {
@@ -267,7 +286,7 @@ configure(guiModule) {
     task deployConf(type: Copy) {
         from file('src')
         include "de/diedavids/cuba/runtimediagnose/**"
-        into "$cuba.tomcat.dir/conf/runtime-diagnose"
+        into "$cuba.tomcat.dir/conf/${modulePrefix}"
     }
 }
 
@@ -295,26 +314,28 @@ configure(webModule) {
     task deployConf(type: Copy) {
         from file('src')
         include "de/diedavids/cuba/runtimediagnose/**"
-        into "$cuba.tomcat.dir/conf/runtime-diagnose"
+        into "$cuba.tomcat.dir/conf/${modulePrefix}"
     }
 
     task clearMessagesCache(type: CubaClearMessagesCache) {
-        appName = 'runtime-diagnose'
+        appName = "${modulePrefix}"
     }
     deployConf.dependsOn clearMessagesCache
 
-    task cleanConf(description: 'Cleans up conf directory') << {
-        def dir = new File(cuba.tomcat.dir, '/conf/runtime-diagnose')
-        if (dir.isDirectory()) {
-            ant.delete(includeemptydirs: true) {
-                fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties')
+    task cleanConf(description: 'Cleans up conf directory') {
+        doLast {
+            def dir = new File(cuba.tomcat.dir, "/conf/${modulePrefix}")
+            if (dir.isDirectory()) {
+                ant.delete(includeemptydirs: true) {
+                    fileset(dir: dir, includes: '**/*', excludes: 'local.app.properties')
+                }
             }
         }
     }
 
     task deploy(dependsOn: [assemble, cleanConf], type: CubaDeployment) {
-        appName = 'runtime-diagnose'
-        appJars('runtime-diagnose-global', 'runtime-diagnose-gui', 'runtime-diagnose-web')
+        appName = "${modulePrefix}"
+        appJars(modulePrefix + '-global', modulePrefix + '-gui', modulePrefix + '-web')
     }
 }
 
@@ -322,19 +343,21 @@ configure(webModule) {
 
 
 
-task undeploy(type: Delete, dependsOn: ':runtime-diagnose-web:cleanConf') {
+task undeploy(type: Delete, dependsOn: ":${modulePrefix}-web:cleanConf") {
     delete("$cuba.tomcat.dir/shared")
-    delete("$cuba.tomcat.dir/webapps/runtime-diagnose-core")
-    delete("$cuba.tomcat.dir/webapps/runtime-diagnose")
+    delete("$cuba.tomcat.dir/webapps/${modulePrefix}-core")
+    delete("$cuba.tomcat.dir/webapps/${modulePrefix}")
 }
 
-task restart(dependsOn: ['stop', ':runtime-diagnose-core:deploy', ':runtime-diagnose-web:deploy'], description: 'Redeploys applications and restarts local Tomcat') << {
-    ant.waitfor(maxwait: 6, maxwaitunit: 'second', checkevery: 2, checkeveryunit: 'second') {
-        not {
-            socket(server: 'localhost', port: '8787')
+task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefix}-web:deploy"], description: 'Redeploys applications and restarts local Tomcat') {
+    doLast {
+        ant.waitfor(maxwait: 6, maxwaitunit: 'second', checkevery: 2, checkeveryunit: 'second') {
+            not {
+                socket(server: 'localhost', port: '8787')
+            }
         }
+        start.execute()
     }
-    start.execute()
 }
 
 task wrapper(type: Wrapper) {
