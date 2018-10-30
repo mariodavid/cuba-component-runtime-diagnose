@@ -1,6 +1,8 @@
 package de.diedavids.cuba.runtimediagnose.web.screens
 
+import com.haulmont.cuba.core.global.BeanLocator
 import com.haulmont.cuba.core.global.Messages
+import com.haulmont.cuba.core.global.Metadata
 import com.haulmont.cuba.core.global.UserSessionSource
 import com.haulmont.cuba.core.global.UuidSource
 import com.haulmont.cuba.core.sys.AppContext
@@ -19,22 +21,30 @@ class SpecificationWithApplicationContext extends Specification {
     UserSessionSource sessionSource
     @Shared
     UuidSource uuidSource
+    @Shared
+    BeanLocator beanLocator
+    @Shared
+    Metadata metadata
 
     def setup() {
         applicationContext = Mock()
+        beanLocator = Mock()
+
+        applicationContext.getBean(BeanLocator.NAME,BeanLocator) >> beanLocator
+
         initBeans()
 
-        AppContext.Internals.setApplicationContext(applicationContext)
+        AppContext.Internals.applicationContext = applicationContext
     }
 
     def cleanup() {
-        AppContext.Internals.setApplicationContext(null)
+        AppContext.Internals.applicationContext = null
     }
 
     private void initBeans() {
-        Map<Class, Object> beansFromSpec = getBeans()
-        addDefaultBeans(beansFromSpec)
-        mockGetBean(beansFromSpec)
+        def allBeans = getBeans()
+        addDefaultBeans(allBeans)
+        mockGetBean(allBeans)
     }
 
     private void mockGetBean(Map<Class, Object> beans) {
@@ -42,28 +52,29 @@ class SpecificationWithApplicationContext extends Specification {
             Class clazz = bean.key
             Object instance = bean.value
 
-            applicationContext.getBean(clazz) >> instance
-
-            try {
-                String name = clazz.NAME
-                if (name) {
-                    applicationContext.getBean(name) >> instance
-                    applicationContext.getBean(name, clazz) >> instance
-                }
-            }
-            catch(MissingPropertyException e) {
-                e.printStackTrace()
+            beanLocator.get(clazz) >> instance
+            String name = clazz.NAME
+            if (name) {
+                beanLocator.get(name) >> instance
+                beanLocator.get(name, clazz) >> instance
             }
         }
     }
 
     protected void addDefaultBeans(Map<Class, Object> beansFromSpec) {
+
         messages = Mock()
         sessionSource = Mock()
         uuidSource = Mock()
+        metadata = Mock()
         uuidSource.createUuid() >> UUID.randomUUID()
 
-        beansFromSpec.putAll([(Messages): messages, (UserSessionSource): sessionSource, (UuidSource): uuidSource])
+        beansFromSpec.putAll([
+            (Messages)         : messages,
+            (UserSessionSource): sessionSource,
+            (UuidSource)       : uuidSource,
+            (Metadata)         : metadata,
+        ])
     }
 
     Map<Class, Object> getBeans() {

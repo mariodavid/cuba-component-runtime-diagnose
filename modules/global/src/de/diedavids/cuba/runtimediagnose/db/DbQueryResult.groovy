@@ -10,6 +10,10 @@ class DbQueryResult implements Serializable {
 
     Collection<KeyValueEntity> entities = []
 
+    boolean isEmpty() {
+        columns.empty && entities.empty
+    }
+
     void addColumn(String column) {
         columns << column
     }

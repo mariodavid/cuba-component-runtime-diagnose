@@ -65,8 +65,13 @@ class ConsoleFrame extends ConsoleWindow {
     void doRunConsole() {
         try {
             DbQueryResult result = dbDiagnoseService.runSqlDiagnose(console.value, diagnoseType)
-            ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
-            createResultTable(sqlResultDs)
+            if (result.empty) {
+                showNotification(formatMessage('executionSuccessful'), Frame.NotificationType.TRAY)
+            }
+            else {
+                ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
+                createResultTable(sqlResultDs)
+            }
         }
         catch (SqlConsoleSecurityException e) {
             showNotification(e.message, Frame.NotificationType.ERROR)

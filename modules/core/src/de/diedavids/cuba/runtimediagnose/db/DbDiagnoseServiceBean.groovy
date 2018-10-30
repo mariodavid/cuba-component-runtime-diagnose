@@ -32,6 +32,9 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
     DbQueryParser dbQueryParser
 
     @Inject
+    DbSqlExecutor dbSqlExecutor
+
+    @Inject
     TimeSource timeSource
 
     @Inject
@@ -57,7 +60,8 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         DbQueryResult dbQueryResult
         try {
             dbQueryResult = getQueryResult(diagnoseType, queryStatement, queryStatements)
-            diagnoseExecution.handleSuccessfulExecution(dbQueryResult.entities[0].toString())
+
+            diagnoseExecution.handleSuccessfulExecution(getResultMessage(dbQueryResult))
             diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
         } catch (Exception e) {
             dbQueryResult = selectResultFactory.createFromRows([])
@@ -68,20 +72,30 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         dbQueryResult
     }
 
+    protected String getResultMessage(DbQueryResult dbQueryResult) {
+        String resultMessage = ''
+        if (dbQueryResult.empty) {
+            resultMessage = 'Execution successful'
+        } else {
+            resultMessage = dbQueryResult.entities[0].toString()
+        }
+        resultMessage
+    }
+
     protected DbQueryResult getQueryResult(DiagnoseType diagnoseType, String queryStatement, Statements queryStatements) {
-        DbQueryResult sqlSelectResult
+        DbQueryResult dbQueryResult
         switch (diagnoseType) {
             case DiagnoseType.JPQL:
-                sqlSelectResult = executeJpqlStatement(queryStatement, queryStatements)
+                dbQueryResult = executeJpqlStatement(queryStatement, queryStatements)
                 break
             case DiagnoseType.SQL:
                 def sql = createSqlConnection(persistence.dataSource)
-                sqlSelectResult = executeSqlStatement(sql, queryStatement)
+                dbQueryResult = executeSqlStatement(sql, queryStatements)
                 break
             default:
                 throw new IllegalArgumentException('DiagnoseType is not supported (' + diagnoseType + ')')
         }
-        sqlSelectResult
+        dbQueryResult
     }
 
     protected DbQueryResult executeJpqlStatement(String queryStatement, Statements queryStatements) {
@@ -97,9 +111,8 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         }
     }
 
-    protected DbQueryResult executeSqlStatement(Sql sql, String queryString) {
-        def rows = sql.rows(queryString)
-        selectResultFactory.createFromRows(rows)
+    protected DbQueryResult executeSqlStatement(Sql sql, Statements queryStatements) {
+        dbSqlExecutor.executeStatement(sql, queryStatements.statements[0])
     }
 
     private DiagnoseExecution createAdHocDiagnose(String sqlStatement, DiagnoseType diagnoseType) {

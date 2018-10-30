@@ -28,6 +28,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
     MockableDbDiagnoseServiceBean dbDiagnoseServiceBean
 
     DbQueryParser dbQueryParser
+    DbSqlExecutor dbSqlExecutor
     SqlSelectResultFactory selectResultFactory
     Transaction transaction
     Persistence persistence
@@ -42,6 +43,10 @@ class DbDiagnoseServiceBeanSpec extends Specification {
     def setup() {
         dbQueryParser = Mock(DbQueryParser)
         selectResultFactory = Mock(SqlSelectResultFactory)
+        dbSqlExecutor = Mock(DbSqlExecutor)
+
+        dbSqlExecutor.executeStatement(_,_) >> new DbQueryResult()
+
         transaction = Mock(Transaction)
         persistence = Mock(Persistence)
         sql = Mock(Sql) {
@@ -62,6 +67,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         diagnoseExecutionFactory = Mock(DiagnoseExecutionFactory)
         dbDiagnoseServiceBean = new MockableDbDiagnoseServiceBean(
                 dbQueryParser: dbQueryParser,
+                dbSqlExecutor: dbSqlExecutor,
                 selectResultFactory: selectResultFactory,
                 persistence: persistence,
                 sql: sql,
@@ -139,7 +145,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
 
         then:
-        1 * sql.rows(sqlString)
+        1 * dbSqlExecutor.executeStatement(_, sqlStatement) >> new DbQueryResult()
     }
 
     def "runSqlDiagnose executes the jpql script if there is at least one result of the jpql parser"() {
@@ -170,7 +176,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
 
-        and: "the db parser returns one db statement"
+        and: "the db parser returns no db statement"
         def statements = Mock(Statements)
         statements.getStatements() >> []
 
@@ -180,7 +186,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
 
         then:
-        0 * sql.rows(_)
+        0 * dbSqlExecutor.executeStatement(_,_)
     }
 
     def "runSqlDiagnose executes no sql script if there is no result of the jpql parser"() {
@@ -198,7 +204,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
 
         then:
-        0 * sql.rows(_)
+        0 * dbSqlExecutor.executeStatement(_,_)
     }
 
     def "runSqlDiagnose executes no jpql script if there is no result of the jpql parser"() {
@@ -216,7 +222,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
 
         then:
-        0 * sql.rows(_)
+        0 * dbSqlExecutor.executeStatement(_,_)
     }
 
     def "runSqlDiagnose adds metainformation to the diagnoseExecution"() {
