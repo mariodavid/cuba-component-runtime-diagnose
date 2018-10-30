@@ -1,6 +1,7 @@
 package de.diedavids.cuba.runtimediagnose.diagnose
 
 import com.haulmont.cuba.core.global.BuildInfo
+import com.haulmont.cuba.core.global.BuildInfo.Content
 import com.haulmont.cuba.core.global.Messages
 import com.haulmont.cuba.core.global.Metadata
 import com.haulmont.cuba.core.global.UuidSource
@@ -13,7 +14,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
     DiagnoseFileValidationService sut
     Metadata metadata
     BuildInfo buildInfo
-    BuildInfo.Content buildInfoContent
+    Content buildInfoContent
 
     @Override
     Map<Class, Object> getBeans() {
@@ -31,7 +32,7 @@ class DiagnoseFileValidationServiceBeanSpec extends SpecificationWithApplication
                 buildInfo: buildInfo
         )
 
-        buildInfoContent = Mock(BuildInfo.Content)
+        buildInfoContent = Mock(Content)
         buildInfo.getContent() >> buildInfoContent
     }
 

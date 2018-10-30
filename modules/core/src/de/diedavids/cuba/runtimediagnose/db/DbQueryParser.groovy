@@ -10,6 +10,7 @@ import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import net.sf.jsqlparser.parser.CCJSqlParserUtil
 import net.sf.jsqlparser.statement.SetStatement
+import net.sf.jsqlparser.statement.Statement
 import net.sf.jsqlparser.statement.Statements
 import net.sf.jsqlparser.statement.alter.Alter
 import net.sf.jsqlparser.statement.create.index.CreateIndex
@@ -22,6 +23,7 @@ import net.sf.jsqlparser.statement.execute.Execute
 import net.sf.jsqlparser.statement.insert.Insert
 import net.sf.jsqlparser.statement.merge.Merge
 import net.sf.jsqlparser.statement.replace.Replace
+import net.sf.jsqlparser.statement.select.Select
 import net.sf.jsqlparser.statement.truncate.Truncate
 import net.sf.jsqlparser.statement.update.Update
 import org.springframework.stereotype.Component
@@ -38,6 +40,9 @@ class DbQueryParser {
     @Inject
     Messages messages
 
+    protected static final SELECT_OPERATIONS = [
+        Select
+    ]
     protected static final EXECUTE_OPERATIONS = [
         Execute, SetStatement
     ]
@@ -86,26 +91,52 @@ class DbQueryParser {
             ScriptManagerUtilLazyHolder.DOMAIN_MODEL_INSTANCE
         }
     }
+
     boolean containsDataManipulation(Statements statements) {
         containsIllegalOperation(statements, DATA_MANIPULATION_OPERATIONS)
+    }
+    boolean isDataManipulation(Statement statement) {
+        containsIllegalOperation(statement, DATA_MANIPULATION_OPERATIONS)
+    }
+
+    boolean containsSelect(Statements statements) {
+        containsIllegalOperation(statements, SELECT_OPERATIONS)
+    }
+
+    boolean isSelect(Statement statement) {
+      containsIllegalOperation(statement, SELECT_OPERATIONS)
     }
 
     boolean containsSchemaManipulation(Statements statements) {
         containsIllegalOperation(statements, SCHEMA_MANIPULATION_OPERATIONS)
+    }
+    boolean isSchemaManipulation(Statement statement) {
+        containsIllegalOperation(statement, SCHEMA_MANIPULATION_OPERATIONS)
     }
 
     boolean containsExecuteOperations(Statements statements) {
         containsIllegalOperation(statements, EXECUTE_OPERATIONS)
     }
 
-    protected boolean containsIllegalOperation(Statements statements, dataManipulationOperations) {
+    boolean isExecuteOperations(Statement statement) {
+        containsIllegalOperation(statement, EXECUTE_OPERATIONS)
+    }
+
+    protected boolean containsIllegalOperation(Statements statements, List<Class> dataManipulationOperations) {
+
+        def statementsResults = statements.statements.collect { Statement statement ->
+          containsIllegalOperation(statement, dataManipulationOperations)
+        }
+
+        statementsResults.any { it }
+    }
+
+    protected boolean containsIllegalOperation(Statement statement, List<Class> dataManipulationOperations) {
 
         def containsIllegalOperation = false
-        statements.statements.each { statement ->
-            dataManipulationOperations.each { operationClass ->
-                if (operationClass.isAssignableFrom(statement.class)) {
-                    containsIllegalOperation = true
-                }
+        dataManipulationOperations.each { operationClass ->
+            if (operationClass.isAssignableFrom(statement.class)) {
+                containsIllegalOperation = true
             }
         }
 
