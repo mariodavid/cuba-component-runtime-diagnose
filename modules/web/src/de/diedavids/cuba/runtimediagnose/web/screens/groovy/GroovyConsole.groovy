@@ -7,12 +7,12 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseService
-import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleWindow
+import de.diedavids.cuba.runtimediagnose.web.screens.console.AbstractConsoleWindow
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
 
 import javax.inject.Inject
 
-class GroovyConsole extends ConsoleWindow {
+class GroovyConsole extends AbstractConsoleWindow {
 
     @Inject
     SourceCodeEditor consoleResult

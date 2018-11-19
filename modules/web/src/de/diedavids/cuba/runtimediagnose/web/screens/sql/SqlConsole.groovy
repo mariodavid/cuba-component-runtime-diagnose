@@ -1,25 +1,13 @@
 package de.diedavids.cuba.runtimediagnose.web.screens.sql
 
-import com.haulmont.bali.util.ParamsMap
-import com.haulmont.cuba.gui.components.AbstractWindow
-import com.haulmont.cuba.gui.components.Frame
+
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
+import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleWindow
 
-import javax.inject.Inject
-
-class SqlConsole extends AbstractWindow {
-
-    @Inject
-    protected Frame consoleFrame
+class SqlConsole extends ConsoleWindow {
 
     @Override
-    void init(Map<String, Object> params) {
-        super.init(params)
-
-        openFrame(
-                consoleFrame,
-                'console-frame',
-                ParamsMap.of('diagnoseType', DiagnoseType.SQL)
-        )
+    DiagnoseType getDiagnoseType() {
+        return DiagnoseType.SQL
     }
 }

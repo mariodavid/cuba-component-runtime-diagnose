@@ -6,15 +6,16 @@ import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.gui.components.*
 import com.haulmont.cuba.gui.export.ExportDisplay
 import com.haulmont.cuba.gui.upload.FileUploadingAPI
+import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseService
-import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
 import de.diedavids.cuba.runtimediagnose.wizard.DiagnoseWizardResultType
 
 import javax.inject.Inject
+import java.util.function.Consumer
 
 class DiagnoseWizard extends AbstractWindow {
 
@@ -56,35 +57,32 @@ class DiagnoseWizard extends AbstractWindow {
     }
 
     protected initUploadFileSucceedListener() {
-        consoleFileUploadBtn.addFileUploadSucceedListener(new FileUploadField.FileUploadSucceedListener() {
-            @Override
-            void fileUploadSucceed(FileUploadField.FileUploadSucceedEvent e) {
-                File file = fileUploadingAPI.getFile(consoleFileUploadBtn.fileId)
+        consoleFileUploadBtn.addFileUploadSucceedListener([
+                accept : { FileUploadField.FileUploadSucceedEvent fileUploadSucceedEvent ->
+                    File file = fileUploadingAPI.getFile(consoleFileUploadBtn.fileId)
 
-                diagnoseExecution = diagnoseExecutionFactory.createDiagnoseExecutionFromFile(file)
-                diagnoseFileValidationDs.refresh([diagnose: diagnoseExecution])
+                    diagnoseExecution = diagnoseExecutionFactory.createDiagnoseExecutionFromFile(file)
+                    diagnoseFileValidationDs.refresh([diagnose: diagnoseExecution])
 
-                wizardAccordion.getTab(WIZARD_STEP_2).enabled = true
-                wizardAccordion.tab = WIZARD_STEP_2
+                    wizardAccordion.getTab(WIZARD_STEP_2).enabled = true
+                    wizardAccordion.tab = WIZARD_STEP_2
 
-                if (diagnoseFileValidationDs.items.any { it.type == DiagnoseWizardResultType.ERROR }) {
-                    executeDiagnosisBtn.enabled = false
+                    if (diagnoseFileValidationDs.items.any { it.type == DiagnoseWizardResultType.ERROR }) {
+                        executeDiagnosisBtn.enabled = false
+                    }
+                    Accordion.Tab step1 = wizardAccordion.getTab(WIZARD_STEP_1)
+                    step1.caption = "${step1.caption} $check"
+                    step1.enabled = false
                 }
-                Accordion.Tab step1 = wizardAccordion.getTab(WIZARD_STEP_1)
-                step1.caption = "${step1.caption} $check"
-                step1.enabled = false
-
-            }
-        })
+        ] as Consumer);
     }
 
     protected initUploadFileErrorListener() {
-        consoleFileUploadBtn.addFileUploadErrorListener(new UploadField.FileUploadErrorListener() {
-            @Override
-            void fileUploadError(UploadField.FileUploadErrorEvent e) {
-                showNotification(formatMessage('fileUploadError'), Frame.NotificationType.ERROR)
-            }
-        })
+        consoleFileUploadBtn.addFileUploadErrorListener([
+                accept : { UploadField.FileUploadErrorEvent fileUploadSucceedEvent ->
+                    showNotification(formatMessage('fileUploadError'), NotificationType.ERROR)
+                }
+        ] as Consumer)
     }
 
     void runGroovyDiagnose() {

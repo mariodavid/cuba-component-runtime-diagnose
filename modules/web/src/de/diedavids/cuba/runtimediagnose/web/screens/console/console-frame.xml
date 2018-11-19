@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
-        class="de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleFrame"
+        class="de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleWindow"
         messagesPack="de.diedavids.cuba.runtimediagnose.web.screens.sql">
         <actions>
             <action id="runSqlConsoleAction"

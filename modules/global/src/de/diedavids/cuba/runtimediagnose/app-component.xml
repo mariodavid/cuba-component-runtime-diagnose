@@ -5,6 +5,7 @@
             name="global">
         <artifact appJar="true"
                   name="runtime-diagnose-global"/>
+        <artifact name="runtime-diagnose-core" classifier="db" ext="zip" configuration="dbscripts"/>
         <property name="cuba.persistenceConfig"
                   value="+de/diedavids/cuba/runtimediagnose/persistence.xml"/>
         <property name="cuba.metadataConfig"

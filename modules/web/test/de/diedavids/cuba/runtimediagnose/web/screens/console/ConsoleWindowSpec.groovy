@@ -73,7 +73,7 @@ class ConsoleWindowSpec extends Specification {
         sut.minimizeConsole()
 
         then:
-        1 * consoleResultSplitter.setSplitPosition(ConsoleWindow.SPLIT_POSITION_CENTER)
+        1 * consoleResultSplitter.setSplitPosition(AbstractConsoleWindow.SPLIT_POSITION_CENTER)
     }
 
     def "minimizeConsoleResult sets the split position to 50"() {
@@ -81,7 +81,7 @@ class ConsoleWindowSpec extends Specification {
         sut.minimizeConsoleResult()
 
         then:
-        1 * consoleResultSplitter.setSplitPosition(ConsoleWindow.SPLIT_POSITION_CENTER)
+        1 * consoleResultSplitter.setSplitPosition(AbstractConsoleWindow.SPLIT_POSITION_CENTER)
     }
 
     def "runConsole runs the console content if it contains content"() {
@@ -149,7 +149,7 @@ class ConsoleWindowSpec extends Specification {
 
 }
 
-class TestGroovyConsoleWindow extends ConsoleWindow {
+class TestGroovyConsoleWindow extends AbstractConsoleWindow {
 
     boolean consoleRunExecuted = false
     @Override

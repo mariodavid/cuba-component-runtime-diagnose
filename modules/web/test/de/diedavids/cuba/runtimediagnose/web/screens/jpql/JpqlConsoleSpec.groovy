@@ -4,9 +4,8 @@ import com.haulmont.cuba.core.global.Messages
 import com.haulmont.cuba.core.global.RemoteException
 import com.haulmont.cuba.gui.components.AbstractFrame
 import com.haulmont.cuba.gui.components.SourceCodeEditor
-import com.haulmont.cuba.web.gui.components.WebSourceCodeEditor
 import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
-import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleFrame
+import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleWindow
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -17,7 +16,7 @@ import static com.haulmont.cuba.gui.components.Frame.NotificationType.WARNING
 class JpqlConsoleSpec extends Specification {
 
     JpqlConsole sut
-    ConsoleFrame consoleFrame
+    ConsoleWindow consoleFrame
     SourceCodeEditor codeEditor
     DbDiagnoseService dbDiagnoseService
     AbstractFrame frame
