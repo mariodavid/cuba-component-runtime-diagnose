@@ -10,7 +10,7 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import groovy.sql.Sql
 import net.sf.jsqlparser.statement.Statements
-import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.StringUtils
 import org.eclipse.persistence.internal.jpa.EJBQueryImpl
 import org.springframework.stereotype.Service
 
