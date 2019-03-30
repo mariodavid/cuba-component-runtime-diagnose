@@ -23,6 +23,10 @@ buildscript {
 }
 
 
+plugins {
+    id 'net.researchgate.release' version '2.6.0'
+}
+
 apply plugin: "com.github.kt3k.coveralls"
 
 
@@ -44,8 +48,8 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'de.diedavids.cuba.runtimediagnose'
-        version = "1.3.0"
-        isSnapshot = true
+        version = project.properties['version'].replaceAll('-SNAPSHOT', '')
+        isSnapshot = project.properties['version'].contains('-SNAPSHOT')
     }
     tomcat {
         dir = "$project.rootDir/deploy/tomcat"
@@ -60,8 +64,8 @@ subprojects {
     apply plugin: 'com.jfrog.bintray'
 
     bintray {
-        user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('UPLOAD_REPOSITORY_USERNAME')
-        key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('UPLOAD_REPOSITORY_PASSWORD')
+        user = System.getenv('BINTRAY_USERNAME')
+        key = System.getenv('BINTRAY_PASSWORD')
 
         configurations = ['archives']
 
@@ -147,7 +151,7 @@ configure([globalModule, coreModule, guiModule, webModule]) {
 
         compile('org.codehaus.groovy:groovy-all:2.5.4')
 
-        testCompile('org.spockframework:spock-core:1.0-groovy-2.4')
+        testCompile('org.spockframework:spock-core:1.2-groovy-2.5')
         testCompile('org.springframework:spring-test:4.3.1.RELEASE')
         testRuntime "cglib:cglib-nodep:3.2.4"
     }
@@ -168,12 +172,11 @@ configure([globalModule, coreModule, guiModule, webModule]) {
     apply plugin: 'net.saliman.cobertura'
     apply plugin: 'codenarc'
 
-
     codenarc {
-        toolVersion = "0.24"
+        toolVersion = "1.3"
         ignoreFailures = false
         reportFormat = 'html'
-        reportsDir = new File("./build/reports/codenarc")
+        reportsDir = project.file("build/reports/codenarc")
     }
 
     codenarcMain {
@@ -359,7 +362,7 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
 }
 
 
-apply from: 'extra.gradle'
+
 
 
 clean {
