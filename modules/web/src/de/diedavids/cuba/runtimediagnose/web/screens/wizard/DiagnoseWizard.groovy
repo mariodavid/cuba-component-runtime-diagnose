@@ -74,7 +74,7 @@ class DiagnoseWizard extends AbstractWindow {
                     step1.caption = "${step1.caption} $check"
                     step1.enabled = false
                 }
-        ] as Consumer);
+        ] as Consumer)
     }
 
     protected initUploadFileErrorListener() {

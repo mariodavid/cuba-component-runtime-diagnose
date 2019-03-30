@@ -3,11 +3,11 @@ package de.diedavids.cuba.runtimediagnose.web.screens.jpql
 import com.haulmont.cuba.core.global.Messages
 import com.haulmont.cuba.core.global.RemoteException
 import com.haulmont.cuba.gui.components.AbstractFrame
+import com.haulmont.cuba.gui.components.AbstractWindow
+import com.haulmont.cuba.gui.components.Component
 import com.haulmont.cuba.gui.components.SourceCodeEditor
 import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
-import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleWindow
 import spock.lang.Specification
-import spock.lang.Unroll
 
 import static com.haulmont.cuba.gui.WindowManager.OpenType
 import static com.haulmont.cuba.gui.components.Frame.NotificationType.ERROR
@@ -15,8 +15,7 @@ import static com.haulmont.cuba.gui.components.Frame.NotificationType.WARNING
 
 class JpqlConsoleSpec extends Specification {
 
-    JpqlConsole sut
-    ConsoleWindow consoleFrame
+    TestJpqlConsole sut
     SourceCodeEditor codeEditor
     DbDiagnoseService dbDiagnoseService
     AbstractFrame frame
@@ -25,22 +24,18 @@ class JpqlConsoleSpec extends Specification {
 
     def setup() {
         codeEditor = Mock(SourceCodeEditor)
-        consoleFrame = Mock() {
-            getComponent('console') >> codeEditor
-        }
         dbDiagnoseService = Mock(DbDiagnoseService)
         messages = Mock(Messages)
-        sut = new JpqlConsole(consoleFrame: consoleFrame, dbDiagnoseService: dbDiagnoseService, messages: messages)
+        sut = new TestJpqlConsole(sourceCodeEditor: codeEditor, dbDiagnoseService: dbDiagnoseService, messages: messages)
 
         frame = Mock(AbstractFrame)
-        sut.setWrappedFrame(frame)
+        sut.frame = frame
 
         frame.getMessagesPack() >> "de.diedavids"
 
 
     }
 
-    @Unroll
     def "showSqlDialog show notification if text area is empty"() {
 
         given:
@@ -50,7 +45,8 @@ class JpqlConsoleSpec extends Specification {
         sut.showSqlDialog()
 
         then:
-        1 * frame.showNotification(_, WARNING)
+        sut.actualNotificationCaption
+        sut.actualNotificationType == WARNING
 
     }
 
@@ -65,7 +61,8 @@ class JpqlConsoleSpec extends Specification {
         sut.showSqlDialog()
 
         then:
-        1 * frame.showNotification(_, ERROR)
+        sut.actualNotificationCaption
+        sut.actualNotificationType == ERROR
 
     }
 
@@ -81,8 +78,38 @@ class JpqlConsoleSpec extends Specification {
         sut.showSqlDialog()
 
         then:
-        1 * frame.openWindow('sqlCopyDialog', OpenType.DIALOG,_)
-
+        sut.actualOpenedWindow == 'sqlCopyDialog'
     }
 
+}
+
+class TestJpqlConsole extends JpqlConsole {
+
+    SourceCodeEditor sourceCodeEditor
+    String actualNotificationCaption
+    NotificationType actualNotificationType
+    String actualOpenedWindow
+
+    @Override
+    Component getComponent(String id) {
+        sourceCodeEditor
+    }
+
+    @Override
+    protected String getMessage(String key) {
+        key
+    }
+
+    @Override
+    void showNotification(String caption, NotificationType type) {
+        actualNotificationCaption = caption
+        actualNotificationType = type
+    }
+
+    @Override
+    AbstractWindow openWindow(String windowAlias, OpenType openType, Map<String, Object> params) {
+        actualOpenedWindow = windowAlias
+
+        null
+    }
 }

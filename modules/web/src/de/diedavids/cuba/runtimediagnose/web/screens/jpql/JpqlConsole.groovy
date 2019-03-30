@@ -1,5 +1,9 @@
 package de.diedavids.cuba.runtimediagnose.web.screens.jpql
 
+import static com.haulmont.cuba.gui.WindowManager.OpenType.DIALOG
+import static com.haulmont.cuba.gui.components.Frame.NotificationType.ERROR
+import static com.haulmont.cuba.gui.components.Frame.NotificationType.WARNING
+
 import com.haulmont.bali.util.ParamsMap
 import com.haulmont.cuba.core.global.RemoteException
 import com.haulmont.cuba.gui.UiComponents
@@ -11,10 +15,6 @@ import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.web.screens.console.ConsoleWindow
 
 import javax.inject.Inject
-
-import static com.haulmont.cuba.gui.WindowManager.OpenType.DIALOG
-import static com.haulmont.cuba.gui.components.Frame.NotificationType.ERROR
-import static com.haulmont.cuba.gui.components.Frame.NotificationType.WARNING
 
 class JpqlConsole extends ConsoleWindow {
 
@@ -32,7 +32,7 @@ class JpqlConsole extends ConsoleWindow {
 
     @Override
     DiagnoseType getDiagnoseType() {
-        return DiagnoseType.JPQL
+        DiagnoseType.JPQL
     }
 
     void addSqlQueryButton() {

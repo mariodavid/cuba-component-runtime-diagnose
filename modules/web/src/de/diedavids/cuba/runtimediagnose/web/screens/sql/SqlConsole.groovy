@@ -8,6 +8,6 @@ class SqlConsole extends ConsoleWindow {
 
     @Override
     DiagnoseType getDiagnoseType() {
-        return DiagnoseType.SQL
+        DiagnoseType.SQL
     }
 }

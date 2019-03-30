@@ -30,7 +30,7 @@ abstract class AbstractConsoleWindow extends AbstractWindow {
     DiagnoseFileDownloader diagnoseFileDownloader
 
     @Inject
-    Notifications notifications;
+    Notifications notifications
 
     DiagnoseExecution diagnoseExecution
 
@@ -48,9 +48,8 @@ abstract class AbstractConsoleWindow extends AbstractWindow {
         if (console.value) {
             doRunConsole()
         } else {
-            notifications.create()
-                    .setCaption(getMessage('noScriptDefined'))
-                    .setType(Notifications.NotificationType.WARNING)
+            notifications.create(Notifications.NotificationType.WARNING)
+                    .withCaption(getMessage('noScriptDefined'))
                     .show()
         }
     }

@@ -2,12 +2,12 @@ package de.diedavids.cuba.runtimediagnose.web.screens.console
 
 import com.haulmont.chile.core.model.MetaClass
 import com.haulmont.chile.core.model.MetaProperty
+import com.haulmont.cuba.gui.UiComponents
 import com.haulmont.cuba.gui.WindowParam
 import com.haulmont.cuba.gui.components.*
 import com.haulmont.cuba.gui.components.actions.ExcelAction
 import com.haulmont.cuba.gui.data.DsBuilder
 import com.haulmont.cuba.gui.data.impl.ValueCollectionDatasourceImpl
-import com.haulmont.cuba.gui.xml.layout.ComponentsFactory
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
 import de.diedavids.cuba.runtimediagnose.db.DbQueryResult
@@ -23,7 +23,7 @@ class ConsoleWindow extends AbstractConsoleWindow {
     DbDiagnoseService dbDiagnoseService
 
     @Inject
-    ComponentsFactory componentsFactory
+    UiComponents uiComponents
 
     @Inject
     protected BoxLayout resultTableBox
@@ -61,6 +61,7 @@ class ConsoleWindow extends AbstractConsoleWindow {
         this.setWidthFull()
     }
 
+    @SuppressWarnings('UnnecessaryGetter')
     @Override
     void doRunConsole() {
         try {
@@ -100,7 +101,7 @@ class ConsoleWindow extends AbstractConsoleWindow {
         if (resultTable) {
             resultTableBox.remove(resultTable)
         }
-        resultTable = componentsFactory.createComponent(Table)
+        resultTable = uiComponents.create(Table)
         resultTable.frame = frame
 
         addTableColumns(sqlResultDs, resultTable)
