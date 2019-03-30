@@ -11,3 +11,4 @@ test-run
 .idea
 .ideaDataSources
 classes
+.DS_Store
