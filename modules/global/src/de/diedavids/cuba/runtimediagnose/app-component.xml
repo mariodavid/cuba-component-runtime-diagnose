@@ -1,57 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <app-component xmlns="http://schemas.haulmont.com/cuba/app-component.xsd"
                dependsOn="com.haulmont.cuba">
-    <module blocks="*"
-            name="global">
-        <artifact appJar="true"
-                  name="runtime-diagnose-global"/>
-        <property name="cuba.persistenceConfig"
-                  value="+de/diedavids/cuba/runtimediagnose/persistence.xml"/>
-        <property name="cuba.metadataConfig"
-                  value="+de/diedavids/cuba/runtimediagnose/metadata.xml"/>
-        <property name="cuba.viewsConfig"
-                  value="+de/diedavids/cuba/runtimediagnose/views.xml"/>
+
+    <module name="global" blocks="*">
+        <artifact name="runtime-diagnose-global" appJar="true"/>
+
+        <property name="cuba.persistenceConfig" value="+de/diedavids/cuba/runtimediagnose/persistence.xml"/>
+        <property name="cuba.metadataConfig" value="+de/diedavids/cuba/runtimediagnose/metadata.xml"/>
+        <property name="cuba.viewsConfig" value="+de/diedavids/cuba/runtimediagnose/views.xml"/>
     </module>
-    <module blocks="core"
-            dependsOn="global"
-            name="core">
-        <artifact appJar="true"
-                  name="runtime-diagnose-core"/>
-        <property name="cuba.springContextConfig"
-                  value="+de/diedavids/cuba/runtimediagnose/spring.xml"/>
-        <property name="cuba.mainMessagePack"
-                  value="+de.diedavids.cuba.runtimediagnose.core"/>
-        <artifact classifier="db"
-                  configuration="dbscripts"
-                  ext="zip"
-                  name="runtime-diagnose-core"/>
+    <module name="core" dependsOn="global" blocks="core">
+        <artifact name="runtime-diagnose-core" appJar="true"/>
+        <artifact name="runtime-diagnose-core" classifier="db" ext="zip" configuration="dbscripts"/>
+
+        <property name="cuba.springContextConfig" value="+de/diedavids/cuba/runtimediagnose/spring.xml"/>
+        <property name="cuba.mainMessagePack" value="+de.diedavids.cuba.runtimediagnose.core"/>
     </module>
-    <module blocks="web,desktop"
-            dependsOn="global"
-            name="gui">
-        <artifact appJar="true"
-                  name="runtime-diagnose-gui"/>
+    <module name="gui" dependsOn="global" blocks="web,desktop">
+        <artifact name="runtime-diagnose-gui" appJar="true"/>
     </module>
-    <module blocks="web"
-            dependsOn="gui"
-            name="web">
-        <artifact appJar="true"
-                  name="runtime-diagnose-web"/>
-        <artifact classifier="web"
-                  configuration="webcontent"
-                  ext="zip"
-                  name="runtime-diagnose-web"/>
-        <property name="cuba.springContextConfig"
-                  value="+de/diedavids/cuba/runtimediagnose/web-spring.xml"/>
+    <module name="web" dependsOn="gui" blocks="web">
+        <artifact name="runtime-diagnose-web" appJar="true"/>
+        <artifact name="runtime-diagnose-web" classifier="web" ext="zip" configuration="webcontent"/>
+
+        <property name="cuba.springContextConfig" value="+de/diedavids/cuba/runtimediagnose/web-spring.xml"/>
         <property name="cuba.dispatcherSpringContextConfig"
                   value="+de/diedavids/cuba/runtimediagnose/web-dispatcher-spring.xml"/>
-        <property name="cuba.windowConfig"
-                  value="+de/diedavids/cuba/runtimediagnose/web-screens.xml"/>
-        <property name="cuba.menuConfig"
-                  value="+de/diedavids/cuba/runtimediagnose/web-menu.xml"/>
-        <property name="cuba.permissionConfig"
-                  value="+de/diedavids/cuba/runtimediagnose/web-permissions.xml"/>
-        <property name="cuba.mainMessagePack"
-                  value="+de.diedavids.cuba.runtimediagnose.web"/>
+        <property name="cuba.windowConfig" value="+de/diedavids/cuba/runtimediagnose/web-screens.xml"/>
+        <property name="cuba.menuConfig" value="+de/diedavids/cuba/runtimediagnose/web-menu.xml"/>
+        <property name="cuba.permissionConfig" value="+de/diedavids/cuba/runtimediagnose/web-permissions.xml"/>
+        <property name="cuba.mainMessagePack" value="+de.diedavids.cuba.runtimediagnose.web"/>
     </module>
 </app-component>

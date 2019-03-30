@@ -61,7 +61,7 @@ class ZipFileHelper {
         zipEntry.size = data.length
         zipEntry.compressedSize = zipEntry.size
         CRC32 crc32 = new CRC32()
-        crc32.update(data)
+        crc32.update(data,0, data.length)
         zipEntry.crc = crc32.value
 
         zipEntry

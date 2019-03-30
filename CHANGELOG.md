@@ -5,11 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.3.0] - 2019-03-30
+
+### Dependencies
+- CUBA 7.0.x
+
 ## [1.2.0] - 2018-10-30
 
 ### Bugfix
 - handle no-results in SQL execution correctly (#23)
-      
+
 ### Dependencies
 - CUBA 6.10.x
 

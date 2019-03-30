@@ -1,9 +1,11 @@
 package de.diedavids.cuba.runtimediagnose.web.screens.console
 
+import com.haulmont.cuba.gui.Notifications
 import com.haulmont.cuba.gui.components.AbstractFrame
 import com.haulmont.cuba.gui.components.Frame
 import com.haulmont.cuba.gui.components.SourceCodeEditor
 import com.haulmont.cuba.gui.components.SplitPanel
+import com.haulmont.cuba.gui.screen.MessageBundle
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
@@ -20,6 +22,7 @@ class ConsoleWindowSpec extends Specification {
     DiagnoseFileDownloader diagnoseFileDownloader
     DiagnoseExecution diagnoseExecution
     AbstractFrame frame
+    Notifications notifications
 
 
     def setup() {
@@ -28,18 +31,21 @@ class ConsoleWindowSpec extends Specification {
         diagnoseExecutionFactory = Mock(DiagnoseExecutionFactory)
         diagnoseFileDownloader = Mock(DiagnoseFileDownloader)
         diagnoseExecution = Mock(DiagnoseExecution)
+        notifications = Mock(Notifications)
+
         sut = new TestGroovyConsoleWindow(
                 console: console,
                 consoleResultSplitter: consoleResultSplitter,
                 diagnoseExecutionFactory: diagnoseExecutionFactory,
                 diagnoseExecution: diagnoseExecution,
-                diagnoseFileDownloader: diagnoseFileDownloader
+                diagnoseFileDownloader: diagnoseFileDownloader,
+                notifications: notifications
         )
 
         frame = Mock(AbstractFrame)
         frame.getMessagesPack() >> 'de.diedavids.cuba.ccrd'
 
-        sut.wrappedFrame = frame
+        sut.frame = frame
     }
 
 
@@ -73,7 +79,7 @@ class ConsoleWindowSpec extends Specification {
         sut.minimizeConsole()
 
         then:
-        1 * consoleResultSplitter.setSplitPosition(ConsoleWindow.SPLIT_POSITION_CENTER)
+        1 * consoleResultSplitter.setSplitPosition(AbstractConsoleWindow.SPLIT_POSITION_CENTER)
     }
 
     def "minimizeConsoleResult sets the split position to 50"() {
@@ -81,7 +87,7 @@ class ConsoleWindowSpec extends Specification {
         sut.minimizeConsoleResult()
 
         then:
-        1 * consoleResultSplitter.setSplitPosition(ConsoleWindow.SPLIT_POSITION_CENTER)
+        1 * consoleResultSplitter.setSplitPosition(AbstractConsoleWindow.SPLIT_POSITION_CENTER)
     }
 
     def "runConsole runs the console content if it contains content"() {
@@ -101,11 +107,17 @@ class ConsoleWindowSpec extends Specification {
         given:
         console.getValue() >> ''
 
+
+        def notificationsBuilder = Mock(Notifications.NotificationBuilder)
+        notificationsBuilder./with.*/(*_) >> notificationsBuilder
+
         when:
         sut.runConsole()
 
         then:
-        1 * frame.showNotification('noScriptDefined',Frame.NotificationType.WARNING)
+        1 * notifications.create(Notifications.NotificationType.WARNING) >> notificationsBuilder
+
+        1 * notificationsBuilder.show()
 
     }
 
@@ -149,9 +161,10 @@ class ConsoleWindowSpec extends Specification {
 
 }
 
-class TestGroovyConsoleWindow extends ConsoleWindow {
+class TestGroovyConsoleWindow extends AbstractConsoleWindow {
 
     boolean consoleRunExecuted = false
+
     @Override
     DiagnoseType getDiagnoseType() {
         DiagnoseType.GROOVY
@@ -169,6 +182,11 @@ class TestGroovyConsoleWindow extends ConsoleWindow {
 
     @Override
     protected String formatMessage(String key, Object... params) {
+        key
+    }
+
+    @Override
+    protected String getMessage(String key) {
         key
     }
 }

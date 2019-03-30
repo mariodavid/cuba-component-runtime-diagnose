@@ -2,10 +2,8 @@
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
         caption="msg://caption"
         class="de.diedavids.cuba.runtimediagnose.web.screens.jpql.JpqlConsole"
-        messagesPack="de.diedavids.cuba.runtimediagnose.web.screens.jpql">
-    <layout height="100%"
-            width="100%"
-            expand="consoleFrame">
-        <frame id="consoleFrame" screen="console-frame"/>
+        messagesPack="de.diedavids.cuba.runtimediagnose.web.screens.jpql"
+        extends="/de/diedavids/cuba/runtimediagnose/web/screens/console/console-frame.xml">
+    <layout>
     </layout>
 </window>

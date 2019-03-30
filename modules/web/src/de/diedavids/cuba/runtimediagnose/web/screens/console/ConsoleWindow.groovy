@@ -1,27 +1,40 @@
 package de.diedavids.cuba.runtimediagnose.web.screens.console
 
-import com.haulmont.cuba.gui.components.AbstractWindow
-import com.haulmont.cuba.gui.components.Frame
-import com.haulmont.cuba.gui.components.SourceCodeEditor
-import com.haulmont.cuba.gui.components.SplitPanel
-import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
+import com.haulmont.chile.core.model.MetaClass
+import com.haulmont.chile.core.model.MetaProperty
+import com.haulmont.cuba.gui.UiComponents
+import com.haulmont.cuba.gui.WindowParam
+import com.haulmont.cuba.gui.components.*
+import com.haulmont.cuba.gui.components.actions.ExcelAction
+import com.haulmont.cuba.gui.data.DsBuilder
+import com.haulmont.cuba.gui.data.impl.ValueCollectionDatasourceImpl
+import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
+import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
+import de.diedavids.cuba.runtimediagnose.db.DbQueryResult
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
-import groovy.transform.CompileStatic
 
 import javax.inject.Inject
 
-@CompileStatic
-abstract class ConsoleWindow extends AbstractWindow {
-
-    public static final int SPLIT_POSITION_CENTER = 50
+class ConsoleWindow extends AbstractConsoleWindow {
 
     @Inject
-    SourceCodeEditor console
+    DbDiagnoseService dbDiagnoseService
 
     @Inject
-    SplitPanel consoleResultSplitter
+    UiComponents uiComponents
+
+    @Inject
+    protected BoxLayout resultTableBox
+
+    protected Table resultTable
+
+    @Inject
+    ButtonsPanel resultButtonPanel
+
+    @Inject
+    protected Button excelButton
 
     @Inject
     DiagnoseExecutionFactory diagnoseExecutionFactory
@@ -29,50 +42,90 @@ abstract class ConsoleWindow extends AbstractWindow {
     @Inject
     DiagnoseFileDownloader diagnoseFileDownloader
 
-    DiagnoseExecution diagnoseExecution
-
-    abstract DiagnoseType getDiagnoseType()
-
-    abstract void doRunConsole()
-
-    abstract void clearConsoleResult()
-
-    void clearConsole() {
-        console.setValue('')
+    @Override
+    DiagnoseType getDiagnoseType() {
+        this.diagnoseType
     }
 
-    void runConsole() {
-        if (console.value) {
-            doRunConsole()
-        } else {
-            showNotification(formatMessage('noScriptDefined'), Frame.NotificationType.WARNING)
+    @Inject
+    SourceCodeEditor console
+
+    @WindowParam(name='diagnoseType')
+    protected DiagnoseType diagnoseType
+
+    @Override
+    void init(Map<String, Object> params) {
+        super.init(params)
+
+        this.setHeightFull()
+        this.setWidthFull()
+    }
+
+    @SuppressWarnings('UnnecessaryGetter')
+    @Override
+    void doRunConsole() {
+        try {
+            DbQueryResult result = dbDiagnoseService.runSqlDiagnose(console.value, getDiagnoseType())
+            if (result.empty) {
+                showNotification(formatMessage('executionSuccessful'), Frame.NotificationType.TRAY)
+            }
+            else {
+                ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
+                createResultTable(sqlResultDs)
+            }
+        }
+        catch (SqlConsoleSecurityException e) {
+            showNotification(e.message, Frame.NotificationType.ERROR)
         }
     }
 
-    void downloadConsoleResult() {
-        def zipBytes = diagnoseExecutionFactory.createExecutionResultFromDiagnoseExecution(diagnoseExecution)
-        diagnoseFileDownloader.downloadFile(this, zipBytes)
+    @Override
+    void clearConsoleResult() {
+        resultTableBox.remove(resultTable)
+        excelButton.enabled = false
     }
 
-    void maximizeConsole() {
-        consoleResultSplitter.splitPosition = 100
+    private ValueCollectionDatasourceImpl createDatasource(DbQueryResult result) {
+        ValueCollectionDatasourceImpl sqlResultDs = creteValueCollectionDs()
+        result.entities.each { sqlResultDs.includeItem(it) }
+        result.columns.each { sqlResultDs.addProperty(it) }
+        sqlResultDs
     }
 
-    void maximizeConsoleResult(Integer position = 0) {
-        consoleResultSplitter.splitPosition = position
+    private ValueCollectionDatasourceImpl creteValueCollectionDs() {
+        DsBuilder.create(dsContext).reset().setAllowCommit(false)
+                .buildValuesCollectionDatasource()
     }
 
-    void minimizeConsole() {
-        consoleResultSplitter.splitPosition = SPLIT_POSITION_CENTER
+    private Table createResultTable(ValueCollectionDatasourceImpl sqlResultDs) {
+        if (resultTable) {
+            resultTableBox.remove(resultTable)
+        }
+        resultTable = uiComponents.create(Table)
+        resultTable.frame = frame
+
+        addTableColumns(sqlResultDs, resultTable)
+
+        resultTable.datasource = sqlResultDs
+        resultTable.setSizeFull()
+        resultTableBox.add(resultTable)
+
+        configureExcelButton(resultTable)
+
+        resultTable
     }
 
-    void minimizeConsoleResult() {
-        consoleResultSplitter.splitPosition = SPLIT_POSITION_CENTER
+    private void configureExcelButton(Table resultTable) {
+        excelButton.enabled = true
+        excelButton.action = new ExcelAction(resultTable)
     }
 
-    void downloadDiagnoseRequestFile() {
-        diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(console.value as String, diagnoseType)
-        def zipBytes = diagnoseExecutionFactory.createDiagnoseRequestFileFromDiagnoseExecution(diagnoseExecution)
-        diagnoseFileDownloader.downloadFile(this, zipBytes, 'diagnose.zip')
+    private void addTableColumns(ValueCollectionDatasourceImpl sqlResultDs, Table resultTable) {
+        MetaClass meta = sqlResultDs.metaClass
+        for (MetaProperty metaProperty : meta.properties) {
+            Table.Column column = new Table.Column(meta.getPropertyPath(metaProperty.name))
+            column.caption = metaProperty.name
+            resultTable.addColumn(column)
+        }
     }
 }
