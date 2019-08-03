@@ -49,9 +49,9 @@ class DiagnoseExecution implements Serializable{
 
     Map<String, String> getExecutionResultFileMap() {
 
-        def executionResultFileMap = [:]
+        def executionResultFileMap = [:] as Map<String, String>
 
-        addResultFileIfPossible(executionResultFileMap, "diagnose.${executedScriptFileExtension}", diagnoseScript)
+        addResultFileIfPossible(executionResultFileMap, "diagnose.${executedScriptFileExtension}".toString(), diagnoseScript)
         addResultFileIfPossible(executionResultFileMap, 'result.log', getResult(RESULT_NAME))
         addResultFileIfPossible(executionResultFileMap, 'log.log', getResult(RESULT_LOG_NAME))
         addResultFileIfPossible(executionResultFileMap, 'stacktrace.log', getResult(RESULT_STACKTRACE_NAME))

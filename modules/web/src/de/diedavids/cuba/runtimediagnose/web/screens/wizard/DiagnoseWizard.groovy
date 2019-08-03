@@ -99,7 +99,7 @@ class DiagnoseWizard extends AbstractWindow {
         if (diagnoseExecution.isGroovy()) {
             runGroovyDiagnose()
         }
-        else if( diagnoseExecution.isSQL() || diagnoseExecution.isJPQL()) {
+        else if(diagnoseExecution.isSQL() || diagnoseExecution.isJPQL()) {
             runSqlDiagnose(diagnoseExecution.manifest.diagnoseType)
         }
         progressToStep3()

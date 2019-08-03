@@ -58,6 +58,7 @@
                                         action="clearSqlConsoleAction"/>
                                 <button id="downloadDiagnoseRequestFileBtn"
                                         action="downloadDiagnoseRequestFileAction"/>
+                                <lookupField id="dataStoreLookupField" />
                             </buttonsPanel>
                         </hbox>
                         <hbox align="TOP_RIGHT">

@@ -210,7 +210,7 @@ ruleset {
     UnnecessaryBooleanInstantiation { priority = 1 }
     UnnecessaryCallForLastElement { priority = 1 }
     UnnecessaryCallToSubstring { priority = 1 }
-    UnnecessaryCast { priority = 1 }
+    //UnnecessaryCast { priority = 1 }
     UnnecessaryCatchBlock { priority = 1 }
     UnnecessaryCollectCall { priority = 1 }
     UnnecessaryCollectionCall { priority = 1 }

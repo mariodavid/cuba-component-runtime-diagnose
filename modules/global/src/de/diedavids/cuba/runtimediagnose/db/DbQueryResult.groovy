@@ -21,4 +21,8 @@ class DbQueryResult implements Serializable {
     void addEntity(KeyValueEntity entity) {
         entities << entity
     }
+
+    String resultMessage() {
+        empty ? 'Execution successful' : entities[0].toString()
+    }
 }
