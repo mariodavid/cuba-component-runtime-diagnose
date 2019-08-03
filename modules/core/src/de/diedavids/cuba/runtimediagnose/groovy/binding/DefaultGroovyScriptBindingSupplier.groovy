@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 import javax.inject.Inject
 
 @Slf4j
-@Component('ddcrd_DefaultGroovyScriptTeststepBindingSupplier')
+@Component('ddcrd_DefaultGroovyScriptBindingSupplier')
 class DefaultGroovyScriptBindingSupplier implements GroovyScriptBindingSupplier {
 
     @Inject
