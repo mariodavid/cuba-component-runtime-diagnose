@@ -13,6 +13,7 @@ import com.haulmont.cuba.gui.data.impl.ValueCollectionDatasourceImpl
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
 import de.diedavids.cuba.runtimediagnose.db.DbQueryResult
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
@@ -157,5 +158,14 @@ class ConsoleWindow extends AbstractConsoleWindow {
             column.caption = metaProperty.name
             resultTable.addColumn(column)
         }
+    }
+
+    @Override
+    protected DiagnoseExecution createDiagnoseExecutionForDiagnoseRequestFile() {
+        diagnoseExecutionFactory.createAdHocDiagnoseExecution(
+                console.value as String,
+                getDiagnoseType(),
+                dataStoreLookupField.value
+        )
     }
 }

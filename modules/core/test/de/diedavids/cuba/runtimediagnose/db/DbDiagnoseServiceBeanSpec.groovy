@@ -117,7 +117,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_, _) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String, _ as DiagnoseType) >> new DiagnoseExecution()
+        diagnoseExecutionIsCreated()
 
         when:
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL, Stores.MAIN)
@@ -140,7 +140,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_, _) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_, _) >> new DiagnoseExecution()
+        diagnoseExecutionIsCreated()
 
         when:
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL, Stores.MAIN)
@@ -163,13 +163,17 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_ as String, DiagnoseType.JPQL) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String, _ as DiagnoseType) >> new DiagnoseExecution()
+        diagnoseExecutionIsCreated()
 
         when:
         dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL, Stores.MAIN)
 
         then:
         1 * persistence.callInTransaction(_ as Transaction.Callable)
+    }
+
+    private void diagnoseExecutionIsCreated() {
+        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String, _ as DiagnoseType, Stores.MAIN) >> new DiagnoseExecution()
     }
 
     def "runSqlDiagnose executes no sql script if there is no result of the sql parser"() {

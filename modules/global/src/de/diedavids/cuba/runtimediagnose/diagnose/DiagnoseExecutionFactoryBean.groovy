@@ -1,6 +1,7 @@
 package de.diedavids.cuba.runtimediagnose.diagnose
 
 import com.haulmont.cuba.core.global.BuildInfo
+import com.haulmont.cuba.core.global.Stores
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
@@ -37,11 +38,17 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
 
     @Override
     DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript, DiagnoseType diagnoseType) {
+        createAdHocDiagnoseExecution(diagnoseScript, diagnoseType, Stores.MAIN)
+    }
+
+    @Override
+    DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript, DiagnoseType diagnoseType, String dataStore) {
         new DiagnoseExecution(
             manifest: new DiagnoseManifest(
-                diagnoseType: diagnoseType,
-                appName: buildInfo.content.appName,
-                appVersion: buildInfo.content.version
+                    diagnoseType: diagnoseType,
+                    appName: buildInfo.content.appName,
+                    appVersion: buildInfo.content.version,
+                    dataStore: dataStore
             ),
             diagnoseScript: diagnoseScript,
             executionType: DiagnoseExecutionType.CONSOLE

@@ -21,6 +21,16 @@ interface DiagnoseExecutionFactory {
 
 
     /**
+     * creates an ad-hoc diagnose execution
+     * @param diagnoseScript the diagnose script to use
+     * @param diagnoseType the diagnose type to use
+     * @param dataStore the data store to be used (SQL / JPQL)
+     * @return the diagnose execution instance
+     */
+    DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript, DiagnoseType diagnoseType, String dataStore)
+
+
+    /**
      * creates an execution result (as zip bytes) form a given diagnose exection
      * @param diagnoseExecution the diagnose execution to create a zip file from
      * @return the execution result (as zip bytes)

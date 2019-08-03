@@ -130,7 +130,7 @@ class DiagnoseWizard extends AbstractWindow {
 
     void downloadDiagnoseResult() {
         def zipBytes = diagnoseExecutionFactory.createExecutionResultFromDiagnoseExecution(diagnoseExecution)
-        diagnoseFileDownloader.downloadFile(this, zipBytes)
+        diagnoseFileDownloader.downloadFile(this, zipBytes, 'diagnoseResultsDownloadedMessage')
     }
 
     @Override

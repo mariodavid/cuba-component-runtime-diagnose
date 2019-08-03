@@ -45,11 +45,11 @@ class DiagnoseFileDownloader {
         datatypeFormatter.formatDateTime(now).replace(' ', '-')
     }
 
-    void downloadFile(Frame frame, byte[] zipBytes, String filename = createResultFilename()) {
+    void downloadFile(Frame frame, byte[] zipBytes, String filename = createResultFilename(), String downloadSuccessfullMessage) {
 
         try {
             exportDisplay.show(new ByteArrayDataProvider(zipBytes), filename, ExportFormat.ZIP)
-            frame.showNotification(messages.formatMessage(getClass(),'diagnoseResultsDownloadedMessage'))
+            frame.showNotification(messages.formatMessage(getClass(), downloadSuccessfullMessage))
         } catch (Exception e) {
             frame.showNotification(messages.formatMessage(getClass(),'exportFailed'), e.message, Frame.NotificationType.ERROR)
         }

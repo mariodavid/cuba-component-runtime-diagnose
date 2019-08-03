@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 class SqlSelectResultFactorySpec extends Specification{
 
-    SqlSelectResultFactoryBean delegate
+    SqlSelectResultFactoryBean sut
     String predefinedPropName
     MetaProperty predefinedMetaProperty
 
@@ -19,7 +19,7 @@ class SqlSelectResultFactorySpec extends Specification{
             getJavaType() >> String.class
         }
 
-        delegate = new SqlSelectResultFactoryBean()
+        sut = new SqlSelectResultFactoryBean()
     }
 
     def "createFromRows with GroovyRowResult argument returns SqlSelectResult"(){
@@ -27,7 +27,7 @@ class SqlSelectResultFactorySpec extends Specification{
         GroovyRowResult groovyRowResult = [(predefinedPropName): "Name"] as GroovyRowResult
 
         when:
-        def result = delegate.createFromRows([groovyRowResult])
+        def result = sut.createFromRows([groovyRowResult])
 
         then:
         result != null
@@ -44,7 +44,7 @@ class SqlSelectResultFactorySpec extends Specification{
         }
 
         when:
-        def result = delegate.createFromRows([user])
+        def result = sut.createFromRows([user])
 
         then:
         result != null
@@ -66,7 +66,7 @@ class SqlSelectResultFactorySpec extends Specification{
         }
 
         when:
-        def result = delegate.createFromRows([user])
+        def result = sut.createFromRows([user])
 
         then:
         result != null

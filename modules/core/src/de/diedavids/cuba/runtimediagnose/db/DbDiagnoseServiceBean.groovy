@@ -60,7 +60,7 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         }
 
         def queryStatement = queryStatements.statements[0].toString()
-        DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType)
+        DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType, dataStore)
         tryToRunSqlDiagnose(diagnoseType, queryStatement, queryStatements, dataStore, diagnoseExecution)
     }
 
@@ -116,8 +116,8 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         dbSqlExecutor.executeStatement(sql, queryStatements.statements[0])
     }
 
-    private DiagnoseExecution createAdHocDiagnose(String sqlStatement, DiagnoseType diagnoseType) {
-        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlStatement, diagnoseType)
+    private DiagnoseExecution createAdHocDiagnose(String sqlStatement, DiagnoseType diagnoseType, String dataStore) {
+        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlStatement, diagnoseType, dataStore)
         setDiagnoseExecutionMetadata(diagnoseExecution)
         diagnoseExecution
     }
@@ -133,9 +133,8 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
             setDiagnoseExecutionMetadata(diagnoseExecution)
 
             try {
-                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript, diagnoseType)
-                // TODO: create CSV file with content
-                diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
+                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript, diagnoseType, diagnoseExecution.manifest.dataStore)
+                diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.toCSV())
             }
             catch (Exception e) {
                 diagnoseExecution.handleErrorExecution(e)

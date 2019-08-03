@@ -59,7 +59,7 @@ class DiagnoseFileDownloaderSpec extends Specification {
         messages.formatMessage(DiagnoseFileDownloader, 'diagnoseResultsDownloadedMessage') >> "did work"
 
         when:
-        sut.downloadFile(frame, [] as byte[], 'myfile.zip')
+        sut.downloadFile(frame, [] as byte[], 'myfile.zip', 'diagnoseResultsDownloadedMessage')
 
         then:
         frame.showNotification("did work")
@@ -73,7 +73,7 @@ class DiagnoseFileDownloaderSpec extends Specification {
 
         def filename = 'myfile.zip'
         when:
-        sut.downloadFile(frame, [] as byte[], filename)
+        sut.downloadFile(frame, [] as byte[], filename, 'diagnoseResultsDownloadedMessage')
 
         then:
         1 * exportDisplay.show(_ as ByteArrayDataProvider, filename, ExportFormat.ZIP)
@@ -88,7 +88,7 @@ class DiagnoseFileDownloaderSpec extends Specification {
         messages.formatMessage(DiagnoseFileDownloader, 'exportFailed') >> "did not work"
 
         when:
-        sut.downloadFile(frame, [] as byte[], 'myfile.zip')
+        sut.downloadFile(frame, [] as byte[], 'myfile.zip', 'diagnoseResultsDownloadedMessage')
 
         then:
         frame.showNotification("did not work", Frame.NotificationType.ERROR)

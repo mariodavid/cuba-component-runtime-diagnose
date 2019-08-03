@@ -22,6 +22,6 @@ class DiagnoseExecutionLogBrowse extends AbstractLookup {
     void downloadResultFile() {
         DiagnoseExecutionLog executionLog = diagnoseExecutionLogsTable.singleSelected
         def zipBytes = fileStorageService.loadFile(executionLog.executionResultFile)
-        diagnoseFileDownloader.downloadFile(this,zipBytes, executionLog.executionResultFile.name)
+        diagnoseFileDownloader.downloadFile(this, zipBytes, executionLog.executionResultFile.name, 'diagnoseResultsDownloadedMessage')
     }
 }
