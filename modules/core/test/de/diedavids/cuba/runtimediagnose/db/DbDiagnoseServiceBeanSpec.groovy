@@ -3,6 +3,7 @@ package de.diedavids.cuba.runtimediagnose.db
 import com.haulmont.cuba.core.EntityManager
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.Transaction
+import com.haulmont.cuba.core.global.Stores
 import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
 import com.haulmont.cuba.security.entity.User
@@ -78,7 +79,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         )
 
         dataSource = Mock(DataSource)
-        persistence.getDataSource() >> dataSource
+        persistence.getDataSource(_) >> dataSource
         persistence.getTransaction() >> transaction
 
     }
@@ -88,7 +89,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'SELECT * FROM SEC_USER;'
         when:
-        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
+        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL, Stores.MAIN)
         then:
         1 * dbQueryParser.analyseQueryString(sqlString, DiagnoseType.SQL)
     }
@@ -98,7 +99,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         given:
         def sqlString = 'select u from sec$User u'
         when:
-        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
+        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL, Stores.MAIN)
         then:
         1 * dbQueryParser.analyseQueryString(sqlString, DiagnoseType.JPQL)
     }
@@ -116,10 +117,10 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_, _) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String, _ as DiagnoseType) >> new DiagnoseExecution()
+        diagnoseExecutionIsCreated()
 
         when:
-        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
+        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL, Stores.MAIN)
 
         then:
         dbDiagnoseServiceBean.actualDataSource == dataSource
@@ -139,10 +140,10 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_, _) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_, _) >> new DiagnoseExecution()
+        diagnoseExecutionIsCreated()
 
         when:
-        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
+        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL, Stores.MAIN)
 
         then:
         1 * dbSqlExecutor.executeStatement(_, sqlStatement) >> new DbQueryResult()
@@ -162,13 +163,17 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_ as String, DiagnoseType.JPQL) >> statements
 
         and:
-        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String, _ as DiagnoseType) >> new DiagnoseExecution()
+        diagnoseExecutionIsCreated()
 
         when:
-        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
+        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL, Stores.MAIN)
 
         then:
         1 * persistence.callInTransaction(_ as Transaction.Callable)
+    }
+
+    private void diagnoseExecutionIsCreated() {
+        diagnoseExecutionFactory.createAdHocDiagnoseExecution(_ as String, _ as DiagnoseType, Stores.MAIN) >> new DiagnoseExecution()
     }
 
     def "runSqlDiagnose executes no sql script if there is no result of the sql parser"() {
@@ -183,7 +188,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_, DiagnoseType.SQL) >> statements
 
         when:
-        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL)
+        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.SQL, Stores.MAIN)
 
         then:
         0 * dbSqlExecutor.executeStatement(_,_)
@@ -201,7 +206,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_, DiagnoseType.JPQL) >> statements
 
         when:
-        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
+        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL, Stores.MAIN)
 
         then:
         0 * dbSqlExecutor.executeStatement(_,_)
@@ -219,7 +224,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         dbQueryParser.analyseQueryString(_, DiagnoseType.JPQL) >> statements
 
         when:
-        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL)
+        dbDiagnoseServiceBean.runSqlDiagnose(sqlString, DiagnoseType.JPQL, Stores.MAIN)
 
         then:
         0 * dbSqlExecutor.executeStatement(_,_)
@@ -257,7 +262,7 @@ class DbDiagnoseServiceBeanSpec extends Specification {
         Statements statements = Mock(Statements)
 
         when:
-        dbDiagnoseServiceBean.getQueryResult(diagnoseType, _ as String, statements)
+        dbDiagnoseServiceBean.getQueryResult(diagnoseType, _ as String, statements, Stores.MAIN)
 
         then:
         thrown(IllegalArgumentException)

@@ -3,7 +3,7 @@ package de.diedavids.cuba.runtimediagnose.diagnose
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class DiagnoseExecution implements Serializable{
+class DiagnoseExecution implements Serializable {
 
 
     private static final long serialVersionUID = -8288852447591914153L
@@ -39,19 +39,14 @@ class DiagnoseExecution implements Serializable{
     }
 
     String getExecutedScriptFileExtension() {
-        String extension = ''
-        if (manifest) {
-            extension = manifest.diagnoseType.name().toLowerCase()
-        }
-
-        extension
+        manifest ? manifest.diagnoseType.name().toLowerCase() : ''
     }
 
     Map<String, String> getExecutionResultFileMap() {
 
-        def executionResultFileMap = [:]
+        def executionResultFileMap = [:] as Map<String, String>
 
-        addResultFileIfPossible(executionResultFileMap, "diagnose.${executedScriptFileExtension}", diagnoseScript)
+        addResultFileIfPossible(executionResultFileMap, "diagnose.${executedScriptFileExtension}".toString(), diagnoseScript)
         addResultFileIfPossible(executionResultFileMap, 'result.log', getResult(RESULT_NAME))
         addResultFileIfPossible(executionResultFileMap, 'log.log', getResult(RESULT_LOG_NAME))
         addResultFileIfPossible(executionResultFileMap, 'stacktrace.log', getResult(RESULT_STACKTRACE_NAME))

@@ -2,6 +2,8 @@ package de.diedavids.cuba.runtimediagnose.web.screens.console
 
 import com.haulmont.chile.core.model.MetaClass
 import com.haulmont.chile.core.model.MetaProperty
+import com.haulmont.cuba.core.global.Messages
+import com.haulmont.cuba.core.global.Stores
 import com.haulmont.cuba.gui.UiComponents
 import com.haulmont.cuba.gui.WindowParam
 import com.haulmont.cuba.gui.components.*
@@ -11,6 +13,7 @@ import com.haulmont.cuba.gui.data.impl.ValueCollectionDatasourceImpl
 import de.diedavids.cuba.runtimediagnose.SqlConsoleSecurityException
 import de.diedavids.cuba.runtimediagnose.db.DbDiagnoseService
 import de.diedavids.cuba.runtimediagnose.db.DbQueryResult
+import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.web.screens.diagnose.DiagnoseFileDownloader
@@ -42,6 +45,9 @@ class ConsoleWindow extends AbstractConsoleWindow {
     @Inject
     DiagnoseFileDownloader diagnoseFileDownloader
 
+    @Inject
+    Messages messages
+
     @Override
     DiagnoseType getDiagnoseType() {
         this.diagnoseType
@@ -53,21 +59,46 @@ class ConsoleWindow extends AbstractConsoleWindow {
     @WindowParam(name='diagnoseType')
     protected DiagnoseType diagnoseType
 
+    @Inject
+    LookupField<String> dataStoreLookupField
+
     @Override
     void init(Map<String, Object> params) {
         super.init(params)
 
         this.setHeightFull()
         this.setWidthFull()
+
+        initDataStoreField()
+    }
+
+
+    protected void initDataStoreField() {
+        Map<String, String> dataStores = [:]
+        dataStores.put(
+                messages.getMessage('de.diedavids.cuba.runtimediagnose.web.screens.console', 'dataStoreMain'),
+                Stores.MAIN
+        )
+
+        Stores.additional.each { String additional ->
+            dataStores.put(additional, additional)
+        }
+
+        dataStoreLookupField.optionsMap = dataStores
     }
 
     @SuppressWarnings('UnnecessaryGetter')
     @Override
     void doRunConsole() {
         try {
-            DbQueryResult result = dbDiagnoseService.runSqlDiagnose(console.value, getDiagnoseType())
+            DbQueryResult result = dbDiagnoseService.runSqlDiagnose(
+                    console.value,
+                    getDiagnoseType(),
+                    dataStoreLookupField.value
+            )
+
             if (result.empty) {
-                showNotification(formatMessage('executionSuccessful'), Frame.NotificationType.TRAY)
+                showNotification(formatMessage('executionSuccessful'), NotificationType.TRAY)
             }
             else {
                 ValueCollectionDatasourceImpl sqlResultDs = createDatasource(result)
@@ -75,7 +106,7 @@ class ConsoleWindow extends AbstractConsoleWindow {
             }
         }
         catch (SqlConsoleSecurityException e) {
-            showNotification(e.message, Frame.NotificationType.ERROR)
+            showNotification(e.message, NotificationType.ERROR)
         }
     }
 
@@ -127,5 +158,14 @@ class ConsoleWindow extends AbstractConsoleWindow {
             column.caption = metaProperty.name
             resultTable.addColumn(column)
         }
+    }
+
+    @Override
+    protected DiagnoseExecution createDiagnoseExecutionForDiagnoseRequestFile() {
+        diagnoseExecutionFactory.createAdHocDiagnoseExecution(
+                console.value as String,
+                getDiagnoseType(),
+                dataStoreLookupField.value
+        )
     }
 }

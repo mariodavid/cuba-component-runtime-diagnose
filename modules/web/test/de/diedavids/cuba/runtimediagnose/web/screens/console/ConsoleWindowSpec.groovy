@@ -1,11 +1,10 @@
 package de.diedavids.cuba.runtimediagnose.web.screens.console
 
+import com.haulmont.cuba.core.global.Stores
 import com.haulmont.cuba.gui.Notifications
 import com.haulmont.cuba.gui.components.AbstractFrame
-import com.haulmont.cuba.gui.components.Frame
 import com.haulmont.cuba.gui.components.SourceCodeEditor
 import com.haulmont.cuba.gui.components.SplitPanel
-import com.haulmont.cuba.gui.screen.MessageBundle
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
@@ -131,7 +130,7 @@ class ConsoleWindowSpec extends Specification {
         sut.downloadConsoleResult()
 
         then:
-        1 * diagnoseFileDownloader.downloadFile(sut, zipBytes)
+        1 * diagnoseFileDownloader.downloadFile(sut, zipBytes, 'diagnoseResultsDownloadedMessage')
 
     }
 
@@ -155,7 +154,7 @@ class ConsoleWindowSpec extends Specification {
         sut.downloadDiagnoseRequestFile()
 
         then:
-        1 * diagnoseFileDownloader.downloadFile(sut, zipBytes, 'diagnose.zip')
+        1 * diagnoseFileDownloader.downloadFile(sut, zipBytes, 'diagnose.zip', 'diagnoseRequestFileDownloadedMessage')
 
     }
 

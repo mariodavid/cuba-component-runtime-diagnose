@@ -1,6 +1,7 @@
 package de.diedavids.cuba.runtimediagnose.diagnose
 
 import com.haulmont.cuba.core.global.BuildInfo
+import com.haulmont.cuba.core.global.Stores
 import spock.lang.Specification
 
 class DiagnoseExecutionFactoryBeanSpec extends Specification {
@@ -34,6 +35,17 @@ class DiagnoseExecutionFactoryBeanSpec extends Specification {
         result.manifest.diagnoseType == diagnoseType
         result.diagnoseScript == executionScript
         result.executionType == DiagnoseExecutionType.CONSOLE
+    }
+
+
+    def "createAdHocDiagnoseExecution sets the optional dataStore"() {
+        given:
+        def diagnoseType = DiagnoseType.SQL
+        def executionScript = "SELECT * FROM SEC_USER"
+        when:
+        DiagnoseExecution result = sut.createAdHocDiagnoseExecution(executionScript, diagnoseType, Stores.MAIN)
+        then:
+        result.manifest.dataStore == Stores.MAIN
     }
 
     def "createAdHocDiagnoseExecution sets the metadata from the application"() {

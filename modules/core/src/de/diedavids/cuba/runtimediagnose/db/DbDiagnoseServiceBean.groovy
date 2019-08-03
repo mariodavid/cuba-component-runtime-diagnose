@@ -2,6 +2,7 @@ package de.diedavids.cuba.runtimediagnose.db
 
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.Query
+import com.haulmont.cuba.core.global.Stores
 import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
@@ -46,9 +47,12 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
     @Inject
     DiagnoseExecutionFactory diagnoseExecutionFactory
 
-
     @Override
-    DbQueryResult runSqlDiagnose(String queryString, DiagnoseType diagnoseType) {
+    DbQueryResult runSqlDiagnose(
+            String queryString,
+            DiagnoseType diagnoseType,
+            String dataStore
+    ) {
         Statements queryStatements = dbQueryParser.analyseQueryString(queryString, diagnoseType)
 
         if (!statementsAvailable(queryStatements)) {
@@ -56,41 +60,37 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         }
 
         def queryStatement = queryStatements.statements[0].toString()
-        DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType)
+        DiagnoseExecution diagnoseExecution = createAdHocDiagnose(queryStatement, diagnoseType, dataStore)
+        tryToRunSqlDiagnose(diagnoseType, queryStatement, queryStatements, dataStore, diagnoseExecution)
+    }
+
+    private DbQueryResult tryToRunSqlDiagnose(DiagnoseType diagnoseType, String queryStatement, Statements queryStatements, String dataStore, DiagnoseExecution diagnoseExecution) {
         DbQueryResult dbQueryResult
         try {
-            dbQueryResult = getQueryResult(diagnoseType, queryStatement, queryStatements)
-
-            diagnoseExecution.handleSuccessfulExecution(getResultMessage(dbQueryResult))
+            dbQueryResult = getQueryResult(diagnoseType, queryStatement, queryStatements, dataStore ?: Stores.MAIN)
+            diagnoseExecution.handleSuccessfulExecution(dbQueryResult.resultMessage())
             diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
         } catch (Exception e) {
             dbQueryResult = selectResultFactory.createFromRows([])
             diagnoseExecution.handleErrorExecution(e)
             diagnoseExecutionLogService.logDiagnoseExecution(diagnoseExecution)
         }
-
         dbQueryResult
     }
 
-    protected String getResultMessage(DbQueryResult dbQueryResult) {
-        String resultMessage = ''
-        if (dbQueryResult.empty) {
-            resultMessage = 'Execution successful'
-        } else {
-            resultMessage = dbQueryResult.entities[0].toString()
-        }
-        resultMessage
-    }
-
-    protected DbQueryResult getQueryResult(DiagnoseType diagnoseType, String queryStatement, Statements queryStatements) {
+    protected DbQueryResult getQueryResult(
+            DiagnoseType diagnoseType,
+            String queryStatement,
+            Statements queryStatements,
+            String dataStore
+    ) {
         DbQueryResult dbQueryResult
         switch (diagnoseType) {
             case DiagnoseType.JPQL:
-                dbQueryResult = executeJpqlStatement(queryStatement, queryStatements)
+                dbQueryResult = executeJpqlStatement(queryStatement, queryStatements, dataStore)
                 break
             case DiagnoseType.SQL:
-                def sql = createSqlConnection(persistence.dataSource)
-                dbQueryResult = executeSqlStatement(sql, queryStatements)
+                dbQueryResult = executeSqlStatement(queryStatements, dataStore)
                 break
             default:
                 throw new IllegalArgumentException('DiagnoseType is not supported (' + diagnoseType + ')')
@@ -98,9 +98,9 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         dbQueryResult
     }
 
-    protected DbQueryResult executeJpqlStatement(String queryStatement, Statements queryStatements) {
+    protected DbQueryResult executeJpqlStatement(String queryStatement, Statements queryStatements, String storeName) {
         persistence.callInTransaction {
-            Query q = persistence.entityManager.createQuery(queryStatement)
+            Query q = persistence.getEntityManager(storeName).createQuery(queryStatement)
 
             if (dbQueryParser.containsDataManipulation(queryStatements)) {
                 q.executeUpdate()
@@ -111,12 +111,13 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         }
     }
 
-    protected DbQueryResult executeSqlStatement(Sql sql, Statements queryStatements) {
+    protected DbQueryResult executeSqlStatement(Statements queryStatements, String dataStore) {
+        Sql sql = createSqlConnection(persistence.getDataSource(dataStore))
         dbSqlExecutor.executeStatement(sql, queryStatements.statements[0])
     }
 
-    private DiagnoseExecution createAdHocDiagnose(String sqlStatement, DiagnoseType diagnoseType) {
-        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlStatement, diagnoseType)
+    private DiagnoseExecution createAdHocDiagnose(String sqlStatement, DiagnoseType diagnoseType, String dataStore) {
+        def diagnoseExecution = diagnoseExecutionFactory.createAdHocDiagnoseExecution(sqlStatement, diagnoseType, dataStore)
         setDiagnoseExecutionMetadata(diagnoseExecution)
         diagnoseExecution
     }
@@ -132,9 +133,8 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
             setDiagnoseExecutionMetadata(diagnoseExecution)
 
             try {
-                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript, diagnoseType)
-                // TODO: create CSV file with content
-                diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.entities[0].toString())
+                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript, diagnoseType, diagnoseExecution.manifest.dataStore)
+                diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.toCSV())
             }
             catch (Exception e) {
                 diagnoseExecution.handleErrorExecution(e)

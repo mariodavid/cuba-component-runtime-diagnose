@@ -6,6 +6,7 @@ class DiagnoseManifest implements Serializable {
 
     String appName
     String appVersion
+    String dataStore
     DiagnoseType diagnoseType
 
 }

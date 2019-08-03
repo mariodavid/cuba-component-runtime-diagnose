@@ -102,6 +102,9 @@ The JPQL / SQL console allows you to interactivly interact with the database usi
 ![Screenshot SQL-Console](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/sql-console-screenshot.png)
 
 
+![Screenshot JPQL-Console](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/jpql-console-screenshot.png)
+
+
 > NOTE: for normal data diagnosis the [Entity inspector](https://doc.cuba-platform.com/manual-6.4/entity_inspector.html) is oftentimes more user friendly, even for debugging purposes. 
 Usage of the SQL-console is to be preferable to the entity inspector if you want to access data across tables using joins for example.
 The JPQL console is useful if you want to test your JPQL queries that you want to use in your application e.g. 
