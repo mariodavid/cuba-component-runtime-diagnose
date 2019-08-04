@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '7.0.3'
+    ext.cubaVersion = '7.1.0.BETA1'
     repositories {
 
         mavenLocal()
@@ -215,7 +215,12 @@ configure(globalModule) {
         }
     }
     entitiesEnhancing {
-        main { enabled = true }
+        main {
+            enabled = true
+        }
+        test {
+            enabled = true
+        }
     }
 
     jar {
@@ -241,7 +246,7 @@ configure(coreModule) {
         jdbc(hsql)
         testRuntime(hsql)
 
-        compile 'com.github.jsqlparser:jsqlparser:0.9.7'
+        implementation 'com.github.jsqlparser:jsqlparser:2.1'
 
     }
 

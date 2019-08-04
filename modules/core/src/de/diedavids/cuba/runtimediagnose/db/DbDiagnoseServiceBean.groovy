@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service
 import javax.inject.Inject
 import javax.persistence.EntityManager
 import javax.sql.DataSource
-import javax.transaction.Transactional
 
 @Service(DbDiagnoseService.NAME)
 class DbDiagnoseServiceBean implements DbDiagnoseService {
@@ -146,9 +145,8 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
         }
     }
 
-    @SuppressWarnings(['UnnecessaryGetter'])
-    @Transactional
     @Override
+    @SuppressWarnings(['UnnecessaryGetter'])
     String getSqlQuery(String jpqlQuery) {
         if (StringUtils.isBlank(jpqlQuery)) {
             return null
