@@ -53,7 +53,8 @@ The groovy console allows you to interactively inspect the running application. 
 
 > WARN: Using the groovy console in production can be dangerous. Make sure that you will use the security subsystem properly so that only allowed users are able to execute code in production. For more information see the section about security
 
-The console uses the [Scripting](https://doc.cuba-platform.com/manual-6.4/scripting.html) Interface of the platform in order to execute groovy code. Therefore most of the features of the scripting interface apply to the groovy console as well.
+The console uses the [Scripting](https://doc.cuba-platform.com/manual-6.4/scripting.html) Interface of the platform in order to execute groovy code.
+Therefore most of the features of the scripting interface apply to the groovy console as well.
 
 ### Using existing classes
 
@@ -77,6 +78,19 @@ If you want to define custom variables that are accessible in your scripts, you 
     
 You can define multiple Spring beans that implement `GroovyScriptBindingSupplier` in your project. 
 All Maps will be merged and be accessible in the groovy script.
+
+### Auto import statements
+
+Writing manual import statements is a tedious task. Therefore the groovy script that should be executed can be enhanced
+by automatically adding import statements. It is possible to configure the auto import statement functionality by `Administration > Application Properties`:
+
+* `runtime-diagnose.console.autoImport.entities` adds automatically import statements for all persistent entity classes
+* `runtime-diagnose.console.autoImport.additionalClasses` adds all mentioned classes as import statements. Entries have to be separated by `;`, wildcard imports are also possible.
+
+Example:
+
+`runtime-diagnose.console.autoImport.additionalClasses` = `com.haulmont.cuba.core.app.UniqueNumbersService; com.haulmont.cuba.core.app.EntityLogService; com.haulmont.cuba.core.app.importexport.*`
+
 
 ### Execution results
 

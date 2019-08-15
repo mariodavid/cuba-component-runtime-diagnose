@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Select DataStore for SQL / JPQL console in order to execute SQL / JPQL statements against different then the MAIN data store
 - Diagnose Wizard now exports the SQL / JPQL result set in proper CSV format
+- auto import statements for entities for groovy scripts through configuration (#1)
+- auto import statements for arbitrary classes for groovy script through configuration (#1)
 
 ### Dependencies
 - CUBA 7.1.x
