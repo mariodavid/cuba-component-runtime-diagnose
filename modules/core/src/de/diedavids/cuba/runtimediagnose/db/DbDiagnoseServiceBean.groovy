@@ -133,7 +133,7 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
             setDiagnoseExecutionMetadata(diagnoseExecution)
 
             try {
-                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.diagnoseScript, diagnoseType, diagnoseExecution.manifest.dataStore)
+                def sqlSelectResult = runSqlDiagnose(diagnoseExecution.finalDiagnoseScript(), diagnoseType, diagnoseExecution.manifest.dataStore)
                 diagnoseExecution.handleSuccessfulExecution(sqlSelectResult.toCSV())
             }
             catch (Exception e) {

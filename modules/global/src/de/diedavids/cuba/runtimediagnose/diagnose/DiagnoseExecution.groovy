@@ -22,10 +22,22 @@ class DiagnoseExecution implements Serializable {
 
     String diagnoseScript
 
+    String executedDiagnoseScript
+
     Map<String, String> diagnoseResults = [:]
 
     DiagnoseManifest manifest
 
+    String finalDiagnoseScript() {
+
+        if (groovy) {
+            executedDiagnoseScript ?: diagnoseScript
+        }
+        else {
+            diagnoseScript
+        }
+
+    }
     boolean isGroovy() {
         manifest.diagnoseType == DiagnoseType.GROOVY
     }
@@ -46,7 +58,7 @@ class DiagnoseExecution implements Serializable {
 
         def executionResultFileMap = [:] as Map<String, String>
 
-        addResultFileIfPossible(executionResultFileMap, "diagnose.${executedScriptFileExtension}".toString(), diagnoseScript)
+        addResultFileIfPossible(executionResultFileMap, "diagnose.${executedScriptFileExtension}".toString(), finalDiagnoseScript())
         addResultFileIfPossible(executionResultFileMap, 'result.log', getResult(RESULT_NAME))
         addResultFileIfPossible(executionResultFileMap, 'log.log', getResult(RESULT_LOG_NAME))
         addResultFileIfPossible(executionResultFileMap, 'stacktrace.log', getResult(RESULT_STACKTRACE_NAME))

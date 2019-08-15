@@ -3,7 +3,6 @@ package de.diedavids.cuba.runtimediagnose.web.screens.groovy
 import com.haulmont.cuba.gui.components.Button
 import com.haulmont.cuba.gui.components.Frame
 import com.haulmont.cuba.gui.components.SourceCodeEditor
-import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionFactory
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseType
 import de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseService
@@ -24,15 +23,12 @@ class GroovyConsole extends AbstractConsoleWindow {
     SourceCodeEditor consoleExecutedScriptLog
     @Inject
     Button downloadResultBtn
-
     @Inject
     GroovyDiagnoseService groovyDiagnoseService
     @Inject
     DiagnoseExecutionFactory diagnoseExecutionFactory
     @Inject
     DiagnoseFileDownloader diagnoseFileDownloader
-
-    DiagnoseExecution diagnoseExecution
 
     @Override
     void doRunConsole() {
@@ -47,7 +43,7 @@ class GroovyConsole extends AbstractConsoleWindow {
                 diagnoseExecution.getResult('result'),
                 diagnoseExecution.getResult('log'),
                 diagnoseExecution.getResult('stacktrace'),
-                diagnoseExecution.diagnoseScript,
+                diagnoseExecution.finalDiagnoseScript(),
         )
         downloadResultBtn.enabled = diagnoseExecution.executed
     }
@@ -66,7 +62,12 @@ class GroovyConsole extends AbstractConsoleWindow {
 
     @Override
     void clearConsoleResult() {
+        clearDiagnoseExecution()
         updateResultTabs('', '', '', '')
     }
 
+    protected void clearDiagnoseExecution() {
+        diagnoseExecution = null
+        downloadResultBtn.enabled = false
+    }
 }

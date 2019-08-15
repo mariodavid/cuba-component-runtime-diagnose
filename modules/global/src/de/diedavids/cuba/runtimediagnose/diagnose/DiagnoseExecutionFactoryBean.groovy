@@ -2,6 +2,7 @@ package de.diedavids.cuba.runtimediagnose.diagnose
 
 import com.haulmont.cuba.core.global.BuildInfo
 import com.haulmont.cuba.core.global.Stores
+import de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseScriptEnhancer
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
@@ -21,6 +22,10 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
 
     @Inject
     BuildInfo buildInfo
+
+    @Inject
+    GroovyDiagnoseScriptEnhancer groovyDiagnoseScriptEnhancer
+
 
 
     DiagnoseExecution createDiagnoseExecutionFromFile(File file) {
@@ -43,7 +48,7 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
 
     @Override
     DiagnoseExecution createAdHocDiagnoseExecution(String diagnoseScript, DiagnoseType diagnoseType, String dataStore) {
-        new DiagnoseExecution(
+        DiagnoseExecution diagnoseExecution = new DiagnoseExecution(
             manifest: new DiagnoseManifest(
                     diagnoseType: diagnoseType,
                     appName: buildInfo.content.appName,
@@ -53,6 +58,10 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
             diagnoseScript: diagnoseScript,
             executionType: DiagnoseExecutionType.CONSOLE
         )
+
+        groovyDiagnoseScriptEnhancer.enhance(diagnoseExecution)
+
+        diagnoseExecution
     }
 
     private String readDiagnoseScriptFromDiagnoseFile(DiagnoseExecution diagnoseExecution, ZipFile diagnoseZipFile) {
@@ -78,7 +87,7 @@ class DiagnoseExecutionFactoryBean implements DiagnoseExecutionFactory {
     @Override
     byte[] createDiagnoseRequestFileFromDiagnoseExecution(DiagnoseExecution diagnoseExecution) {
         def files = [
-                (getDiagnoseScriptFilename(diagnoseExecution)): diagnoseExecution.diagnoseScript,
+                (getDiagnoseScriptFilename(diagnoseExecution)): diagnoseExecution.finalDiagnoseScript(),
                 (MANIFEST_FILENAME)                           : JsonOutput.prettyPrint(JsonOutput.toJson(diagnoseExecution.manifest)),
         ]
         zipFileHelper.createZipFileForEntries(files)
