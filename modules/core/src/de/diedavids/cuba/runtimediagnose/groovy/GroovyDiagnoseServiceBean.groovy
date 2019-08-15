@@ -1,5 +1,6 @@
 package de.diedavids.cuba.runtimediagnose.groovy
 
+
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.global.*
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
@@ -40,6 +41,8 @@ class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
     @Inject
     List<GroovyScriptBindingSupplier> groovyScriptBindingSuppliers
 
+    @Inject
+    protected GroovyDiagnoseScriptEnhancer groovyDiagnoseScriptEnhancer
 
 
     DiagnoseExecution runGroovyDiagnose(DiagnoseExecution diagnoseExecution) {
@@ -48,12 +51,12 @@ class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
             Binding binding = createBinding(log)
             diagnoseExecution.executionTimestamp = timeSource.currentTimestamp()
             diagnoseExecution.executionUser = userSessionSource.userSession.currentOrSubstitutedUser.login
+            groovyDiagnoseScriptEnhancer.enhance(diagnoseExecution)
 
             try {
-                def result = scripting.evaluateGroovy(diagnoseExecution.diagnoseScript, binding)
+                def result = scripting.evaluateGroovy(diagnoseExecution.executedDiagnoseScript, binding)
                 diagnoseExecution.handleSuccessfulExecution(result.toString())
             }
-
             catch (Exception e) {
                 diagnoseExecution.handleErrorExecution(e)
             }
@@ -65,13 +68,14 @@ class GroovyDiagnoseServiceBean implements GroovyDiagnoseService {
         }
     }
 
+
     protected Binding createBinding(GroovyConsoleLogger log) {
         def binding = scriptBinding
 
         binding.setVariable('log', log)
 
         /**
-         * for backwards comparible reasons.
+         * for backwards compatible reasons.
          * TODO: remove in 1.2.0
          */
         additionalBindingVariableMap.each { k, v ->

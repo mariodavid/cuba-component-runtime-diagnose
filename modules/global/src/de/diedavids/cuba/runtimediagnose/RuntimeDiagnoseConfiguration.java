@@ -31,4 +31,12 @@ public interface RuntimeDiagnoseConfiguration extends Config {
     @Default("false")
     Boolean getLogDiagnoseDetails();
 
+
+    @Property("runtime-diagnose.console.autoImport.entities")
+    @Default("false")
+    Boolean getConsoleAutoImportEntities();
+
+    @Property("runtime-diagnose.console.autoImport.additionalClasses")
+    String getConsoleAutoImportAdditionalClasses();
+
 }

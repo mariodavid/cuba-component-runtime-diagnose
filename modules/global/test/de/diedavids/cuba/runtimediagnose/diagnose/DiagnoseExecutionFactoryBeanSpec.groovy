@@ -2,10 +2,10 @@ package de.diedavids.cuba.runtimediagnose.diagnose
 
 import com.haulmont.cuba.core.global.BuildInfo
 import com.haulmont.cuba.core.global.Stores
+import de.diedavids.cuba.runtimediagnose.groovy.GroovyDiagnoseScriptEnhancer
 import spock.lang.Specification
 
 class DiagnoseExecutionFactoryBeanSpec extends Specification {
-
 
     DiagnoseExecutionFactory sut
     ZipFileHelper zipFileHelper
@@ -17,7 +17,8 @@ class DiagnoseExecutionFactoryBeanSpec extends Specification {
         buildInfo = Mock(BuildInfo)
         sut = new DiagnoseExecutionFactoryBean(
                 zipFileHelper: zipFileHelper,
-                buildInfo: buildInfo
+                buildInfo: buildInfo,
+                groovyDiagnoseScriptEnhancer: Mock(GroovyDiagnoseScriptEnhancer)
         )
 
         buildInfoContent = Mock(BuildInfo.Content)

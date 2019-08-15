@@ -1,5 +1,6 @@
 package de.diedavids.cuba.runtimediagnose.groovy
 
+
 import com.haulmont.cuba.core.Persistence
 import com.haulmont.cuba.core.global.DataManager
 import com.haulmont.cuba.core.global.DatatypeFormatter
@@ -9,7 +10,6 @@ import com.haulmont.cuba.core.global.TimeSource
 import com.haulmont.cuba.core.global.UserSessionSource
 import com.haulmont.cuba.security.entity.User
 import com.haulmont.cuba.security.global.UserSession
-import de.diedavids.cuba.runtimediagnose.RuntimeDiagnoseConfiguration
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecution
 import de.diedavids.cuba.runtimediagnose.diagnose.DiagnoseExecutionLogService
 import spock.lang.Specification
@@ -17,14 +17,15 @@ import spock.lang.Specification
 class GroovyDiagnoseServiceBeanSpec extends Specification {
 
     GroovyDiagnoseService service
-    private Scripting scripting
-    private DataManager dataManager
-    private Metadata metadata
-    private DatatypeFormatter datatypeFormatter
-    private TimeSource timeSource
-    private Persistence persistence
-    private UserSessionSource userSessionSource
-    private DiagnoseExecutionLogService diagnoseExecutionLogService
+    Scripting scripting
+    DataManager dataManager
+    Metadata metadata
+    DatatypeFormatter datatypeFormatter
+    TimeSource timeSource
+    Persistence persistence
+    UserSessionSource userSessionSource
+    DiagnoseExecutionLogService diagnoseExecutionLogService
+    GroovyDiagnoseScriptEnhancer groovyDiagnoseScriptEnhancer
 
     def setup() {
         scripting = Mock(Scripting)
@@ -38,6 +39,8 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         userSession.getCurrentOrSubstitutedUser() >> new User(login: "admin")
         userSessionSource.getUserSession() >> userSession
         diagnoseExecutionLogService = Mock(DiagnoseExecutionLogService)
+
+        groovyDiagnoseScriptEnhancer = Mock(GroovyDiagnoseScriptEnhancer)
         service = new GroovyDiagnoseServiceBean(
                 scripting: scripting,
                 dataManager: dataManager,
@@ -46,9 +49,11 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
                 timeSource: timeSource,
                 persistence: persistence,
                 userSessionSource: userSessionSource,
-                diagnoseExecutionLogService: diagnoseExecutionLogService
+                diagnoseExecutionLogService: diagnoseExecutionLogService,
+                groovyDiagnoseScriptEnhancer: this.groovyDiagnoseScriptEnhancer
         )
     }
+
 
     def "RunGroovyDiagnose will not run anything if there is no diagnose execution information"() {
 
@@ -59,10 +64,16 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         0 * scripting.evaluateGroovy(_,_)
     }
 
-    def "RunGroovyDiagnose uses the diagnoseScript from diaglogExecution for script execution"() {
+    def "RunGroovyDiagnose uses the diagnoseScript from dialogExecution for script execution"() {
 
         given:
         def diagnoseExecution = new DiagnoseExecution(diagnoseScript: "println 'hello world'")
+
+        and:
+        groovyDiagnoseScriptEnhancer.enhance(_) >> { DiagnoseExecution execution ->
+            execution.executedDiagnoseScript = execution.diagnoseScript
+            execution.executedDiagnoseScript
+        }
 
         when:
         service.runGroovyDiagnose(diagnoseExecution)
@@ -70,7 +81,6 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         then:
         1 * scripting.evaluateGroovy("println 'hello world'",_)
     }
-
 
     def "RunGroovyDiagnose creates a binding with an instance of GroovyConsoleLogger"() {
 
@@ -119,8 +129,6 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         diagnoseExecution.getResult('result') == "this is the result"
     }
 
-
-
     def "RunGroovyDiagnose marks the diagnoseExecution as failure if an exception occurs during script execution"() {
 
         given:
@@ -135,7 +143,6 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
         then:
         !diagnoseExecution.executionSuccessful
     }
-
 
     def "RunGroovyDiagnose puts the message of the exception to the diagnose result"() {
 
@@ -202,6 +209,7 @@ class GroovyDiagnoseServiceBeanSpec extends Specification {
 
         given:
         def diagnoseExecution = new DiagnoseExecution()
+
 
         expect:
         service.runGroovyDiagnose(diagnoseExecution) == diagnoseExecution
