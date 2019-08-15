@@ -248,8 +248,7 @@ configure(coreModule) {
         jdbc(hsql)
         testRuntime(hsql)
 
-        compile 'com.github.jsqlparser:jsqlparser:0.9.7'
-
+        implementation 'com.github.jsqlparser:jsqlparser:2.1'
     }
 
     task cleanConf(description: 'Cleans up conf directory') {
