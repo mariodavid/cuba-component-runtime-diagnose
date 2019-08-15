@@ -81,8 +81,10 @@ All Maps will be merged and be accessible in the groovy script.
 
 ### Auto import statements
 
-Writing manual import statements is a tedious task. Therefore the groovy script that should be executed can be enhanced
-by automatically adding import statements. It is possible to configure the auto import statement functionality by `Administration > Application Properties`:
+Writing manual import statements is a tedious task. Doing it for every groovy console over and over again even more so.
+
+Therefore the groovy script that should be executed can be enhanced by defining the import statements once and automatically adding import statements.
+It is possible to configure the auto import statement functionality by `Administration > Application Properties`:
 
 * `runtime-diagnose.console.autoImport.entities` adds automatically import statements for all persistent entity classes
 * `runtime-diagnose.console.autoImport.additionalClasses` adds all mentioned classes as import statements. Entries have to be separated by `;`, wildcard imports are also possible.
