@@ -65,20 +65,6 @@ class DiagnoseFileDownloaderSpec extends Specification {
         frame.showNotification("did work")
     }
 
-    def "downloadFile delegates to export display to download the file"() {
-
-        given:
-        def frame = Mock(Frame)
-        messages.formatMessage(DiagnoseFileDownloader, 'diagnoseResultsDownloadedMessage') >> "did work"
-
-        def filename = 'myfile.zip'
-        when:
-        sut.downloadFile(frame, [] as byte[], filename, 'diagnoseResultsDownloadedMessage')
-
-        then:
-        1 * exportDisplay.show(_ as ByteArrayDataProvider, filename, ExportFormat.ZIP)
-    }
-
     def "downloadFile shows an error if an exception occurs during download"() {
         def frame = Mock(Frame)
         given:

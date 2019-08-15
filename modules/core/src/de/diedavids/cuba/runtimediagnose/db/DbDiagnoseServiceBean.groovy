@@ -14,6 +14,7 @@ import net.sf.jsqlparser.statement.Statements
 import org.apache.commons.lang3.StringUtils
 import org.eclipse.persistence.internal.jpa.EJBQueryImpl
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 import javax.inject.Inject
 import javax.persistence.EntityManager
@@ -146,6 +147,7 @@ class DbDiagnoseServiceBean implements DbDiagnoseService {
     }
 
     @Override
+    @Transactional
     @SuppressWarnings(['UnnecessaryGetter'])
     String getSqlQuery(String jpqlQuery) {
         if (StringUtils.isBlank(jpqlQuery)) {

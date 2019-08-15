@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '7.1.0.BETA2'
+    ext.cubaVersion = '7.1.0.BETA3'
     repositories {
 
         mavenLocal()
@@ -205,6 +205,8 @@ configure([globalModule, coreModule, guiModule, webModule]) {
         main { groovy { srcDirs = ["src"] } }
         test { groovy { srcDirs = ["test"] } }
     }
+    sourceSets.main.output.classesDir = new File(project.buildDir, "classes/main")
+    sourceSets.test.output.classesDir = new File(project.buildDir, "classes/test")
 }
 
 configure(globalModule) {
