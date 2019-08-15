@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Dependencies
 - CUBA 7.1.x
-
+- jsqlparser 2.1
 
 ## [1.3.0] - 2019-03-30
 
