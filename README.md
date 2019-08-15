@@ -177,6 +177,15 @@ of those diagnosis. The audit log is written for ad-hoc diagnosis as well as dia
 The audit logging can be enabled through CUBAs App properties UI: `Administration > Application properties`
 
 * `runtime-diagnose.log.enabled` - enables / disables the audit logging feature for diagnose executions
-* `runtime-diagnose.log.logDiagnoseDetails` - enables / disables detailed logging, including the content of the diagnose script, diagnose result
+* `runtime-diagnose.log.logDiagnoseDetails` - enables / disables detailed logging, including the content of the diagnose script and diagnose result
 
 
+### Audit Log Details
+
+In case the audit log details are enabled, the diagnose results are also stored during execution. This allows administrators
+to afterwards see all information about the script (Groovy / SQL) that was executed as well as the result it produced.
+
+The Audit Log Details are stored in a file, that will itself be written to the `FileStorage` subsystem of CUBA.
+
+
+![dialog execution logs](https://github.com/mariodavid/cuba-component-runtime-diagnose/blob/master/img/dialog-execution-logs.png)
