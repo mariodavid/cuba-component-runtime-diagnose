@@ -174,8 +174,8 @@ The diagnose.(sql|groovy) contains the executable script. The manifest file desc
     {
       "appVersion": "1.1",
       "appName": "runtime-diagnose-app",
-      "producer": "Company Inc.",
-      "diagnoseType": "GROOVY"
+      "diagnoseType": "GROOVY",
+      "dataStore": "__MAIN__"
     }
 
 The `diagnoseType` has to be either `GROOVY` or `SQL`. 

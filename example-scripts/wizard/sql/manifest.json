@@ -2,5 +2,5 @@
   "diagnoseType": "SQL",
   "appVersion": "1.0",
   "appName": "runtime-diagnose-app",
-  "producer": "Company Inc."
+  "dataStore": "__MAIN__"
 }
