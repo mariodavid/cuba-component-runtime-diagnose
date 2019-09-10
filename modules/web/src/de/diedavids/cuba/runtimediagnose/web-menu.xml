@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <item id="diagnoseWizard"
-          insertAfter="logWindow"/>
+          insertAfter="printDomain"/>
     <menu id="consoleMenu"
           insertBefore="appProperties">
         <item id="groovyConsole"/>
