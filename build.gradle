@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '7.1.0.BETA3'
+    ext.cubaVersion = '7.1.0'
     repositories {
 
         mavenLocal()
@@ -248,7 +248,7 @@ configure(coreModule) {
         jdbc(hsql)
         testRuntime(hsql)
 
-        implementation 'com.github.jsqlparser:jsqlparser:2.1'
+        compile 'com.github.jsqlparser:jsqlparser:2.1'
     }
 
     task cleanConf(description: 'Cleans up conf directory') {

@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [1.4.0] - Unreleased
+## [1.4.0] - 2019-09-10
 
 ### Added
 - Select DataStore for SQL / JPQL console in order to execute SQL / JPQL statements against different then the MAIN data store
