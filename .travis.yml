@@ -1,9 +1,18 @@
 language: groovy
 jdk:
-  - openjdk8
+- openjdk8
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 script:
-  - ./gradlew check coveralls
+- "./gradlew check coveralls"
+deploy:
+  provider: script
+  script: "./gradlew clean assemble bintrayUpload"
+  on:
+    tags: true
+env:
+  global:
+  - secure: sWwMLC9lblFpqfSCNn0HvBcDq7s09gexbcDa6TCYfwXM4o6AYttXOHSm5OBi7MIxMsd3h9H88UubA0qeOcM84hGPgZ/hH5yC3iIZcnHHSTJ5S8Wv2BhdRnBVv9DeuyLnFDYg5Vr9H0cQ2I+uWtbbqTtwo3s1GJEp4VNo8sQQZmPpBj/3WHA2+Js2inOqzHOViTvVZEwhCE3ZWj8nDBtxcGiy8GTTflP+r+SroBMGJUXl+rJXRe8DQX8HQnmchzdmpkkfNyG/TE0ojdpKuT5wMsqT1qUxO98YZTEYhPFULIgc5YPHxi84qKwFdiEMMZw/he16ohBPVc3VnQ2Dgwuz1aiO+1fY8E24wRFtLRIc2EpuzmfMN4caxqlvhk/fgaaMePPeZGvN2RD0+0rhKqf3yQCglGLzPNEW4KQjvGLxyVYVMeoZBS7vKvq2skBuTz78qWVryEFhAqKSFSDx4eP/u+gOCwboKL+aREPEe3o/IeVoGAJjsrokb9lW+PgrcY1jPGSG4hLlBfxsjaxPH70cuH7WBnh34IFzxtUWXWg+gn+3OjVs5tskXyWE84hCXercnTJa1CwnG1LYAmDTpo9tLBKfLJDSr4zg0jVz4dJbz414xf3kbbnlwNWOJ7NMI0+Wo0PVAJAmS8sa4FIssLwPPGvQ4OqntaMqtWvl2/CWADQ=
+  - secure: HPy2JI4MO71BBILm5HKHyb8BDNPc45TDBcvwewbhbCsUxvRhyXavLV67C9WIBLyuKGRScIWSM+ZEjPCgOkxqDRITJUze5ftBdhMEl4KD/Zthoyum2gGqDEeDyCASvMMukWTtzBG1BPpBqyyp7oN4S9pqsULRcA2JfAkxdKb04kEPKUXnzQG7lyOJkhWWU3nIsizvfxo6xq1fpLm/Y35D2uCTuhf3jN0+XXQZWOShOhkMqNjBZmg3OhQjQPy/dA5xUdd/LHL+Mp2h/tU+4lFO/9RGC47dWX+MDp8AxgOjlUiMdt9NryQ5h/k0hFxChQQJ+t60S1SpnJXSkAyZq7z8wEKHwd4bbN++1A+MDoj290FA8sCmvPcGg6zdVmD9Yaa6ikcLfrsD6U/9uqv+y7pLeI/nLLZ7oOSdRIfOF0eyimlI0YocZgLturHoqnXoIWU64e1v3KxS6agbLnnjI2E/++7huzD9D/s9K9bp0HS1T6sHSMenhWdxlyVtfsirpDV3BRRLs94Q9usI2+5Qet8IT68YaiN0wqu765jaZ1Z8daCp6Gzc1dOfzjmzAlDO1NGoYxbSbh7S+vrQbsOu2sCdmeaoaV4I3notV5TzVms9MoaQUFHJts7KdyXXtjqN8o6aYwaA8/milM4Uern8NqCNpN1v4fkyNQUiZNgOgYDgGJk=
