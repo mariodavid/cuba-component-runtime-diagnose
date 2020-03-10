@@ -23,6 +23,7 @@ It mainly consists of the three parts:
 
 | Platform Version | Add-on Version |
 | ---------------- | -------------- |
+| 7.2.x            | 1.5.x          |
 | 7.1.x            | 1.4.x          |
 | 7.0.x            | 1.3.x          |
 | 6.10.x           | 1.2.x          |
